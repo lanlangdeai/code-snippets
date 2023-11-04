@@ -57,22 +57,36 @@ https://www.xp.cn/
 - ServBay(Mac)
 https://www.servbay.dev/zh_CN
 
+- xdebug: 代码调试/debug
+https://github.com/xdebug/xdebug
+
 
 
 #### Web框架
 - laravel-s: 介于laravel/lumen与swoole的适配器
 https://github.com/hhxsv5/laravel-s
+- dingo/api: 基于laravel/lumen框架的restful api包
+https://github.com/dingo/api
+
+
 
 
 - Hpyerf: 使用docker部署开发环境
 https://github.com/hyperf/hyperf-docker
 
 
+
+
+
+
+
+
 #### 第三方类库
 - laravel-uuid: 生成uuid
 https://github.com/webpatser/laravel-uuid
 
-
+- sso: SSo实现包
+https://github.com/evangui/sso
 
 
 #### 相关工具
@@ -165,6 +179,8 @@ https://github.com/shima-park/agollo
 https://github.com/twmb/franz-go
 - Kafka 客户端2
 https://github.com/confluentinc/confluent-kafka-go
+- Kafka 客户端3(*)
+https://github.com/IBM/sarama
 
 
 - guuid: 生成uuid1
@@ -274,8 +290,6 @@ https://github.com/gabriel-vasile/mimetype
 https://github.com/go-laoji/wecom-go-sdk
 
 #### Web框架
-- go-kit
-https://github.com/go-kit/kit
 
 - Echo
 https://github.com/labstack/echo
@@ -285,10 +299,15 @@ https://echo.labstack.com/
 
 
 #### 微服务
+- go-kit
+https://github.com/go-kit/kit
+
+
 - hertz: 字节推出的微服务框架
 https://github.com/cloudwego/hertz
 
-  
+- kratos: 哔哩哔哩推出的微服务框架
+https://github.com/go-kratos/kratos
 
 
 
@@ -388,6 +407,10 @@ Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, 
 
 ### Linux
 
+- linux的终端可视化工具
+https://github.com/sqshq/sampler
+
+
 - Upx: 文件压缩工具
 https://github.com/upx/upx
 
@@ -408,9 +431,17 @@ https://github.com/ryanoasis/nerd-fonts
 
 
 
+
+
 ### 机器学习
 
 - https://github.com/microsoft/ML-For-Beginners
+
+
+
+## 编辑器
+IDE使用教程(PHPstorm,Pycharm,Goland,WebStorm,DataGrip等)
+- https://github.com/judasn/IntelliJ-IDEA-Tutorial
 
 
 
@@ -429,16 +460,25 @@ https://github.com/markyin0707/typora-activation
 - Etcd的可视化客户端
 https://github.com/gtamas/etcdmanager
 
+- Zookeeper GUI工具
+https://github.com/vran-dev/PrettyZoo
 
 - uPic: 图片上传工具(Mac)
 https://github.com/gee1k/uPic
-
-
+- Cloudreve: 云盘系统
+https://github.com/cloudreve/Cloudreve
 
 - wrk: 性能测试工具
 https://github.com/wg/wrk
 
 
+
+## 平台类
+- 静态导航网站
+https://github.com/WebStackPage/WebStackPage.github.io
+
+- 站点监控工具(Uptime)
+https://github.com/louislam/uptime-kuma
 
 
 ## 公共资源列表
