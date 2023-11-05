@@ -69,6 +69,8 @@ https://github.com/hhxsv5/laravel-s
 https://github.com/dingo/api
 
 
+- yii2-sentry: 适用于Yii2框架的sentry包
+https://github.com/notamedia/yii2-sentry
 
 
 - Hpyerf: 使用docker部署开发环境
@@ -87,6 +89,13 @@ https://github.com/webpatser/laravel-uuid
 
 - sso: SSo实现包
 https://github.com/evangui/sso
+
+
+- oauth2: OAUTH2.0实现
+https://github.com/thephpleague/oauth2-client
+
+- OpenID: OpenId连接授权
+https://github.com/jumbojett/OpenID-Connect-PHP
 
 
 #### 相关工具
@@ -352,6 +361,17 @@ Go-Build模版
 
 
 
+### Rust
+
+- 学习教程
+https://github.com/sunface/rust-by-practice
+
+
+
+---
+
+
+
 ### Redis
 
 - 布隆过滤器模块
@@ -429,6 +449,11 @@ https://github.com/ryanoasis/nerd-fonts
 
 
 
+#### 工具
+
+- json文件查看与管理工具
+https://github.com/triggerdotdev/jsonhero-web
+
 
 
 
@@ -468,6 +493,11 @@ https://github.com/gee1k/uPic
 - Cloudreve: 云盘系统
 https://github.com/cloudreve/Cloudreve
 
+- 代码片段管理软件
+https://github.com/massCodeIO/massCode
+
+
+
 - wrk: 性能测试工具
 https://github.com/wg/wrk
 
@@ -484,6 +514,7 @@ https://github.com/louislam/uptime-kuma
 ## 公共资源列表
 - Etcd: https://github.com/etcd-io/etcd
 - Apollo: https://github.com/apolloconfig/apollo-quick-start
+- Proto Buffer: https://github.com/protocolbuffers/protobuf
 - 
 
 
