@@ -4,38 +4,37 @@
 常用代码片段, 包括但不限于
 
 + 语言
-  - PHP 
-  - Python
-  - Golang
-  - Shell
-  - Lua
-  - NodeJS
-  - Java
+  - [PHP](php/PHP.md)
+  - [Python](python/Python.md)
+  - [Golang](golang/Go.md)
+  - [Shell](shell/Shell.md)
+  - [Lua](lua/Lua.md)
+  - [NodeJS](nodejs/NodeJS.md)
+  - [Java](java/Java.md)
 + 数据库
-  - MySQL
-  - PostgreSQL
-  - ClickHouse
+  - [MySQL](mysql/MySQL.md)
+  - [PostgreSQL](postgreSQL/PostgreSQL.md)
+  - [ClickHouse](clickhouse/Clickhouse.md)
 + 缓存
-  - Redis
-  - MongoDB
-  - ElasticSearch
+  - [Redis](redis/Redis.md)
++ 文档型
+  - [MongoDB](mongodb/MongoDB.md)
+  - [ElasticSearch](elasticSearch/ElasticSearch.md)
 + 注册发现
-  - Consul
-  - Etcd
+  - [Consul](consul/Consul.md)
+  - [Etcd](etcd/Etcd.md)
 + 配置中心
-  - Apollo
-  - Nacos
+  - [Apollo](apollo/Apollo.md)
+  - [Nacos](nacos/Nacos.md)
 + Web软件
-  - Nginx
-  - Apache
+  - [Nginx](nginx/Nginx.md)
+  - [Apache](apache/Apache.md)
 + 容器化
   - [Docker](docker/Docker.md)
-  - K8s
+  - [K8s](kubernetes/K8s.md)
 + 操作系统
-  - Linux
-  - Centos
-  - Ubuntu
-
+  - [Linux](linux/Linux.md)
+  - [Windows](windows/Windows.md)
 
 
 
