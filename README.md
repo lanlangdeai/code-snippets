@@ -78,7 +78,8 @@ https://github.com/hyperf/hyperf-docker
 
 
 
-
+- PhalApi: 开源接口项目
+https://www.phalapi.net/
 
 
 
@@ -109,6 +110,14 @@ https://github.com/REBELinBLUE/deployer
 https://github.com/slince/composer-registry-manager
 
 
+
+#### 相关站点
+- composer包仓库
+https://packagist.org/
+
+
+
+---
 
 
 ### Python
@@ -363,6 +372,7 @@ Go-Build模版
 - https://github.com/lifei6671/interview-go
 
 
+---
 
 ### Rust
 
@@ -372,6 +382,15 @@ https://github.com/sunface/rust-by-practice
 
 
 ---
+
+
+### Shell
+
+
+#### 学习资源
+基础-入门
+- https://www.runoob.com/linux/linux-shell.html
+
 
 
 
@@ -430,6 +449,14 @@ Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, 
 
 ### Linux
 
+
+#### 操作系统
+- Centos: https://www.centos.org/
+
+
+
+
+
 - linux的终端可视化工具
 https://github.com/sqshq/sampler
 
@@ -444,7 +471,24 @@ https://github.com/upx/upx
 
 
 
-### Js+Css
+### 前端
+
+
+#### 第三方包
+- bce-sdk-js: 对接百度云开发服务接口 
+https://baidubce.github.io/bce-sdk-js/
+
+
+
+
+
+#### 框架
+- React
+https://www.reactjs.cn/
+
+
+
+
 
 
 - 字体图标
@@ -484,7 +528,12 @@ IDE使用教程(PHPstorm,Pycharm,Goland,WebStorm,DataGrip等)
 - typora-activation: Typora激活工具
 https://github.com/markyin0707/typora-activation
 
-  
+
+- Virtualbox: 虚拟机软件
+https://www.virtualbox.org/
+
+
+
 - Etcd的可视化客户端
 https://github.com/gtamas/etcdmanager
 
@@ -525,6 +574,66 @@ https://github.com/louislam/uptime-kuma
 ## 码如人生
 - 程序员的副业: https://github.com/easychen/lean-side-bussiness
 - 
+
+
+
+
+## 开发资源汇总
+罗列开发中常用的参考文档
+
+### 微信开发
+- 官方文档: https://developers.weixin.qq.com/doc/
+- 微信支付: https://pay.weixin.qq.com/wiki/doc/api/index.html
+- 微信公众号调试工具: https://mp.weixin.qq.com/debug/cgi-bin/apiinfo
+- 微信 JS 接口签名校验工具: https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign
+- 小程序开放个人申请: https://www.jianshu.com/p/fff515483c6c
+- 
+
+
+
+
+## 其他
+
+### 云平台
+- 腾讯云: https://cloud.tencent.com/
+- 新浪云: https://www.sinacloud.com/
+- 阿里云: https://www.aliyun.com/
+- 七牛云: https://www.qiniu.com/
+
+
+
+### 第三方服务
+地图类
+- 百度地图: https://lbsyun.baidu.com/index.php?title=%E9%A6%96%E9%A1%B5
+- 
+
+短信类
+- 云片: https://www.yunpian.com/entry
+- 腾讯云短信: https://cloud.tencent.com/product/sms
+
+
+
+
+
+### 云课程
+入门基础
+- 阿里云大学: https://edu.aliyun.com/explore/?spm=a2cwt.28120021.J_9305143570.2.13c5704aHcRooO
+众多免费课程可以学习,不限于java,python,mysql,linux等,可以看到自己想学习的一些基础教程
+
+
+
+
+### 招聘站
+- 智联招聘: https://www.zhaopin.com/
+- BOSS: https://www.zhipin.com
+- 黄豆纳才: https://zhaopin.clouderwork.com/
+
+
+
+
+
+
+
 
 
 
