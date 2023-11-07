@@ -61,26 +61,50 @@ https://github.com/xdebug/xdebug
 
 
 
+#### 学习教程
+- 官方文档: https://www.php.net/docs.php
+- PHP之道: https://learnku.com/docs/php-the-right-way/PHP8.0
+
+
 #### Web框架
+- laravel: 现代化框架
+https://laravel.com/
 - laravel-s: 介于laravel/lumen与swoole的适配器
 https://github.com/hhxsv5/laravel-s
 - dingo/api: 基于laravel/lumen框架的restful api包
 https://github.com/dingo/api
 
+- Lumen: 
+https://lumen.laravel.com/docs/10.x
+
+
 
 - yii2-sentry: 适用于Yii2框架的sentry包
 https://github.com/notamedia/yii2-sentry
 
+- Yaf: 一个C语言编写的PHP框架
+https://www.laruence.com/manual/
 
+- Hyperf
+https://hyperf.wiki/3.0/#/
 - Hpyerf: 使用docker部署开发环境
 https://github.com/hyperf/hyperf-docker
 
+- Swoole: PHP协程框架
+https://www.swoole.com/
 
 
 - PhalApi: 开源接口项目
 https://www.phalapi.net/
 
+- Slim: 微框架 
+https://www.slimframework.com/
 
+- Workererman: 一款开源高性能PHP应用容器
+https://www.workerman.net/
+
+- Phalcon: 基于C扩展的框架
+https://phalcon.io/zh-cn
 
 
 #### 第三方类库
@@ -114,6 +138,8 @@ https://github.com/slince/composer-registry-manager
 - composer包仓库
 https://packagist.org/
 
+- composer官方站
+https://www.phpcomposer.com/
 
 
 ---
@@ -121,11 +147,39 @@ https://packagist.org/
 
 ### Python
 
+
+
+#### 框架
+- Django: https://www.djangoproject.com/
+- Flask: https://docs.jinkan.org/docs/flask/
+- 
+
+
 #### 第三个类库
 
 - psutil: 查看系统信息(内存,CPU等)
 https://github.com/giampaolo/psutil
 
+
+
+
+
+#### 学习教程
+
+博文
+- 官方文档(V3): https://docs.python.org/zh-cn/3/
+- 入门教程: http://www.pythondoc.com/pythontutorial3/index.html
+- 菜鸟教程(V2,已不推荐): https://www.runoob.com/python/python-tutorial.html
+- 菜鸟教程(V3): https://www.runoob.com/python3/python3-mysql.html
+- 标准库实例教程: https://learnku.com/docs/pymotw
+
+
+社区:
+- 和鲸社区: https://www.heywhale.com/home/
+- 玩蛇网(Python学习与分享平台): https://www.iplaypy.com/
+
+视频课程(免费+付费)
+- 风变编程: https://www.pypypy.cn/app#/app-center
 
 
 #### 面试资源
@@ -469,8 +523,28 @@ https://github.com/upx/upx
 ---
 
 
+### Windows
+
+
+#### 相关软件
+- Chocolatey: 软件包管理工具
+https://chocolatey.org/
+
+- Scoop: 命令行下软件包管理工具(类Mac下的brew)
+https://scoop.sh/#/
+
+- Cygwin: 提供windows下的Linux环境
+https://www.cygwin.com/index.html
+
+
+
+---
+
+
 
 ### 前端
+
+
 
 
 #### 第三方包
@@ -485,7 +559,8 @@ https://baidubce.github.io/bce-sdk-js/
 - React
 https://www.reactjs.cn/
 
-
+- Vue
+https://cn.vuejs.org/
 
 
 
@@ -580,6 +655,11 @@ https://github.com/louislam/uptime-kuma
 ## 开发资源汇总
 罗列开发中常用的参考文档
 
+
+### 多种语言学习Bus
+- LearnKu: https://learnku.com/
+
+
 ### 微信开发
 - 官方文档: https://developers.weixin.qq.com/doc/
 - 微信支付: https://pay.weixin.qq.com/wiki/doc/api/index.html
@@ -600,6 +680,16 @@ https://github.com/louislam/uptime-kuma
 - 七牛云: https://www.qiniu.com/
 
 
+### 代码托管
+- 腾讯云Coding: https://coding.net/
+- 码云: https://gitee.com/
+- 
+
+
+
+### 学习站
+视频
+- 51CTO学堂: https://edu.51cto.com/
 
 ### 第三方服务
 地图类
@@ -610,6 +700,10 @@ https://github.com/louislam/uptime-kuma
 - 云片: https://www.yunpian.com/entry
 - 腾讯云短信: https://cloud.tencent.com/product/sms
 
+
+
+实时通信:
+- GoEasy: https://www.goeasy.io/
 
 
 

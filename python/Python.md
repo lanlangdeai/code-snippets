@@ -7,6 +7,7 @@
 - 官网中文版3.7: [https://docs.python.org/zh-cn/3.7/download.html](https://docs.python.org/zh-cn/3.7/download.html)
 
 
+
 ## 安装
 
 1.安装依赖包
@@ -92,6 +93,73 @@ pip config set global.index-url http://pypi.douban.com/simple/
 ## 常用第三方包
 - [fake-useragent](./package.md) (代理伪造，随机生成UA)
 - [loguru]([https://github.com/Delgan/loguru](https://github.com/Delgan/loguru) (日志记录器)
+
+
+
+
+
+## 基础
+```python
+
+# 数据类型
+## 字符串
+'''
+1.索引切片 [开始索引:结束索引:步长]   顾头不顾尾
+[:3]       0到3
+[2:]       2到最后一位
+[1:8:2]    从1到8,隔一个取一个值
+[:]        复制整个内容
+[::-1]     字符串反转
+
+
+## 浮点型
+
+## 布尔值
+True | False
+
+
+## 元祖
+
+
+## 列表
+
+## 字典
+
+## None
+
+
+
+'''
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
