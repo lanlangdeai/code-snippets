@@ -56,6 +56,14 @@ https://www.xp.cn/
 - ServBay(Mac)
 https://www.servbay.dev/zh_CN
 
+- 宝塔
+https://www.bt.cn/new/index.html
+
+
+
+
+
+
 - xdebug: 代码调试/debug
 https://github.com/xdebug/xdebug
 
@@ -403,6 +411,9 @@ Golang学习
   - https://github.com/go-sonic/sonic
 
 
+静态网站生成器Hugo
+  - https://www.gohugo.org/
+
 
 
 代码风格
@@ -445,6 +456,23 @@ https://github.com/sunface/rust-by-practice
 - https://www.runoob.com/linux/linux-shell.html
 
 
+---
+
+
+
+### MySQL
+
+
+
+---
+
+### ClickHouse
+官方地址: https://clickhouse.com/docs/zh
+
+
+
+
+
 
 
 ### Redis
@@ -453,6 +481,7 @@ https://github.com/sunface/rust-by-practice
 https://github.com/RedisBloom/RedisBloom
 
 
+---
 
 
 ### K8s
@@ -537,19 +566,67 @@ https://scoop.sh/#/
 https://www.cygwin.com/index.html
 
 
+- Vagrant: 构建虚拟开发环境的工具
+https://www.vagrantup.com/
+
+
+
+
 
 ---
 
 
 
 ### 前端
+Nodejs: https://nodejs.org/en
 
+
+
+Less: https://www.runoob.com/manual/lessguide/
+
+
+- element-ui: https://element.eleme.cn/#/zh-CN
+- AT-UI: https://at-ui.github.io/at-ui/#/zh
 
 
 
 #### 第三方包
+
+- yarn: https://yarnpkg.com/
+- 
+
+
+
+
+
+
 - bce-sdk-js: 对接百度云开发服务接口 
 https://baidubce.github.io/bce-sdk-js/
+
+
+- clipboard.js: 复制粘贴板
+https://clipboardjs.com/
+
+- Swiper: 滑动特效
+https://www.swiper.com.cn/
+
+- 瀑布流
+https://masonry.desandro.com/
+
+- 图片,视频悬浮展示
+https://fancyapps.com/fancybox/
+
+
+
+- 基于css的效果
+https://animate.style/
+http://ianlunn.github.io/Hover/
+https://elrumordelaluz.github.io/csshake/
+
+
+
+- 基于JS的效果
+http://anijs.github.io/
 
 
 
@@ -577,6 +654,20 @@ https://github.com/triggerdotdev/jsonhero-web
 
 
 
+#### 效果站点(可借鉴的效果,功能点,交互)
+- https://isux.tencent.com/
+
+
+
+#### 学习教程
+- https://www.w3cways.com/
+- w3school: https://www.w3school.com.cn/
+- 
+
+
+
+
+---
 
 
 ### 机器学习
@@ -590,13 +681,14 @@ IDE使用教程(PHPstorm,Pycharm,Goland,WebStorm,DataGrip等)
 - https://github.com/judasn/IntelliJ-IDEA-Tutorial
 
 
+---
 
 ## 周边服务
 [IP]
 1. https://www.ipip.net
 
 
-
+---
 
 ## 使用软件&工具
 - typora-activation: Typora激活工具
@@ -628,6 +720,7 @@ https://github.com/massCodeIO/massCode
 https://github.com/wg/wrk
 
 
+---
 
 ## 平台类
 - 静态导航网站
@@ -637,20 +730,22 @@ https://github.com/WebStackPage/WebStackPage.github.io
 https://github.com/louislam/uptime-kuma
 
 
+---
+
 ## 公共资源列表
 - Etcd: https://github.com/etcd-io/etcd
 - Apollo: https://github.com/apolloconfig/apollo-quick-start
 - Proto Buffer: https://github.com/protocolbuffers/protobuf
 - 
 
-
+---
 
 ## 码如人生
 - 程序员的副业: https://github.com/easychen/lean-side-bussiness
 - 
 
 
-
+---
 
 ## 开发资源汇总
 罗列开发中常用的参考文档
@@ -669,7 +764,7 @@ https://github.com/louislam/uptime-kuma
 - 
 
 
-
+---
 
 ## 其他
 
@@ -691,6 +786,15 @@ https://github.com/louislam/uptime-kuma
 视频
 - 51CTO学堂: https://edu.51cto.com/
 
+
+
+文档
+- 稀土掘金: https://juejin.cn/
+- 
+
+
+
+
 ### 第三方服务
 地图类
 - 百度地图: https://lbsyun.baidu.com/index.php?title=%E9%A6%96%E9%A1%B5
@@ -700,10 +804,25 @@ https://github.com/louislam/uptime-kuma
 - 云片: https://www.yunpian.com/entry
 - 腾讯云短信: https://cloud.tencent.com/product/sms
 
-
+存储类(OSS)
+- 又拍云: https://www.upyun.com/
+- 阿里云
 
 实时通信:
 - GoEasy: https://www.goeasy.io/
+
+
+音视频服务:
+- 融云: https://www.rongcloud.cn/
+
+
+
+检测类: 微信域名,链接封禁状态,证书过期检测,QQ检测等
+- 极强检测: https://www.urlzt.com/
+
+
+IP代理
+- 快代理: https://www.kuaidaili.com/free/
 
 
 
@@ -720,6 +839,55 @@ https://github.com/louislam/uptime-kuma
 - 智联招聘: https://www.zhaopin.com/
 - BOSS: https://www.zhipin.com
 - 黄豆纳才: https://zhaopin.clouderwork.com/
+
+
+### 项目开发
+
+团队协作工具
+- Tower: https://tower.im/
+- Zoho WorkDrive: https://www.zoho.com.cn/
+
+敏捷开发
+- tapd: https://www.tapd.cn/
+
+
+
+代码管理
+- 自建: Gitlab,Gogs
+- 第三方平台: 阿里云,腾讯云,码云,rap2等
+
+
+接口管理
+- 自建: Yapi,postman
+- 第三方: showdoc,Apifox
+
+
+文档输出
+- 腾讯文档
+- 钉钉文档
+- wps
+- 金山文档
+
+知识库
+- Confluence
+- 
+
+
+产品设计
+- 蓝湖
+
+
+项目工程
+
+错误日志监控告警平台
+- Sentry: https://sentry.io/welcome/
+- fundebug - 前端bug上报: https://www.fundebug.com/
+
+
+堡垒机
+- jumpserver
+
+
 
 
 

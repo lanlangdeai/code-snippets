@@ -111,6 +111,23 @@ pip config set global.index-url http://pypi.douban.com/simple/
 [:]        复制整个内容
 [::-1]     字符串反转
 
+2.拼接
+1) str1 + str2
+2) f''
+3) 'xxx: %s' % (str1)
+4) "name: {1} age:{age}".format(lixing, age=23)
+
+3. 字符串复制拼接
+str1 * 10  : 重复10个str1的字符串拼接成一个新串
+
+4.判断成员是否存在
+substr1 in str1
+
+5. input 得到的是字符串
+
+
+
+
 
 ## 浮点型
 
