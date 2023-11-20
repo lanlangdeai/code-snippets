@@ -1,5 +1,7 @@
 # Code-Snippets
-代码片段
+
+  本人从2016年~2023年已经从事开发将近八年时间,以下罗列的都是本人开发生涯中所涉猎的技术栈,汇总于此.
+希望可以帮助更多开发者,或是初入编程,或是编程老兵都可以有所获,不限于代码,开发思路,架构思想,开发周边服务等等
 
 常用代码片段, 包括但不限于
 
@@ -35,6 +37,16 @@
 + 操作系统
   - [Linux](linux/Linux.md)
   - [Windows](windows/Windows.md)
+
+
+---
+### 面试题
+
+* [网络面试题](other/network-interview.md)
+
+* [Redis面试题](redis/redis-interview.md)
+
+* [MySQL面试题](mysql/mysql_interview.md)
 
 
 
