@@ -410,9 +410,9 @@ Golang学习
   - https://github.com/golang/example
 
 
-进阶学习
+进阶学习(成熟项目+优秀借鉴)
   - https://github.com/xinliangnote/go-gin-api
-  - 
+  - https://www.gin-vue-admin.com/
 
 
 
