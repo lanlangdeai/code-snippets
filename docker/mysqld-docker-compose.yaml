@@ -1,0 +1,21 @@
+version: '3.7'
+
+networks:
+  servers:
+    driver: bridge
+
+services:
+  server-mysql:
+    container_name: mysql
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=lixing
+      - MYSQL_PASSWORD=123456
+      - TZ=Asia/Shanghai
+#    volumes:
+#      - ./config/sql:/docker-entrypoint-initdb.d/
+    ports:
+      - "3306:3306"
