@@ -5,6 +5,7 @@ networks:
     driver: bridge
 
 services:
+  # 貌似有问题,会出现祸端时间服务中断的情况
   Etcd:
     image: 'bitnami/etcd:latest'  # 最新稳定版本:3.5
     environment:

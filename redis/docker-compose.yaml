@@ -1,0 +1,15 @@
+services:
+  server-redis:
+    container_name: redis80
+    image: redis:6.2.0
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    volumes:
+      - ./redis/redis.conf:/redis.conf:rw
+      - ./redis/data:/data
+    command: redis-server /redis.conf
+    ports:
+      - "6380:6379"
+    tty: true

@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  fmt_kafka:
+    image: provectuslabs/kafka-ui
+    container_name: fmt_kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: xxx.xx.xx.xxx:9092
+    ports:
+      - "9889:8080"
+    networks:
+      - fmt_base_network
+
+networks:
+  fmt_base_network:
+    driver: bridge
