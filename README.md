@@ -380,6 +380,11 @@ https://github.com/gabriel-vasile/mimetype
 - wecom-go-sdk: 企业微信应用接入
 https://github.com/go-laoji/wecom-go-sdk
 
+
+- 友好打印JSON
+https://github.com/tidwall/pretty
+
+
 #### Web框架
 
 - Echo
