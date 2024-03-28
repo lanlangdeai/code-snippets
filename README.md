@@ -229,7 +229,7 @@ https://github.com/hibiken/asynqmon
 
 - redigo: Redis客户端包1
 https://github.com/gomodule/redigo
-- go-redis: Redis客户端包2
+- **go-redis**: Redis客户端包2
 https://github.com/redis/go-redis
 
 - mongo-go-driver: MongoDB客户端
@@ -239,20 +239,20 @@ https://github.com/mongodb/mongo-go-driver
 https://github.com/nsqio/nsq
 
 
-- cobra: Cli应用程序库(类Python中的Click)
+- **cobra**: Cli应用程序库(类Python中的Click)
 https://github.com/spf13/cobra
 
-- pflag: 程序参数处理(类Python中的argparse) 
+- **pflag**: 程序参数处理(类Python中的argparse) 
 https://github.com/spf13/pflag
 
-- shopspring/decimal: 浮点数精度处理
+- **shopspring/decimal**: 浮点数精度处理
 https://github.com/shopspring/decimal
 
-- copier: 结构体复制
+- **copier**: 结构体/切片/映射的复制
 https://github.com/jinzhu/copier
 
 
-- 从一个类型转换为另一种类型
+- **cast**: 从一个类型转换为另一种类型
 https://github.com/spf13/cast
 
 - go-spew: 友好的打印
@@ -297,7 +297,7 @@ https://github.com/allegro/bigcache
 https://github.com/patrickmn/go-cache
 
 
-- json-iterator/go: 高效的JSON序列化工具
+- **json-iterator/go**: 高效的JSON序列化工具
   https://github.com/json-iterator/go
 
 - sonic: 一个速度奇快的 JSON 序列化/反序列化库
@@ -316,7 +316,7 @@ https://github.com/prometheus/client_golang
 - gin-contrib/pprof: gin框架的pprof中间件
 https://github.com/gin-contrib/pprof
 
-- gin-swagger: gin框架生成swagger文档中间件
+- **gin-swagger**: gin框架生成swagger文档中间件
 https://github.com/swaggo/gin-swagger
 
 - wire: 依赖注入工具
@@ -337,18 +337,18 @@ https://github.com/gorilla/mux
 - gout 是go写的http 客户端，为提高工作效率而开发
 https://github.com/guonaihong/gout
 
-- cron: 定时任务
+- **cron**: 定时任务
 https://github.com/robfig/cron
 
-- 日志分割
+- **日志分割**
 https://github.com/natefinch/lumberjack
 
 
-- zap: 日志管理工具1
+- **zap**: 日志管理工具
 https://github.com/uber-go/zap
-- logrus: 日志管理工具2
+- logrus: 日志管理工具
 https://github.com/sirupsen/logrus
-- zerolog: 日志管理工具3
+- zerolog: 日志管理工具
 https://github.com/rs/zerolog
 
 - converter: mysql表结构自动生成golang struct
@@ -360,7 +360,7 @@ https://github.com/parnurzeal/gorequest
 https://github.com/go-resty/resty
 
 
-- viper: 配置管理
+- **viper**: 配置管理
 https://github.com/spf13/viper
 
 - cleanenv: 纯净配置管理工具
@@ -370,10 +370,10 @@ https://github.com/ilyakaznacheev/cleanenv
 https://github.com/shirou/gopsutil
 
 
-- 生成二维码
+- **go-qrcode**: 生成二维码
 https://github.com/skip2/go-qrcode
 
-- 探测媒体,文件的类型
+- **mimetype**: 探测媒体,文件的类型
 https://github.com/gabriel-vasile/mimetype
 
 
@@ -381,8 +381,22 @@ https://github.com/gabriel-vasile/mimetype
 https://github.com/go-laoji/wecom-go-sdk
 
 
-- 友好打印JSON
+- pretty: 友好打印JSON
 https://github.com/tidwall/pretty
+
+- **lo**: 高效友好的处理slice,map,math,string,tuple,channel
+https://github.com/samber/lo 
+
+- **lancet**: 通用工具库
+https://github.com/duke-git/lancet
+
+- excelize: Excel表格处理
+https://github.com/qax-os/excelize
+
+
+
+
+
 
 
 #### Web框架
