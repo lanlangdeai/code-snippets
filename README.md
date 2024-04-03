@@ -393,7 +393,11 @@ https://github.com/duke-git/lancet
 - excelize: Excel表格处理
 https://github.com/qax-os/excelize
 
+- jinzhu/now: 时间工具
+https://github.com/jinzhu/now
 
+- **carbon**: 时间/日期扩展库
+https://github.com/golang-module/carbon
 
 
 
