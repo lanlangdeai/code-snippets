@@ -7,7 +7,7 @@ networks:
 services:
   server-mysql:
     container_name: mysql
-    image: mysql:latest
+    image: mysql:5.7
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=123456

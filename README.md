@@ -139,7 +139,19 @@ https://github.com/evangui/sso
 https://github.com/thephpleague/oauth2-client
 
 - OpenID: OpenId连接授权
-https://github.com/jumbojett/OpenID-Connect-PHP
+  https://github.com/jumbojett/OpenID-Connect-PHP
+
+- phpredis: 操作Redis的扩展库
+
+  https://github.com/phpredis/phpredis
+
+- 
+
+
+
+
+
+
 
 
 #### 相关工具
@@ -150,7 +162,15 @@ https://github.com/REBELinBLUE/deployer
 
 
 - Composer镜像源切换工具
-https://github.com/slince/composer-registry-manager
+  https://github.com/slince/composer-registry-manager
+
+- #### awesome-php: 收集整理一些常用的PHP类库, 资源以及技巧
+
+​	https://github.com/JingwenTian/awesome-php
+
+
+
+
 
 
 
@@ -160,6 +180,24 @@ https://packagist.org/
 
 - composer官方站
 https://www.phpcomposer.com/
+
+
+
+#### 解决方案
+
+	- xunsearch: 全文检索技术方案
+
+​	http://www.xunsearch.com/
+
+
+
+
+
+
+
+
+
+
 
 
 ---
@@ -921,7 +959,6 @@ IP代理
 
 堡垒机
 - jumpserver
-
 
 
 
