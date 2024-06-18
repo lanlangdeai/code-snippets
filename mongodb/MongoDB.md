@@ -1,5 +1,14 @@
 # MongoDB
 
+[官网](https://www.mongodb.com/zh-cn)
+
+
+
+
+
+
+
+
 
 ## 常用脚本
 
@@ -37,3 +46,24 @@ restart)
 esac
 exit 0
 ```
+
+
+
+
+
+
+
+## 知识库
+
+- [深入MongoDB](https://www.yuque.com/jiangtengfei/mongodb/zispyk)
+
+
+
+
+
+
+
+
+
+
+

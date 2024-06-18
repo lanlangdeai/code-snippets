@@ -98,6 +98,14 @@ cnpm install  [name]
 
 ## 第三方
 
+[orm](https://www.npmjs.com/package/orm)
+
+对象关系映射
+
+
+
+
+
 [fnm](https://juejin.cn/post/7113462239734022158)
 
 ```shell
