@@ -57,9 +57,12 @@ fnm env --use-on-cd | Out-String | Invoke-Expression
   
   # 查看npm版本
   npm -v
-  
+  # 升级
+  npm install npm@latest -g
+  # 清理缓存
+  npm cache clean
   ```
-
+  
   
 
 

@@ -175,10 +175,12 @@ https://github.com/REBELinBLUE/deployer
 
 
 #### 相关站点
-- composer包仓库
+##### composer包仓库
+
 https://packagist.org/
 
-- composer官方站
+##### composer官方站
+
 https://www.phpcomposer.com/
 
 
@@ -669,18 +671,23 @@ https://github.com/upx/upx
 
 
 #### 相关软件
-- Chocolatey: 软件包管理工具
+##### Chocolatey: 软件包管理工具
+
 https://chocolatey.org/
 
-- Scoop: 命令行下软件包管理工具(类Mac下的brew)
+##### Scoop: 命令行下软件包管理工具(类Mac下的brew)
+
 https://scoop.sh/#/
 
-- Cygwin: 提供windows下的Linux环境
+##### Cygwin: 提供windows下的Linux环境
+
 https://www.cygwin.com/index.html
 
+##### Vagrant: 构建虚拟开发环境的工具
 
-- Vagrant: 构建虚拟开发环境的工具
 https://www.vagrantup.com/
+
+
 
 
 
