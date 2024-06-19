@@ -30,6 +30,36 @@ apt-get install zip
 
 
 
+### [Rar](https://www.rarlab.com)
+
+```shell
+# 安装 
+## 源码安装
+wget https://www.rarlab.com/rar/rarlinux-x64-5.9.1.tar.gz
+tar  -zxvf  rarlinux-x64-5.9.1.tar.gz 
+cd rar
+make
+
+## yum安装
+yum install -y rar
+yum install -y unrar
+
+
+# 使用
+1)添加目录为压缩文件
+rar a test.rar test
+	a: Add files to archive
+
+2)解压缩文件
+rar x test.rar
+	x: 解压缩
+
+unrar e test.rar
+
+
+
+```
+
 
 
 
