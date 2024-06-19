@@ -3,7 +3,7 @@
   本人从2016年~2023年已经从事开发将近八年时间,以下罗列的都是本人开发生涯中所涉猎的技术栈,汇总于此.
 希望可以帮助更多开发者,或是初入编程,或是编程老兵都可以有所获,不限于代码,开发思路,架构思想,开发周边服务等等
 
-常用代码片段, 包括但不限于
+## 知识结构
 
 + 语言
   - [PHP](php/PHP.md)
@@ -40,7 +40,7 @@
 
 
 ---
-### 面试题
+## 面试题
 
 * [网络面试题](other/network-interview.md)
 
@@ -53,7 +53,7 @@
 
 ---
 
-### PHP
+## PHP
 
 #### 环境搭建
 
@@ -203,7 +203,7 @@ https://www.phpcomposer.com/
 ---
 
 
-### Python
+## Python
 
 
 
@@ -230,6 +230,8 @@ https://github.com/giampaolo/psutil
 - 菜鸟教程(V2,已不推荐): https://www.runoob.com/python/python-tutorial.html
 - 菜鸟教程(V3): https://www.runoob.com/python3/python3-mysql.html
 - 标准库实例教程: https://learnku.com/docs/pymotw
+- 入门教程: https://python.archgrid.xyz/
+- 
 
 
 社区:
@@ -250,7 +252,7 @@ https://github.com/giampaolo/psutil
 ---
 
 
-### Golang
+## Golang
 
 #### 第三方库
 - protoc-go-inject-tag: proto文件,tag注入
@@ -511,17 +513,21 @@ Go-Build模版
 
 ---
 
-### Rust
+## Rust
 
 - 学习教程
 https://github.com/sunface/rust-by-practice
 
 
 
+
+
+
+
 ---
 
 
-### Shell
+## Shell
 
 
 #### 学习资源
@@ -533,13 +539,13 @@ https://github.com/sunface/rust-by-practice
 
 
 
-### MySQL
+## MySQL
 
 
 
 ---
 
-### ClickHouse
+## ClickHouse
 官方地址: https://clickhouse.com/docs/zh
 
 
@@ -548,7 +554,11 @@ https://github.com/sunface/rust-by-practice
 
 
 
-### Redis
+## [Redis](https://redis.io/)
+
+中文网: https://www.redis.net.cn/
+
+
 
 - 布隆过滤器模块
 https://github.com/RedisBloom/RedisBloom
@@ -557,7 +567,22 @@ https://github.com/RedisBloom/RedisBloom
 ---
 
 
-### K8s
+
+## [Docker](https://www.docker.com/)
+
+
+
+
+
+
+
+---
+
+
+
+
+
+## K8s
 
 
 - Krew:  kubectl 插件的包管理器。
@@ -587,7 +612,11 @@ Github:
 
 
 
-### DevOps
+## DevOps
+
+
+
+### 部署工具
 
 - bytebase: devpos 平台
 https://github.com/bytebase/bytebase
@@ -597,14 +626,14 @@ https://github.com/bytebase/bytebase
 
 
 
+#### [Jenkins](https://www.jenkins.io/)
 
 
 
 
 
 
-
-#### 学习教程
+## 学习教程
 - https://github.com/bregman-arie/devops-exercises
 
 Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, Network, Virtualization. DevOps Interview
@@ -613,7 +642,7 @@ Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, 
 ---
 
 
-### Linux
+## Linux
 
 
 #### 操作系统
@@ -636,7 +665,7 @@ https://github.com/upx/upx
 ---
 
 
-### Windows
+## Windows
 
 
 #### 相关软件
@@ -661,7 +690,7 @@ https://www.vagrantup.com/
 
 
 
-### NodeJS
+## NodeJS
 
 
 
@@ -675,7 +704,7 @@ https://www.vagrantup.com/
 
 
 
-### 前端
+## 前端
 Nodejs: https://nodejs.org/en
 
 
@@ -768,57 +797,73 @@ https://github.com/triggerdotdev/jsonhero-web
 ---
 
 
-### 机器学习
+## 机器学习
 
 - https://github.com/microsoft/ML-For-Beginners
 
 
 
 ## 编辑器
+
 IDE使用教程(PHPstorm,Pycharm,Goland,WebStorm,DataGrip等)
 - https://github.com/judasn/IntelliJ-IDEA-Tutorial
 
 
 ---
 
+
+
 ## 周边服务
+
 [IP]
 1. https://www.ipip.net
 
 
 ---
 
+
+
 ## 使用软件&工具
-- typora-activation: Typora激活工具
+
+#### typora-activation: Typora激活工具
+
 https://github.com/markyin0707/typora-activation
 
+#### Virtualbox: 虚拟机软件
 
-- Virtualbox: 虚拟机软件
 https://www.virtualbox.org/
 
 
 
-- Etcd的可视化客户端
+#### Etcd的可视化客户端
+
 https://github.com/gtamas/etcdmanager
 
-- Zookeeper GUI工具
+#### Zookeeper GUI工具
+
 https://github.com/vran-dev/PrettyZoo
 
-- uPic: 图片上传工具(Mac)
+#### uPic: 图片上传工具(Mac)
+
 https://github.com/gee1k/uPic
-- Cloudreve: 云盘系统
+
+#### Cloudreve: 云盘系统
+
 https://github.com/cloudreve/Cloudreve
 
-- 代码片段管理软件
+#### 代码片段管理软件
+
 https://github.com/massCodeIO/massCode
 
 
 
-- wrk: 性能测试工具
-https://github.com/wg/wrk
-- log.io: 实时日志监控工具
+#### wrk: 性能测试工具
 
-​	https://github.com/NarrativeScience/log.io
+https://github.com/wg/wrk
+
+#### log.io: 实时日志监控工具
+
+https://github.com/NarrativeScience/log.io
 
 
 
@@ -827,7 +872,10 @@ https://github.com/wg/wrk
 
 ---
 
+
+
 ## 平台类
+
 - 静态导航网站
 https://github.com/WebStackPage/WebStackPage.github.io
 
@@ -837,7 +885,10 @@ https://github.com/louislam/uptime-kuma
 
 ---
 
+
+
 ## 公共资源列表
+
 - Etcd: https://github.com/etcd-io/etcd
 - Apollo: https://github.com/apolloconfig/apollo-quick-start
 - Proto Buffer: https://github.com/protocolbuffers/protobuf
@@ -845,14 +896,20 @@ https://github.com/louislam/uptime-kuma
 
 ---
 
+
+
 ## 码如人生
+
 - 程序员的副业: https://github.com/easychen/lean-side-bussiness
 - 
 
 
 ---
 
+
+
 ## 开发资源汇总
+
 罗列开发中常用的参考文档
 
 
@@ -874,6 +931,7 @@ https://github.com/louislam/uptime-kuma
 ## 其他
 
 ### 云平台
+
 - 腾讯云: https://cloud.tencent.com/
 - 新浪云: https://www.sinacloud.com/
 - 阿里云: https://www.aliyun.com/
@@ -895,6 +953,14 @@ https://github.com/louislam/uptime-kuma
 
 文档
 - 稀土掘金: https://juejin.cn/
+- 
+
+
+
+### 技术靶场
+
+- 代码战争: https://www.codewars.com/
+- 力扣: https://leetcode.cn/
 - 
 
 
@@ -942,8 +1008,12 @@ IP代理
 
 ### 招聘站
 - 智联招聘: https://www.zhaopin.com/
+
 - BOSS: https://www.zhipin.com
+
 - 黄豆纳才: https://zhaopin.clouderwork.com/
+
+  
 
 
 ### 项目开发
@@ -952,6 +1022,7 @@ IP代理
 
 - Tower: https://tower.im/
 - Zoho WorkDrive: https://www.zoho.com.cn/
+- 
 
 #### 敏捷开发
 
@@ -962,12 +1033,17 @@ IP代理
 #### 代码管理
 
 - 自建: Gitlab,Gogs
+
 - 第三方平台: 阿里云,腾讯云,码云,rap2等
+
+  
 
 #### 接口管理
 
 - 自建: Yapi,postman
 - 第三方: showdoc,Apifox
+- [eolink](https://www.eolink.com/)
+- 
 
 #### 文档输出
 
@@ -994,15 +1070,25 @@ IP代理
 - Sentry: https://sentry.io/welcome/
 - fundebug - 前端bug上报: https://www.fundebug.com/
 
+
+
+
+
 #### 堡垒机
 
 - jumpserver
 
 
 
+#### 科学上网
+
+- [iguge](https://iguge.net/)
 
 
 
+#### 开发日常工具
+
+- 加解密等工具: https://gchq.github.io/CyberChef/
 
 
 
