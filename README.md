@@ -86,7 +86,19 @@ https://github.com/xdebug/xdebug
 - PHP之道: https://learnku.com/docs/php-the-right-way/PHP8.0
 
 
+
+#### 不错的博客
+
+- 鸟哥: https://www.laruence.com/
+- https://www.yuque.com/u30882/uqzhpb
+- 
+
+
+
+
+
 #### Web框架
+
 - laravel: 现代化框架
 https://laravel.com/
 - laravel-s: 介于laravel/lumen与swoole的适配器
@@ -227,7 +239,8 @@ https://github.com/giampaolo/psutil
 
 #### 学习教程
 
-博文
+##### 博文
+
 - 官方文档(V3): https://docs.python.org/zh-cn/3/
 - 入门教程: http://www.pythondoc.com/pythontutorial3/index.html
 - 菜鸟教程(V2,已不推荐): https://www.runoob.com/python/python-tutorial.html
@@ -236,13 +249,14 @@ https://github.com/giampaolo/psutil
 - 入门教程: https://python.archgrid.xyz/
 - 
 
+##### 社区:
 
-社区:
 - 和鲸社区: https://www.heywhale.com/home/
 - 玩蛇网(Python学习与分享平台): https://www.iplaypy.com/
 
 视频课程(免费+付费)
 - 风变编程: https://www.pypypy.cn/app#/app-center
+
 
 
 #### 面试资源
@@ -257,7 +271,16 @@ https://github.com/giampaolo/psutil
 
 ## Golang
 
+
+
+#### 教程
+
+梯子教程网: https://www.tizi365.com/
+
+
+
 #### 第三方库
+
 - protoc-go-inject-tag: proto文件,tag注入
 https://github.com/favadi/protoc-go-inject-tag
 
@@ -469,32 +492,36 @@ https://github.com/go-kratos/kratos
 
 
 #### Github
-Golang学习
+##### Golang学习
+
   - https://github.com/jiujuan/go-collection
   - https://github.com/sdgmf/go-project-sample
   - https://github.com/jincheng9/go-tutorial
   - https://github.com/golang/example
 
+##### 进阶学习(成熟项目+优秀借鉴)
 
-进阶学习(成熟项目+优秀借鉴)
   - https://github.com/xinliangnote/go-gin-api
   - https://www.gin-vue-admin.com/
 
 
 
-代理池搭建
+##### 代理池搭建
+
   - https://github.com/henson/proxypool
 
-博客平台搭建
+##### 博客平台搭建
+
   - https://github.com/go-sonic/sonic
 
+##### 静态网站生成器Hugo
 
-静态网站生成器Hugo
   - https://www.gohugo.org/
 
 
 
-代码风格
+##### 代码风格
+
 - https://github.com/uber-go/guide
 Go项目结构
 - https://github.com/golang-standards/project-layout
@@ -502,8 +529,8 @@ Go项目结构
 
 
 
+##### 代码检测工具
 
-代码检测工具
 - https://github.com/golangci/golangci-lint
 Go-Build模版
 - https://github.com/thockin/go-build-template
@@ -546,6 +573,27 @@ https://github.com/sunface/rust-by-practice
 
 
 
+
+
+
+
+---
+
+## MongoDB
+
+
+
+相关博客:
+
+- https://www.cnblogs.com/chenmh
+- 
+
+
+
+
+
+
+
 ---
 
 ## ClickHouse
@@ -574,6 +622,10 @@ https://github.com/RedisBloom/RedisBloom
 ## [Docker](https://www.docker.com/)
 
 
+
+学习教程:
+
+- https://www.qikqiak.com/k8s-book/
 
 
 
@@ -931,7 +983,45 @@ https://github.com/louislam/uptime-kuma
 - 微信公众号调试工具: https://mp.weixin.qq.com/debug/cgi-bin/apiinfo
 - 微信 JS 接口签名校验工具: https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign
 - 小程序开放个人申请: https://www.jianshu.com/p/fff515483c6c
+
+
+
+
+
+## Github开源项目
+
+网页分析: https://github.com/umami-software/umami
+
+监控工具: https://github.com/louislam/uptime-kuma
+
+数据面板平台: https://github.com/appsmithorg/appsmith
+
+Bi数据分析: https://github.com/getredash/redash
+
+
+
+
+
+## 不错的博客
+
+- https://www.helloweba.net/
+- https://www.php20.cn/
 - 
+
+
+
+
+
+
+
+## 问题搜索
+
+站点
+
+- https://stackoverflow.com/questions
+- 
+
+
 
 
 ---
@@ -954,14 +1044,22 @@ https://github.com/louislam/uptime-kuma
 
 
 ### 学习站
-视频
+#### 视频
+
 - 51CTO学堂: https://edu.51cto.com/
 
 
 
-文档
+#### 文档
+
 - 稀土掘金: https://juejin.cn/
 - 
+
+
+
+#### 教程
+
+- 迹忆客: https://www.jiyik.com/
 
 
 
@@ -1010,6 +1108,14 @@ IP代理
 入门基础
 - 阿里云大学: https://edu.aliyun.com/explore/?spm=a2cwt.28120021.J_9305143570.2.13c5704aHcRooO
 众多免费课程可以学习,不限于java,python,mysql,linux等,可以看到自己想学习的一些基础教程
+
+
+
+中级
+
+- 码神之路: https://mszlu.com/
+
+​	Java,Go,Rust等
 
 
 
