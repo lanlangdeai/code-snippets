@@ -73,11 +73,14 @@ https://www.bt.cn/new/index.html
 
 
 
+linux
 
 
+- Lnmp
 
-- xdebug: 代码调试/debug
-https://github.com/xdebug/xdebug
+  https://lnmp.org/
+
+- 
 
 
 
@@ -91,7 +94,7 @@ https://github.com/xdebug/xdebug
 
 - 鸟哥: https://www.laruence.com/
 - https://www.yuque.com/u30882/uqzhpb
-- 
+- 傲雪星枫:https://blog.csdn.net/fdipzone
 
 
 
@@ -171,7 +174,8 @@ https://github.com/thephpleague/oauth2-client
 - 项目发布工具
 https://github.com/REBELinBLUE/deployer
 
-
+- xdebug: 代码调试/debug
+  https://github.com/xdebug/xdebug
 
 
 - Composer镜像源切换工具
@@ -247,7 +251,7 @@ https://github.com/giampaolo/psutil
 - 菜鸟教程(V3): https://www.runoob.com/python3/python3-mysql.html
 - 标准库实例教程: https://learnku.com/docs/pymotw
 - 入门教程: https://python.archgrid.xyz/
-- 
+- Scrapy: https://scrapy-chs.readthedocs.io/zh-cn/1.0/intro/tutorial.html
 
 ##### 社区:
 
@@ -276,6 +280,16 @@ https://github.com/giampaolo/psutil
 #### 教程
 
 梯子教程网: https://www.tizi365.com/
+
+
+
+
+
+#### 在线工具
+
+- json-to-go: https://mholt.github.io/json-to-go/
+
+
 
 
 
@@ -543,6 +557,152 @@ Go-Build模版
 
 ---
 
+
+
+## [NodeJS](https://nodejs.org/zh-cn)
+
+
+
+周边工具:
+
+- [npm](https://www.npmjs.com/)
+
+
+
+
+
+---
+
+
+
+
+
+## 前端
+
+Nodejs: https://nodejs.org/en
+
+
+
+#### 知识矩阵
+
+- Less: https://www.runoob.com/manual/lessguide/
+
+
+- element-ui: https://element.eleme.cn/#/zh-CN
+- AT-UI: https://at-ui.github.io/at-ui/#/zh
+
+
+
+#### 第三方包
+
+- yarn: https://yarnpkg.com/
+- JQuery:
+  - 懒人之家:https://www.lanrenzhijia.com/jquery/
+  - jQuery之家:https://www.jq22.com/
+
+
+
+
+
+
+
+- bce-sdk-js: 对接百度云开发服务接口 
+  https://baidubce.github.io/bce-sdk-js/
+
+
+- clipboard.js: 复制粘贴板
+  https://clipboardjs.com/
+
+- Swiper: 滑动特效
+  https://www.swiper.com.cn/
+
+- 瀑布流
+  https://masonry.desandro.com/
+
+- 图片,视频悬浮展示
+  https://fancyapps.com/fancybox/
+
+
+
+- 基于css的效果
+  https://animate.style/
+  http://ianlunn.github.io/Hover/
+  https://elrumordelaluz.github.io/csshake/
+
+
+
+- 基于JS的效果
+  http://anijs.github.io/
+
+更多插件: https://www.bootcdn.cn/
+
+
+
+#### 框架
+
+- React
+  https://www.reactjs.cn/
+
+- Vue
+  https://cn.vuejs.org/
+
+- Element-UI
+
+  https://element.eleme.cn/#/zh-CN
+
+- vue-element-admin
+
+  https://github.com/PanJiaChen/vue-element-admin
+
+  
+
+
+
+
+- 字体图标
+  https://github.com/ryanoasis/nerd-fonts
+
+- UI组件库
+
+  https://at-ui.github.io/at-ui/#/zh
+
+  
+
+
+
+#### 工具
+
+- json文件查看与管理工具
+  https://github.com/triggerdotdev/jsonhero-web
+
+
+
+#### 效果站点(可借鉴的效果,功能点,交互)
+
+- https://isux.tencent.com/
+
+
+
+#### 学习教程
+
+- https://www.w3cways.com/
+- w3school: https://www.w3school.com.cn/
+- 
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
 ## Rust
 
 - 学习教程
@@ -619,6 +779,25 @@ https://github.com/RedisBloom/RedisBloom
 
 
 
+## Nginx
+
+
+
+相关教程:
+
+- https://tengine.taobao.org/book/index.html
+- 
+
+
+
+---
+
+
+
+
+
+
+
 ## [Docker](https://www.docker.com/)
 
 
@@ -681,17 +860,19 @@ https://github.com/bytebase/bytebase
 
 
 
-#### [Jenkins](https://www.jenkins.io/)
+### [Jenkins](https://www.jenkins.io/)
 
 
 
 
 
 
-## 学习教程
+### 学习教程
 - https://github.com/bregman-arie/devops-exercises
 
 Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, Network, Virtualization. DevOps Interview
+
+
 
 
 ---
@@ -716,6 +897,15 @@ https://github.com/upx/upx
 
 
 
+相关教程:
+
+- Linux工具: https://linuxtools-rst.readthedocs.io/zh-cn/latest/index.html
+- 
+
+
+
+
+
 
 ---
 
@@ -728,29 +918,27 @@ https://github.com/upx/upx
 
 https://chocolatey.org/
 
+
+
 ##### Scoop: 命令行下软件包管理工具(类Mac下的brew)
 
 https://scoop.sh/#/
+
+
 
 ##### Cygwin: 提供windows下的Linux环境
 
 https://www.cygwin.com/index.html
 
+
+
 ##### Vagrant: 构建虚拟开发环境的工具
 
 https://www.vagrantup.com/
 
+vagrant包: http://www.vagrantbox.es/
 
 
-
-
-
-
----
-
-
-
-## NodeJS
 
 
 
@@ -762,93 +950,6 @@ https://www.vagrantup.com/
 
 
 
-
-
-## 前端
-Nodejs: https://nodejs.org/en
-
-
-
-Less: https://www.runoob.com/manual/lessguide/
-
-
-- element-ui: https://element.eleme.cn/#/zh-CN
-- AT-UI: https://at-ui.github.io/at-ui/#/zh
-
-
-
-#### 第三方包
-
-- yarn: https://yarnpkg.com/
-- 
-
-
-
-
-
-
-- bce-sdk-js: 对接百度云开发服务接口 
-https://baidubce.github.io/bce-sdk-js/
-
-
-- clipboard.js: 复制粘贴板
-https://clipboardjs.com/
-
-- Swiper: 滑动特效
-https://www.swiper.com.cn/
-
-- 瀑布流
-https://masonry.desandro.com/
-
-- 图片,视频悬浮展示
-https://fancyapps.com/fancybox/
-
-
-
-- 基于css的效果
-https://animate.style/
-http://ianlunn.github.io/Hover/
-https://elrumordelaluz.github.io/csshake/
-
-
-
-- 基于JS的效果
-http://anijs.github.io/
-
-
-
-
-
-#### 框架
-- React
-https://www.reactjs.cn/
-
-- Vue
-https://cn.vuejs.org/
-
-
-
-
-- 字体图标
-https://github.com/ryanoasis/nerd-fonts
-
-
-
-#### 工具
-
-- json文件查看与管理工具
-https://github.com/triggerdotdev/jsonhero-web
-
-
-
-#### 效果站点(可借鉴的效果,功能点,交互)
-- https://isux.tencent.com/
-
-
-
-#### 学习教程
-- https://www.w3cways.com/
-- w3school: https://www.w3school.com.cn/
 - 
 
 
@@ -867,6 +968,11 @@ https://github.com/triggerdotdev/jsonhero-web
 
 IDE使用教程(PHPstorm,Pycharm,Goland,WebStorm,DataGrip等)
 - https://github.com/judasn/IntelliJ-IDEA-Tutorial
+- [phpstorm](https://www.jetbrains.com/zh-cn/phpstorm/)
+
+
+
+注: 激活码http://idea.lanyus.com/
 
 
 ---
@@ -892,6 +998,10 @@ https://github.com/markyin0707/typora-activation
 #### Virtualbox: 虚拟机软件
 
 https://www.virtualbox.org/
+
+#### Xshell+Xftp
+
+https://www.xshell.com/zh/
 
 
 
@@ -925,7 +1035,9 @@ https://github.com/wg/wrk
 
 https://github.com/NarrativeScience/log.io
 
+#### GoAccess: 日志分析工具
 
+https://goaccess.io/
 
 
 
@@ -1006,6 +1118,7 @@ Bi数据分析: https://github.com/getredash/redash
 
 - https://www.helloweba.net/
 - https://www.php20.cn/
+- https://imququ.com/
 - 
 
 
@@ -1047,6 +1160,7 @@ Bi数据分析: https://github.com/getredash/redash
 #### 视频
 
 - 51CTO学堂: https://edu.51cto.com/
+- 极客学院:https://www.jikexueyuan.com/
 
 
 
@@ -1060,6 +1174,8 @@ Bi数据分析: https://github.com/getredash/redash
 #### 教程
 
 - 迹忆客: https://www.jiyik.com/
+- tutsplus: https://code.tutsplus.com/
+- 即学即码:http://www.jixuejima.cn/
 
 
 
