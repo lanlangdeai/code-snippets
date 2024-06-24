@@ -183,7 +183,35 @@ function rand_string($len = 6, $type = 0, $addChars = '')
 }
 ```
 
+#### 是否包含中文
 
+```php
+/**
+ * 是否包含中文
+ * @param string $str  字符串
+ * @param boolean $isAll 是否全部包含
+ * @return false|int
+ */
+function hasChinese($str, $isAll=false): bool
+{
+    $ret = preg_match("/[\x7f-\xff]/", $str);
+    if($isAll){
+        $ret = preg_match("/^[\x7f-\xff]+$/", $str);  // 全部为中文
+    }
+    return boolval($ret);
+}
+```
+
+#### 判断是否是字母
+
+```php
+function isLetter($str)
+{
+    $ascii = ord($str);
+    return (($ascii >= 65 && $ascii <=90) || ($ascii >=97 && $ascii<=122));
+}
+// 或直接使用函数ctype_alpha
+```
 
 
 
@@ -271,6 +299,42 @@ function generateUrl($url, array $params = [])
     return $path .'?'. http_build_query($params, null, '&');
 }
 ```
+
+#### 生成短链接
+
+```php
+function code62($x)
+{
+    $show = '';
+    while ($x > 0) {
+        $s = $x % 62;
+        if ($s > 35) {
+            $s = chr($s + 61);
+        } elseif ($s > 9 && $s <= 35) {
+            $s = chr($s + 55);
+        }
+        $show .= $s;
+        $x = floor($x / 62);
+    }
+    return $show;
+}
+
+function shorturl($url){
+    $url=crc32($url);
+    $result=sprintf("%u",$url);
+    return code62($result);
+}
+
+// 使用场景, 例如将长的url的该压缩后的单独存一个字段, 方便进行查询
+```
+
+
+
+
+
+
+
+
 
 
 
@@ -493,6 +557,58 @@ function isLeapYear($year)
 
 
 
+
+## 文件
+
+#### 读写
+
+```php
+// 普通读取
+function read1($filename)
+{
+    $content = [];
+    $fp =fopen($filename, 'rb');
+    while (!feof($fp)) {
+        $content[] = trim(fgets($fp));  // 读取一行
+    }
+    fclose($fp);
+    return $content;
+}
+// 迭代器方式读取
+function read2($filename)
+{
+    $fp =fopen($filename, 'rb');
+    while (!feof($fp)) {
+        yield trim(fgets($fp));  // 读取一行
+    }
+    fclose($fp);
+}
+
+
+// 更多读取,使用stream_copy_to_stream, 中间可以使用过滤器,进行数据的压缩
+$filename = '0325-8元.txt';
+
+$filename2 = '8元.txt';
+
+// 文件转存
+//file_put_contents($filename2, file_get_contents($filename));  // 774448
+$fp1 = fopen($filename, 'r');
+$fp2 = fopen($filename2, 'w');
+
+$bytes = stream_copy_to_stream($fp1, $fp2);
+var_dump($bytes);
+
+//$filename11 = '0325-8元.deflate';
+$filename11 = '0325-8元.zip';
+$handler1 = fopen('php://filter/zlib.deflate/resource=' . $filename, 'r');
+$handler2 = fopen($filename11, 'w');
+stream_copy_to_stream($handler1, $handler2);  // 1114088
+
+
+// 将文件进行压缩
+$content = file_get_contents('php://filter/zlib.inflate/resource='.$filename11);
+var_dump($content);
+```
 
 
 
