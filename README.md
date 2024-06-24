@@ -160,7 +160,11 @@ https://github.com/thephpleague/oauth2-client
 
   https://github.com/phpredis/phpredis
 
-- 
+- SeasLog: 日志记录(需要)
+
+  https://github.com/SeasX/SeasLog
+
+  
 
 > 更多: [packagist](/php/packagist.md)
 >
@@ -1282,14 +1286,19 @@ IP代理
 - wps
 - 金山文档
 
+
+
 #### 知识库
 
 - Confluence
+- 飞书文档
 - 
+
+
 
 #### 产品设计
 
-- 蓝湖
+- [蓝湖](https://lanhuapp.com)
 
 项目工程
 

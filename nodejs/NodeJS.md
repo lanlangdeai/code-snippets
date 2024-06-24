@@ -54,6 +54,15 @@ fnm env --use-on-cd | Out-String | Invoke-Expression
   ```shell
   # 查看node版本
   node -v
+  # 执行脚本
+  node server.js
+  # 执行一段代码
+  node -e 'const name="lanlang";console.log(name)'
+  # 以调试模式启动并且在首行断住
+  node --inspect-brk ./debug.js
+  # 调试模式运行
+  node inspect debug-inspect.js
+  
   
   # 查看npm版本
   npm -v
@@ -65,7 +74,7 @@ fnm env --use-on-cd | Out-String | Invoke-Expression
   
   
 
-
+![node_inspect](E:\lanlang\code-snippets\nodejs\images\node_inspect.png)
 
 
 
