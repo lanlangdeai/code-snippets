@@ -39,6 +39,20 @@ Debian/Ubuntu
 
 
 
+## 查询SQL
+
+#### 查询库中所有表名
+
+```sql
+select table_name from information_schema.tables where table_schema ='表名' and table_type='base table';
+```
+
+
+
+
+
+
+
 
 
 
