@@ -57,6 +57,21 @@ function randomCaptcha(){
 
 ## 字符串
 
+#### 手机号脱敏
+
+```php
+function maskMobile($mobile) {
+    $pattern = "/(1\d{1,2})\d\d(\d{0,3})/";
+    $replacement = "\$1****\$3";
+    $mobile = preg_replace($pattern, $replacement, $mobile);
+    return $mobile;
+}
+```
+
+
+
+
+
 #### 字符串截取
 
 ```php
@@ -894,7 +909,187 @@ function imgs($string){
 
 
 
+## Server&Header
 
+#### 跨域设置
+
+```php
+function set_cors_header(){
+        $origin=@$_SERVER['HTTP_ORIGIN'];
+        $request_method = $_SERVER['REQUEST_METHOD'];
+
+        if ($request_method === 'OPTIONS') {
+            header('Access-Control-Allow-Origin:'.$origin);
+            header('Access-Control-Allow-Credentials:true');
+            header('Access-Control-Allow-Methods:GET, POST, OPTIONS');
+            header('Access-Control-Allow-Headers:'.$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']);
+
+            header('Access-Control-Max-Age:1728000');
+            header('Content-Type:text/plain charset=UTF-8');
+            header('Content-Length: 0',true);
+
+            header('status: 204');
+            header('HTTP/1.0 204 No Content');
+        }
+
+        if ($request_method === 'POST') {
+            header('Access-Control-Allow-Origin:'.$origin);
+            header('Access-Control-Allow-Credentials:true');
+            header('Access-Control-Allow-Methods:GET, POST, OPTIONS');
+        }
+
+        if ($request_method === 'GET') {
+            header('Access-Control-Allow-Origin:'.$origin);
+            header('Access-Control-Allow-Credentials:true');
+            header('Access-Control-Allow-Methods:GET, POST, OPTIONS');
+        }
+    }
+```
+
+
+
+
+
+## 加解密&编码解码
+
+#### base64变种
+
+```php
+function base64url_encode(string $data): string 
+{
+ return rtrim(strtr(base64_encode($data),'+/','-_'),'=');
+}
+
+function base64url_decode(string $data): string 
+{
+ return base64_decode(str_pad(strtr($data,'-_','+/'),strlen($data) %4,'=',STR_PAD_RIGHT));
+}
+```
+
+#### 加解密算法
+
+```php
+/**
+ * 加解密算法(可用于cookie值)
+ * @param string $string 数据字符串
+ * @param string $key 盐值
+ * @param string $operate ENCODE-加密 DECODE-解密
+ * @param $expiry
+ * @return false|string
+ */
+function authcode($string, $key, $operate='ENCODE', $expiry=0)
+{
+    $ckey_length = 4;
+
+    $key = md5($key);
+
+    $keya = md5(substr($key, 0, 16));
+    $keyb = md5(substr($key, 16, 16));
+    $keyc = $operate == 'DECODE' ? substr($string, 0, $ckey_length) : substr(md5(microtime()), -$ckey_length);
+
+    $cryptkey = $keya . md5($keya . $keyc);
+    $key_length = strlen($cryptkey);
+
+    $string = $operate == 'DECODE' ? base64_decode(strtr(substr($string, $ckey_length), '-_', '+/')) : sprintf('%010d', $expiry ? $expiry + time() : 0) . substr(md5($string . $keyb), 0, 16) . $string;
+    $string_length = strlen($string);
+
+    $result = '';
+    $box = range(0, 255);
+
+    $rndkey = array();
+    for ($i = 0; $i <= 255; $i++)
+    {
+        $rndkey[$i] = ord($cryptkey[$i % $key_length]);
+    }
+
+    for ($j = $i = 0; $i < 256; $i++)
+    {
+        $j = ($j + $box[$i] + $rndkey[$i]) % 256;
+
+        $tmp = $box[$i];
+        $box[$i] = $box[$j];
+        $box[$j] = $tmp;
+    }
+
+    for ($i = 0; $i < $string_length; $i++)
+    {
+        $result .= chr(ord($string[$i]) ^ ($box[$i]));
+    }
+
+    if ($operate == 'DECODE')
+    {
+        if ((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26) . $keyb), 0, 16))
+            return substr($result, 26);
+        else
+            return '';
+    }
+    else
+    {
+        return $keyc . rtrim(strtr(base64_encode($result), '+/', '-_'), '=');
+    }
+}
+
+$string = 'lanlang';
+$key = '123456';
+$encryptData = authcode($string, $key);
+var_dump('加密后数据:', $encryptData);
+var_dump('解密后数据:', authcode($encryptData, $key, 'DECODE'));
+```
+
+
+
+
+
+
+
+
+
+
+
+## 其他
+
+#### 多分类数据存储与解析
+
+```php
+// 存储的时候(1 << $j1 + 1 << $j2 ...)
+function getConvertTexts() {
+    //id 不能超过31 for ($i=0;$i<33;$i++) echo ( 1<< $i ) . '<br>';    32位 整型数字长度的限制
+    return  [
+        20=>'周边游',21=>'私家定制',18=>'线路',17=>'小团',15=>'新品',0=>'特色体验',1=>'精品酒店',8=>'品牌酒店',
+        2=>'海外自由行',3=>'国内度假',9=>'精美民宿',10=>'独家',16=>'特卖产品',12=>'酒店民宿',13=>'地方风味',
+        14=>'度假线路',6=>'双11活动',7=>'热门海岛',11=>'景区门票',4=>'海外酒店',22=>'国内酒店'
+    ];
+}
+// 根据分类将类型进行解析
+function convert_style( $style, array $texts = [] ) {
+    if ( empty($texts) ) {
+        $texts = getConvertTexts();
+    }
+
+    $tags = [];
+    if ( is_numeric($style) && $style > 0 ) {
+        for ( $i = 0; $i < 31; $i++ ) {
+            $num = (1 << $i);
+            if ( isset($texts[$i]) && ( $num & $style ) ) {
+                $tags[] = $texts[$i];
+            }
+        }
+
+    }
+    return $tags;
+}
+```
+
+#### 接口的数据加密
+
+```php
+// 1.一般传递的额外参数
+	nonce: 随机数
+    ts: 时间戳(检查时效性)
+    sign: 签名(例如:加密方式 md5(POST参数（升序排序，除key sign参数除外） + 用户密钥))
+    key/appId: 用户访问标识
+// 2.设置Ip白名单
+```
 
 
 

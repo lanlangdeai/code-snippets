@@ -53,7 +53,11 @@
 
 ---
 
-## PHP
+## [PHP](https://www.php.net/manual/zh/)
+
+Windows下的站点: https://windows.php.net, 对应扩展: https://windows.php.net/downloads/pecl/releases/
+
+
 
 #### 环境搭建
 
@@ -69,7 +73,11 @@ https://www.xp.cn/
 https://www.servbay.dev/zh_CN
 
 - 宝塔
-https://www.bt.cn/new/index.html
+  https://www.bt.cn/new/index.html
+
+- UpUpW(Windows, 较新版本不支持)
+
+  https://www.upupw.net/
 
 
 
@@ -87,6 +95,7 @@ linux
 #### 学习教程
 - 官方文档: https://www.php.net/docs.php
 - PHP之道: https://learnku.com/docs/php-the-right-way/PHP8.0
+- Learnku: https://learnku.com/laravel
 
 
 
@@ -110,9 +119,11 @@ https://github.com/hhxsv5/laravel-s
 https://github.com/dingo/api
 
 - Lumen: 
-https://lumen.laravel.com/docs/10.x
+  https://lumen.laravel.com/docs/10.x
 
+- ThinkPHP:大道至简
 
+​	https://www.thinkphp.cn/
 
 - yii2-sentry: 适用于Yii2框架的sentry包
 https://github.com/notamedia/yii2-sentry
@@ -121,12 +132,21 @@ https://github.com/notamedia/yii2-sentry
 https://www.laruence.com/manual/
 
 - Hyperf
-https://hyperf.wiki/3.0/#/
+  https://hyperf.wiki/3.0/#/
+
 - Hpyerf: 使用docker部署开发环境
 https://github.com/hyperf/hyperf-docker
 
 - Swoole: PHP协程框架
-https://www.swoole.com/
+  https://www.swoole.com/
+
+- Easyswoole: 企业级分布式协程框架
+
+  https://www.easyswoole.com/
+
+- CI: 小巧
+
+  https://codeigniter.org.cn/
 
 
 - PhalApi: 开源接口项目
@@ -139,10 +159,20 @@ https://www.slimframework.com/
 https://www.workerman.net/
 
 - Phalcon: 基于C扩展的框架
-https://phalcon.io/zh-cn
+  https://phalcon.io/zh-cn
+
+- MeepoPS: 高效的PHP Socket服务
+
+  http://meepops.lanecn.com/
+
+- CachePHP:
+
+​	https://cakephp.org/
+
 
 
 #### 第三方类库
+
 - laravel-uuid: 生成uuid
 https://github.com/webpatser/laravel-uuid
 
@@ -164,10 +194,50 @@ https://github.com/thephpleague/oauth2-client
 
   https://github.com/SeasX/SeasLog
 
-  
+- Guzzle: 发送网络请求
+
+  https://docs.guzzlephp.org/en/stable/
+
+- QueryList: dom解析
+
+​	https://querylist.cc/
+
+- NotORM: 非常简单操作数据库的类
+
+  https://www.notorm.com/
+
+
+
+
+
+
 
 > 更多: [packagist](/php/packagist.md)
 >
+
+- Sphinx: 搜索服务
+
+  http://sphinxsearch.com/
+
+- PHPUnit: 单元测试
+
+  https://phpunit.de/index.html
+
+- symfony/mailer: 邮件发送
+
+  https://symfony.com/doc/current/mailer.html
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -196,6 +266,11 @@ https://github.com/REBELinBLUE/deployer
 
 
 #### 相关站点
+
+##### composer镜像
+
+https://pkg.xyz/
+
 ##### composer包仓库
 
 https://packagist.org/
@@ -214,7 +289,13 @@ https://www.phpcomposer.com/
 
 
 
+#### 相关开源项目
 
+- VueThink: https://github.com/honraytech/VueThink
+
+- FastAdmin: ThinkPHP+Bootstrap开发的快速后台开发框架
+
+  https://www.fastadmin.net/
 
 
 
@@ -567,9 +648,19 @@ Go-Build模版
 
 
 
-周边工具:
+#### 周边工具
 
 - [npm](https://www.npmjs.com/)
+
+
+
+#### 相关项目
+
+- hexo:博客系统
+
+   https://hexo.io/zh-cn/docs/
+
+
 
 
 
@@ -733,6 +824,28 @@ https://github.com/sunface/rust-by-practice
 
 
 
+
+
+
+
+
+
+---
+
+
+
+## [Lua](https://www.lua.org/)
+
+
+
+
+
+
+
+---
+
+
+
 ## MySQL
 
 
@@ -747,10 +860,10 @@ https://github.com/sunface/rust-by-practice
 
 
 
-相关博客:
+相关博文:
 
 - https://www.cnblogs.com/chenmh
-- 
+- 中文社区: https://mongoing.com/
 
 
 
@@ -780,6 +893,22 @@ https://github.com/RedisBloom/RedisBloom
 
 
 ---
+
+
+
+## 消息队列
+
+#### [Kafka](https://hexo.io/zh-cn/docs/)
+
+
+
+
+
+
+
+---
+
+
 
 
 
@@ -965,6 +1094,18 @@ vagrant包: http://www.vagrantbox.es/
 ## 机器学习
 
 - https://github.com/microsoft/ML-For-Beginners
+
+
+
+
+
+## 人工智能(AI)
+
+相关项目:
+
+- dify
+
+
 
 
 
@@ -1256,11 +1397,13 @@ IP代理
 
 - Tower: https://tower.im/
 - Zoho WorkDrive: https://www.zoho.com.cn/
-- 
+- 禅道: http://zenpms.cn/
 
 #### 敏捷开发
 
 - tapd: https://www.tapd.cn/
+- trello: https://trello.com/
+- tower: https://tower.im
 
 
 
@@ -1292,7 +1435,7 @@ IP代理
 
 - Confluence
 - 飞书文档
-- 
+- 看云
 
 
 
@@ -1310,6 +1453,10 @@ IP代理
 - fundebug - 前端bug上报: https://www.fundebug.com/
 
 
+
+#### 质量检测
+
+- SonarQube: https://www.sonarsource.com/products/sonarqube/
 
 
 
@@ -1331,5 +1478,8 @@ IP代理
 
 
 
+## 附录
 
+- 正则表: http://www.jb51.net/shouce/jquery1.82/regexp.html
+- 
 
