@@ -96,6 +96,7 @@ linux
 - 官方文档: https://www.php.net/docs.php
 - PHP之道: https://learnku.com/docs/php-the-right-way/PHP8.0
 - Learnku: https://learnku.com/laravel
+- PHPChina: http://www.phpchina.com/
 
 
 
@@ -297,7 +298,9 @@ https://www.phpcomposer.com/
 
   https://www.fastadmin.net/
 
+- YOf: yaf教程
 
+  https://github.com/xwmhmily/YOF
 
 
 
@@ -337,14 +340,16 @@ https://github.com/giampaolo/psutil
 - 标准库实例教程: https://learnku.com/docs/pymotw
 - 入门教程: https://python.archgrid.xyz/
 - Scrapy: https://scrapy-chs.readthedocs.io/zh-cn/1.0/intro/tutorial.html
+- PyQt: https://maicss.com/pyqt/
+- 廖雪峰: https://www.liaoxuefeng.com/wiki/1016959663602400
 
 ##### 社区:
 
 - 和鲸社区: https://www.heywhale.com/home/
 - 玩蛇网(Python学习与分享平台): https://www.iplaypy.com/
 
-视频课程(免费+付费)
 - 风变编程: https://www.pypypy.cn/app#/app-center
+- 中文开发者社区: https://www.pythontab.com/
 
 
 
@@ -716,8 +721,10 @@ Nodejs: https://nodejs.org/en
 
 - 图片,视频悬浮展示
   https://fancyapps.com/fancybox/
+  
+- Share.js 一键分享
 
-
+  http://overtrue.me/share.js/
 
 - 基于css的效果
   https://animate.style/
@@ -1301,6 +1308,10 @@ Bi数据分析: https://github.com/getredash/redash
 
 
 
+
+
+
+
 ### 学习站
 #### 视频
 
@@ -1324,6 +1335,12 @@ Bi数据分析: https://github.com/getredash/redash
 
 
 
+### 博文站
+
+- InfoQ: https://www.infoq.cn/
+
+
+
 ### 技术靶场
 
 - 代码战争: https://www.codewars.com/
@@ -1334,33 +1351,51 @@ Bi数据分析: https://github.com/getredash/redash
 
 
 ### 第三方服务
-地图类
+#### 地图类
+
 - 百度地图: https://lbsyun.baidu.com/index.php?title=%E9%A6%96%E9%A1%B5
 - 
 
-短信类
+#### 短信类
+
 - 云片: https://www.yunpian.com/entry
 - 腾讯云短信: https://cloud.tencent.com/product/sms
 
-存储类(OSS)
+#### 存储类(OSS)
+
 - 又拍云: https://www.upyun.com/
 - 阿里云
 
-实时通信:
+#### 实时通信:
+
 - GoEasy: https://www.goeasy.io/
 
+#### 音视频服务:
 
-音视频服务:
 - 融云: https://www.rongcloud.cn/
 
 
 
-检测类: 微信域名,链接封禁状态,证书过期检测,QQ检测等
+#### 检测类: 微信域名,链接封禁状态,证书过期检测,QQ检测等
+
 - 极强检测: https://www.urlzt.com/
 
+#### IP代理
 
-IP代理
 - 快代理: https://www.kuaidaili.com/free/
+
+
+
+#### 数据
+
+- 数数科技: https://thinkingdata.cn/
+
+
+
+#### 能力
+
+- 讯飞开放平台: https://www.xfyun.cn/
+- 火山引擎: https://www.volcengine.com/
 
 
 
@@ -1409,7 +1444,7 @@ IP代理
 
 #### 代码管理
 
-- 自建: Gitlab,Gogs
+- 自建: Gitlab,[Gogs](https://gogs.io/)
 
 - 第三方平台: 阿里云,腾讯云,码云,rap2等
 
@@ -1418,16 +1453,17 @@ IP代理
 #### 接口管理
 
 - 自建: Yapi,postman
-- 第三方: showdoc,Apifox
+- 第三方: [showdoc](https://www.showdoc.com.cn/),Apifox
 - [eolink](https://www.eolink.com/)
-- 
+- Rap2: http://rap2.taobao.org/
 
 #### 文档输出
 
-- 腾讯文档
+- [腾讯文档](https://docs.qq.com/)
 - 钉钉文档
 - wps
-- 金山文档
+- [金山文档](https://www.wps.cn/)
+- Zoho: https://www.zoho.com.cn/workdrive/
 
 
 
@@ -1481,5 +1517,5 @@ IP代理
 ## 附录
 
 - 正则表: http://www.jb51.net/shouce/jquery1.82/regexp.html
-- 
+- ASCII码表: https://www.asciitable.com/
 
