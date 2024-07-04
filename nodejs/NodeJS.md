@@ -6,7 +6,7 @@
 [Yum]
 
 ```shell
-yum install centos-release-scl-rh
+yum install -y centos-release-scl-rh
 yum-config-manager --enable rhel-server-rhscl-7-rpms
 yum install rh-nodejs12
 scl enable rh-nodejs12 bash

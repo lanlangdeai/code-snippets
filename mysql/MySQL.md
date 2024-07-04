@@ -1,5 +1,13 @@
 # MySQL
 
+## 安装
+
+[链接](https://www.cnblogs.com/xingxia/p/mysql57.html)
+
+
+
+
+
 
 
 ## 常用命令
