@@ -4,7 +4,69 @@
 
 [链接](https://www.cnblogs.com/xingxia/p/mysql57.html)
 
+### YUM）
 
+```shell
+# 1. 下载MySQL源安装包
+wget http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm
+# 2. 安装
+yum localinstall -y mysql57-community-release-el7-8.noarch.rpm 
+# 3.检查mysql源是否安装成功
+yum repolist enabled | grep "mysql.*-community.*"
+# 4.修改yum源
+vim /etc/yum.repos.d/mysql-community.repo
+
+#改变默认安装的mysql版本。比如要安装5.6版本，将5.7源的enabled=1改成enabled=0。然后再将5.6源的enabled=0改成enabled=1即可。
+#备注：enabled=1表示即将要安装的mysql版本，这个文件也可以不修改，默认安装mysql最高版本
+# 5. 安装MySQL
+yum install mysql-community-server
+
+##常见问题:
+### 1)Error: Unable to find a match
+先执行：
+	yum module disable mysql -y
+再执行：
+	yum -y install mysql-community-server
+
+### 2)Public key for mysql-community-server-5.7.37-1.el7.x86_64.rpm is not installed
+ rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+### 3)Error: Transaction test error:
+  #file /etc/my.cnf from install of mysql-community-server-5.7.44-1.el7.x86_64 conflicts with file from package mariadb-connector-c-config-3.1.11-2.oc8.1.noarch
+ yum remove mysql-common
+yum remove mariadb-connector-c-config
+ 
+# 6.启动MySQL并设置开机启动
+systemctl start mysqld
+systemctl enable mysqld
+systemctl daemon-reload
+# 7.端口开放
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+firewall-cmd --reload
+```
+
+
+
+修改root本地登录密码
+
+```shell
+# 查看默认密码
+grep 'temporary password' /var/log/mysqld.log
+# 使用临时密码登录
+mysql -uroot -p
+# 修改密码
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass4!';
+## 或者：
+mysql> set password for 'root'@'localhost'=password('MyNewPass4!'); 
+
+# 查看密码策略
+show variables like '%password%';
+# 添加远程登录用户
+GRANT ALL PRIVILEGES ON *.* TO 'caoxiaobo'@'%' IDENTIFIED BY 'Caoxiaobo0917!' WITH GRANT OPTION;
+# 立即刷新
+flush privileges
+```
+
+　　
 
 
 

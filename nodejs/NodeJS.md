@@ -3,15 +3,30 @@
 
 
 ## 安装
-[Yum]
+[Linux]
 
 ```shell
-yum install -y centos-release-scl-rh
-yum-config-manager --enable rhel-server-rhscl-7-rpms
-yum install rh-nodejs12
-scl enable rh-nodejs12 bash
+#nvm
+# installs nvm (Node Version Manager)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+# download and install Node.js (you may need to restart the terminal)
+nvm install 12
+
+# verifies the right Node.js version is in the environment
+node -v # should print `v12.22.12`
+
+# verifies the right NPM version is in the environment
+npm -v # should print `6.14.16`
+
+
+设置npm_mirror:
+nvm npm_mirror https://npmmirror.com/mirrors/npm/
+设置node_mirror:
+nvm node_mirror https://npmmirror.com/mirrors/node/
+
 ```
-说明：如果想安装其他的版本的Node， 直接替换后面的版本号即可
+
 
 
 
@@ -118,7 +133,7 @@ cnpm install  [name]
 
 
 
-[fnm](https://juejin.cn/post/7113462239734022158)
+[fnm](https://juejin.cn/post/7113462239734022158): 多版本工具(更多还有nvm, n)
 
 ```shell
 # 查看使用命令

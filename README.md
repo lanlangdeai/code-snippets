@@ -1244,9 +1244,12 @@ https://github.com/louislam/uptime-kuma
 ### 微信开发
 - 官方文档: https://developers.weixin.qq.com/doc/
 - 微信支付: https://pay.weixin.qq.com/wiki/doc/api/index.html
-- 微信公众号调试工具: https://mp.weixin.qq.com/debug/cgi-bin/apiinfo
+- 微信公众号在线调试工具: https://mp.weixin.qq.com/debug/cgi-bin/apiinfo
 - 微信 JS 接口签名校验工具: https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign
 - 小程序开放个人申请: https://www.jianshu.com/p/fff515483c6c
+- 微信Web开发者工具: https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Web_Developer_Tools.html
+- 历史版本: https://weixin.qq.com/cgi-bin/readtemplate?lang=zh_CN&t=weixin_faq_list&head=true
+- 开启开发者工具: https://github.com/JaveleyQAQ/WeChatOpenDevTools-Python
 
 
 

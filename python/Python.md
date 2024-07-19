@@ -12,7 +12,7 @@
 
 1.安装依赖包
 ```bash
-yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
+yum install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel psmisc libffi-devel zlib* libffi-devel  -y
 ```
 
 2.下载python源码包到指定目录
@@ -25,6 +25,7 @@ wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz
 wget https://www.python.org/ftp/python/3.7.12/Python-3.7.12.tgz
 #39)
 wget https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tgz
+wget https://registry.npmmirror.com/-/binary/python/3.9.10/Python-3.9.10.tgz
 
 ```
 
@@ -38,7 +39,7 @@ tar -zxvf Python-3.8.12.tgz
 # 安装编译器gcc
 yum install gcc
 
-# 安装libffi-devel(3.7版本之后需要的包)
+# 安装libffi-devel(3.7版本之后需要的包), 上面已经安装就不需要了
 yum install libffi-devel -y
 
 cd Python-3.8.12
@@ -69,13 +70,23 @@ source /etc/profile
 ```
 
 ## Pip加速
+查看当前使用的镜像:
+
+```shell
+pip3 config get global.index-url
+
+
+```
+
+
+
 1.临时使用
 
 ```bash
 pip install markdown -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-2.永久设置
+2.切换镜像源
 
 ```bash
 # 清华源
@@ -86,7 +97,43 @@ pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple
 # 豆瓣源
 pip config set global.index-url http://pypi.douban.com/simple/
+
+
+
+
+# 永久设置
+Windows)
+Ctrl+R -> 输入%APPDATA% -> 在该目录下创建文件夹pip -> 创建文件pip.ini
+添加内容:
+[global]
+index-url=https://mirrors.aliyun.com/pypi/simple/
+[install]
+trusted-host=mirrors.aliyun.com
+
 ```
+
+
+
+### 虚拟环境
+
+```shell
+# 创建虚拟环境
+python -m venv venv[环境名称]
+
+# 激活
+source venv/bin/activate
+# 退出虚拟环境
+deactivate
+
+```
+
+
+
+
+
+
+
+
 
 
 
@@ -181,7 +228,6 @@ True | False
 
 
 ## 方法&函数
-
 
 
 
