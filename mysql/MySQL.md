@@ -2,9 +2,9 @@
 
 ## 安装
 
-[链接](https://www.cnblogs.com/xingxia/p/mysql57.html)
+[安装教程链接(博客)](https://www.cnblogs.com/xingxia/p/mysql57.html)
 
-### YUM）
+### YUM
 
 ```shell
 # 1. 下载MySQL源安装包
@@ -21,6 +21,9 @@ vim /etc/yum.repos.d/mysql-community.repo
 # 5. 安装MySQL
 yum install mysql-community-server
 
+
+
+
 ##常见问题:
 ### 1)Error: Unable to find a match
 先执行：
@@ -32,7 +35,7 @@ yum install mysql-community-server
  rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
 ### 3)Error: Transaction test error:
   #file /etc/my.cnf from install of mysql-community-server-5.7.44-1.el7.x86_64 conflicts with file from package mariadb-connector-c-config-3.1.11-2.oc8.1.noarch
- yum remove mysql-common
+yum remove mysql-common
 yum remove mariadb-connector-c-config
  
 # 6.启动MySQL并设置开机启动
@@ -46,7 +49,50 @@ firewall-cmd --reload
 
 
 
-修改root本地登录密码
+### Docker
+
+```bash
+docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7
+
+$ docker run -d --name mysql -p 3306:3306 -v /opt/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7
+
+-v: 指定挂载的数据目录
+```
+
+docker-compose.yml
+
+```yaml
+version: '3'
+services:
+  mysql:
+    image: mysql/mysql-server:8.0
+    container_name: mysql80
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456 
+      MYSQL_USER: test 
+      MYSQL_PASSWORD: 123456 
+    ports:
+      - 3307:3306
+    volumes:
+      - ~/server/docker/mysql/data:/var/lib/mysql
+      - ~/server/docker/mysql/conf:/etc/mysql/conf.d
+      - ~/server/docker/mysql/logs:/logs
+```
+
+
+
+
+
+
+
+## 常用操作
+
+#### 修改root本地登录密码
 
 ```shell
 # 查看默认密码
@@ -57,9 +103,20 @@ mysql -uroot -p
 mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass4!';
 ## 或者：
 mysql> set password for 'root'@'localhost'=password('MyNewPass4!'); 
+## 或:
+UPDATE user SET Password=PASSWORD('newpassword') where USER='root';
+## 其他:
+mysqladmin -u root password 'new-password' 
+
+
 
 # 查看密码策略
 show variables like '%password%';
+# 修改密码校验策略
+set global validate_password.policy=LOW;
+# 设置密码长度(这样就可以设置为较为简单的密码了)
+set global validate_password.length=6;
+
 # 添加远程登录用户
 GRANT ALL PRIVILEGES ON *.* TO 'caoxiaobo'@'%' IDENTIFIED BY 'Caoxiaobo0917!' WITH GRANT OPTION;
 # 立即刷新
@@ -84,6 +141,14 @@ ps aux|grep mysql|grep 'my.cnf'
 mysql --help|grep 'my.cnf'
 >>> /etc/my.cnf /etc/mysql/my.cnf /usr/local/mysql/etc/my.cnf ~/.my.cnf
 #这些就是MySQL默认搜索的配置目录，顺序排前的优先
+
+
+
+# 跳过权限验证(配置文件中添加)
+[mysqld]
+skip-grant-tables
+
+# 重启之后生效
 ```
 
 
