@@ -102,6 +102,76 @@ function msubstr($str, $start, $length, $charset = "utf-8", $suffix = true)
     if ($suffix) return $slice . "…";
     return $slice;
 }
+
+function cutstr( $string, $length, $dot = '...', $charset = 'utf-8' ) {
+        if ( strlen( $string ) <= $length )
+            return $string;
+
+        $pre = chr( 1 );
+        $end = chr( 1 );
+        $string = str_replace( array ( '&amp;' , '&quot;' , '&lt;' , '&gt;' ), array ( $pre . '&' . $end , $pre . '"' . $end , $pre . '<' . $end , $pre . '>' . $end ), $string );
+
+        $strcut = '';
+        if ( strtolower( $charset ) == 'utf-8' ) {
+
+            $n = $tn = $noc = 0;
+            while ( $n < strlen( $string ) ) {
+
+                $t = ord( $string[$n] );
+                if ( $t == 9 || $t == 10 || ( 32 <= $t && $t <= 126 ) ) {
+                    $tn = 1;
+                    $n ++;
+                    $noc ++;
+                } elseif ( 194 <= $t && $t <= 223 ) {
+                    $tn = 2;
+                    $n += 2;
+                    $noc += 2;
+                } elseif ( 224 <= $t && $t <= 239 ) {
+                    $tn = 3;
+                    $n += 3;
+                    $noc += 2;
+                } elseif ( 240 <= $t && $t <= 247 ) {
+                    $tn = 4;
+                    $n += 4;
+                    $noc += 2;
+                } elseif ( 248 <= $t && $t <= 251 ) {
+                    $tn = 5;
+                    $n += 5;
+                    $noc += 2;
+                } elseif ( $t == 252 || $t == 253 ) {
+                    $tn = 6;
+                    $n += 6;
+                    $noc += 2;
+                } else {
+                    $n ++;
+                }
+
+                if ( $noc >= $length ) {
+                    break;
+                }
+
+            }
+            if ( $noc > $length ) {
+                $n -= $tn;
+            }
+
+            $strcut = substr( $string, 0, $n );
+
+        } else {
+            for ( $i = 0; $i < $length; $i ++ ) {
+                $strcut .= ord( $string[$i] ) > 127 ? $string[$i] . $string[++ $i] : $string[$i];
+            }
+        }
+
+        $strcut = str_replace( array ( $pre . '&' . $end , $pre . '"' . $end , $pre . '<' . $end , $pre . '>' . $end ), array ( '&amp;' , '&quot;' , '&lt;' , '&gt;' ), $strcut );
+
+        $pos = strrpos( $strcut, chr( 1 ) );
+        if ( $pos !== false ) {
+            $strcut = substr( $strcut, 0, $pos );
+        }
+        return $strcut . $dot;
+    }
+
 ```
 
 #### 删除字符串右侧指定字符
@@ -216,6 +286,22 @@ function getRand($len) {
     }
     return $d;
 }
+
+// 生成指定长度的纯数字随机字符串
+function generateRandNumString($len)
+{
+    $min = ord('0');
+    $max = ord('9');
+    $value = '';
+    for ($i = 0; $i < $len; $i++)
+    {
+        $value .= chr(rand($min, $max));
+    }
+    return $value;
+}
+
+
+
 ```
 
 #### 是否包含中文
@@ -388,9 +474,193 @@ function uuid()
 }
 ```
 
+#### 驼峰转下划线
+
+```php
+function camel2Flat($word) {
+    return strtolower(preg_replace('/(\w)([A-Z])(\w)/', '\1_\2\3', $word));
+}
+```
+
+#### 下划线转驼峰
+
+```php
+function Flat2Camel($word) {
+    $arr = explode('_', $word);
+    $string = "";
+    foreach ($arr as $value) {
+        $string .=ucfirst($value);
+    }
+    return lcfirst($string);
+}
+```
+
+#### 首字母转小写
+
+```php
+function lcfirst($word) {
+    $word[0] = strtolower($word[0]);
+    return (string) $word;
+}
+```
+
+#### 字符集转换
+
+```php
+function autoCharset ($string, $from = 'gbk', $to = 'utf-8')
+    {
+        $from = strtoupper($from) == 'UTF8' ? 'utf-8' : $from;
+        $to = strtoupper($to) == 'UTF8' ? 'utf-8' : $to;
+        if (strtoupper($from) === strtoupper($to) || empty($string) || (is_scalar($string) && ! is_string($string))) {
+            //如果编码相同或者非字符串标量则不转换
+            return $string;
+        }
+        if (is_string($string)) {
+            if (function_exists('mb_convert_encoding')) {
+                return mb_convert_encoding($string, $to, $from);
+            } elseif (function_exists('iconv')) {
+                return iconv($from, $to, $string);
+            } else {
+                return $string;
+            }
+        } elseif (is_array($string)) {
+            foreach ($string as $key => $val) {
+                $_key = self::autoCharset($key, $from, $to);
+                $string[$_key] = self::autoCharset($val, $from, $to);
+                if ($key != $_key)
+                    unset($string[$key]);
+            }
+            return $string;
+        } else {
+            return $string;
+        }
+    }
+```
+
+#### 清理特殊字符
+
+```php
+function clean_chars($str)
+{
+  $chars_map = array("'", "&", ";", "--", "<", ">", "(", ")", "=", "\"", ",", "[", "]", "{", "}", '\\');
+  return str_replace($chars_map, '', $str);
+}
+```
+
+#### 是否以某个字符串开头的字符串
+
+```php
+function startsWith($haystack, $needle) {
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+}
+```
+
+#### 是否以某个字符串结尾的字符串
+
+```php
+function str_endWith($str,$subStr){
+	return substr($str, -(strlen($subStr)))==$subStr;
+}
+```
+
+#### 过滤乱码
+
+```php
+/**
+ * 过滤乱码
+ * @param $str 
+ * @param $debug
+ */
+function filterMessChars($str, $debug=0)
+{
+	$str = preg_replace('/&lt;a href=&quot;.*?&quot; target=&quot;_blank&quot;&gt;.*?&lt;\/a&gt;/si', '', $str);
+	//if($debug)echo $str."<br>\n";  
+	$new_str = "";
+	for($i = 0; $i < strlen($str); $i++)
+	{	
+        	$value = ord($str[$i]);
+        	if($value > 127){
+            		if($value >= 192 && $value <= 223) $c = 2;
+            		elseif($value >= 224 && $value <= 239) $c = 3;
+            		elseif($value >= 240 && $value <= 247) $c = 4;
+            		else continue;
+        	}
+		else
+			$c = 1;
+		if(($c == 3 || $c == 1) && $value != 237)
+			$new_str .= substr($str, $i, $c);
+	//	if($debug)
+	//		echo substr($str, $i, $c) . ":$c:" . $value."<br>\n";
+	    	$i += $c - 1;
+	}
+	return $new_str;
+}
+```
+
+#### 放置SQL注入处理
+
+```php
+function clean($input)
+{
+    if (is_array($input))
+    {
+        foreach ($input as $key => $val)
+         {
+             $output[$key] = clean($val);
+         }
+    }
+    else
+    {
+        $output = (string) $input;
+        // if magic quotes is on then use strip slashes
+        if (get_magic_quotes_gpc())
+        {
+            $output = stripslashes($output);
+        }
+        $output = htmlentities($output, ENT_QUOTES, 'UTF-8');
+    }
+// return the clean text
+    return $output;
+}
+```
+
+
+
+
+
+
+
+
+
 
 
 ## 数组
+
+#### 从二维数组中提取key
+
+```php
+/**
+ * 从二维数组中取出自己要的KEY值(去除为空字符并根据结果排序)
+ * @param  array $arrData
+ * @param string $key
+ * @param $im true 返回逗号分隔
+ * @return array
+ */
+function filter_value($arrData, $key, $im = false)
+{
+    $re = [];
+    foreach ($arrData as $k => $v) {
+        if (isset($v[$key])) $re[] = $v[$key];
+    }
+    if (!empty($re)) {
+        $re = array_flip(array_flip($re));
+        sort($re);
+    }
+
+    return $im ? implode(',', $re) : $re;
+}
+```
 
 #### 通过数组中的值获取对应的key
 
@@ -413,6 +683,67 @@ function getArrayKey($arr, $value) {
     }
 }
 ```
+
+#### 多维数组合并
+
+```php
+/**
+ * 多维数组合并（支持多数组）
+ * @return array
+ */
+function array_merge_multi()
+{
+    $args = func_get_args();
+    $array = [];
+    foreach ($args as $arg) {
+        if (is_array($arg)) {
+            foreach ($arg as $k => $v) {
+                if (is_array($v)) {
+                    $array[$k] = isset($array[$k]) ? $array[$k] : [];
+                    $array[$k] = array_merge_multi($array[$k], $v);
+                } else {
+                    $array[$k] = $v;
+                }
+            }
+        }
+    }
+
+    return $array;
+}
+```
+
+#### 多维数组转一维数组(索引数组)
+
+```php
+function reduceArray($array) {
+	    $return = [];
+	    array_walk_recursive($array, function ($x) use (&$return) {
+	        $return[] = $x;
+	    });
+	    return $return;
+}
+》》》
+$data = [
+    ['php','python','golang'],
+    ['mysql','sqlite','mongodb','redis','Memcache']
+];
+print_r(reduceArray($data));
+>>> Array
+(
+    [0] => php
+    [1] => python
+    [2] => golang
+    [3] => mysql
+    [4] => sqlite
+    [5] => mongodb
+    [6] => redis
+    [7] => Memcache
+)
+```
+
+
+
+
 
 #### 数组与对象间的转换
 
@@ -468,6 +799,125 @@ function multiArrayUnique($arr){
 }
 ```
 
+#### 生成指定范围的不重复的随机数
+
+```php
+/**
+ * 生成一定数量的不重复随机数
+ * @param  integer $min 最小值
+ * @param  integer $max 最大值
+ * @param  integer $num 随机数数量
+ * @return array        返回值
+ */
+function generateUniqueRand(int $min, int $max,int $num)
+{
+    $count = 0;
+    $return = [];
+    if(($max-$min+1)<$num){
+        return $return;
+    }
+
+    while ($count < $num) {
+        $return[] = mt_rand($min, $max);
+        $return   = array_flip(array_flip($return));
+        $count    = count($return);
+    }
+    shuffle($return);
+    return $return;
+}
+```
+
+#### 数组排序
+
+```php
+//二维数组排序， $arr是数据，$keys是排序的健值，$order是排序规则，0是升序，1是降序
+function array_sort($arr, $keys, $order=0) {
+        if (!is_array($arr)) {
+                return false;
+        }
+        if(count($arr)==0)
+        {
+        	return array();
+        }
+        $keysvalue = array();
+        foreach($arr as $key => $val) {
+                $keysvalue[$key] = $val[$keys];
+        }
+        if($order == 0){
+                asort($keysvalue);
+        }else {
+                arsort($keysvalue);
+        }
+        reset($keysvalue);
+        $keysort=array();
+        foreach($keysvalue as $key => $vals) {
+                $keysort[$key] = $key;
+        }
+        
+        $new_array=array();
+        foreach($keysort as $key => $val) {
+                $new_array[$key] = $arr[$val];
+        }
+        return $new_array;
+}
+```
+
+#### 数组中数据求和
+
+```php
+/**
+ * 数组中数据的求和（支持多维数组）
+ * @param array $array
+ * @return int|mixed
+ */
+function arraySum(array $array)
+{
+    $total = 0;
+    foreach(new RecursiveIteratorIterator( new RecursiveArrayIterator($array) ) as $num){
+        $total += $num;
+    }
+    return $total;
+}
+
+》》》
+$arr = [[11,22],33, [44,55,[66,77]]];
+print_r(arraySum($arr));
+>>> 308
+```
+
+#### 提取数组中指定字段数据
+
+```php
+/**
+ * 过滤并获取有用数据
+ * @param  array $data      原数据
+ * @param  array $standard  保留的参数
+ */
+function filterData($data, array $standard){
+    if(empty($data) || !is_array($data) || !is_array($standard)) return [];
+
+    $standardArr = array_fill_keys($standard, '');
+
+    $data = array_intersect_key($data,$standardArr);
+
+    return array_merge($standardArr,$data);
+}
+
+》》》
+$arr = ['name'=>'xing','age'=>23,'sex'=>1];
+$standard = ['age'];
+
+
+$ret = filterData($arr, $standard);
+var_dump($ret);
+>>> array(1) {
+  'age' =>
+  int(23)
+}
+```
+
+
+
 
 
 
@@ -506,6 +956,24 @@ function redirect($url, $time = 0, $msg = '')
         exit($str);
     }
 }
+
+
+function redirect($url)
+{
+        if (headers_sent()) {
+            echo '<html><head><meta http-equiv="refresh" content="0;URL='.$url.'" /></head></html>';
+            exit;
+        }
+        else{
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: {$url}");
+            exit; 
+        }
+}
+
+
+
+
 ```
 
 #### 拼接URL地址
@@ -674,11 +1142,86 @@ function ip( $str )
 }
 ```
 
+#### 邮箱验证
+
+```php
+function isEmail($email)
+{
+		$chars = "/^([a-z0-9+_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,6}\$/i";
+	    if (strpos($email, '@') !== false && strpos($email, '.') !== false)
+	    {
+	    	if (preg_match($chars, $email))
+	    	{
+	    		return true;
+	    	} 
+	    	else
+	    	{
+	    		return false;
+	    	}
+	    } 
+	    else
+	    {
+	    	return false;
+	    }
+}
+
+
+function isEmail($vStr)
+{
+	return preg_match('/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/', $vStr);
+}
+```
+
+#### 手机号验证
+
+```php
+function isMobile($mobile)
+{
+		if (empty($mobile)) return false;
+		
+		if(preg_match('/^[1]{1}[3|4|5|8]{1}[0-9]{9}$/', $mobile))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+}
+```
+
+#### 网址验证
+
+```php
+function url( $str ) {
+    if ( empty( $str ) )
+        return true;
+
+    return preg_match( '#(http|https|ftp|ftps)://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?#i', $str ) ? true : false;
+}
+```
+
+#### 判断操作系统
+
+```php
+// 是否是Linux
+function isLinux() {return strtoupper(PHP_OS) === 'LINUX';}
+
+// 是否是Windows
+function isWin() {return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';}
+```
+
+
+
+
+
+
+
 
 
 ## Http请求
 
-
+#### 网络请求
 
 ```php
 /**
@@ -879,6 +1422,32 @@ function getFileExt3($filename)
 
 
 
+## XML
+
+#### 编码与解码
+
+```php
+function xml_encode($data, $encoding='utf-8', $root='root') {
+	$xml = '<?xml version="1.0" encoding="' . $encoding . '"?>';
+	$xml.= '<' . $root . '>';
+	$xml.= data_to_xml($data);
+	$xml.= '</' . $root . '>';
+	return $xml;
+}
+
+function data_to_xml($data) {
+	$xml = '';
+	foreach ($data as $key => $val) {
+		is_numeric($key) && $key = "item id=\"$key\"";
+		$xml.="<$key>";
+		$xml.= ( is_array($val) || is_object($val)) ? data_to_xml($val) : $val;
+		list($key, ) = explode(' ', $key);
+		$xml.="</$key>";
+	}
+	return $xml;
+}
+```
+
 
 
 
@@ -904,6 +1473,27 @@ function imgs($string){
 ```
 
 
+
+## 缓存
+
+### Session
+
+```php
+// 获取,设置,删除
+function session($name,$val=''){
+	if($val===''){//get
+		if(!isset($_SESSION[$name]))return false;
+		return  $_SESSION[$name];
+	}else if($val===null){//del
+       unset( $_SESSION[$name]);
+       return null;
+	}else{//set
+		$_SESSION[$name]=$val;
+		return true;
+	}
+	return false;
+}
+```
 
 
 
@@ -964,6 +1554,26 @@ function base64url_decode(string $data): string
 {
  return base64_decode(str_pad(strtr($data,'-_','+/'),strlen($data) %4,'=',STR_PAD_RIGHT));
 }
+
+
+# 编码
+function b64encode( $string ) {
+        $data = base64_encode( $string );
+        $data = str_replace( array ( '+' , '/' , '=' ), array ( '-' , '_' , '' ), $data );
+        return $data;
+    }
+
+# 解码
+
+function b64decode( $string ) {
+        $data = str_replace( array ( '-' , '_' ), array ( '+' , '/' ), $string );
+        $mod4 = strlen( $data ) % 4;
+        if ( $mod4 ) {
+            $data .= substr( '====', $mod4 );
+        }
+        return base64_decode( $data );
+}
+
 ```
 
 #### 加解密算法
@@ -1036,9 +1646,103 @@ var_dump('加密后数据:', $encryptData);
 var_dump('解密后数据:', authcode($encryptData, $key, 'DECODE'));
 ```
 
+#### 字符串双向加解密
+
+```php
+/**
+ * 加密数据方法
+ * @param String $data
+ * @return String
+ * @author shenpeng
+ */
+function encrypt($data)
+{
+    if (empty($data))	return $data;
+    $length = strlen($data);
+    $middle = (int)ceil($length/2);
+    $repalcePos = 9;
+    $step = (int)ceil($length*(1/4));
+    //每多少个替换一次
+    for($i = 0;$i<$length;$i=$i+$step){
+        $temp = $data[($i+$repalcePos)%$length];
+        //每次跟哪个替换
+        $data[($i+$repalcePos)%$length] = $data[$i];
+        $data[$i] = $temp;
+    }
+    $part1 = substr($data,0,$middle);
+    $part2 = substr($data,$middle);
+    $data = strrev($part2).strrev($part1);
+    return $data;
+}
+/**
+ * 解密数据方法
+ * @param String $data
+ * @return String
+ * @author shenpeng
+ */
+function decrypt($data)
+{
+    if (empty($data))	return $data;
+    $length = strlen($data);
+    $middle = (int)ceil($length/2);
+    $part1 = substr($data,0,$middle);
+    $part2 = substr($data,$middle);
+    $data = strrev($part2).strrev($part1);
+    $repalcePos = 9;
+    //每多少个替换一次
+    $step = (int)ceil($length*(1/4));
+    $startPos = $length-1-(($length-1)%$step);
+
+    for($i =$startPos;$i>=0;$i=$i-$step){
+        $temp = $data[($i+$repalcePos)%$length];
+        //每次跟哪个替换
+        $data[($i+$repalcePos)%$length] = $data[$i];
+        $data[$i] = $temp;
+    }
+    return $data;
+}
+```
 
 
 
+## 系统函数
+
+- base_convert: 在任意进制之间转换 
+
+
+
+
+
+## 助手
+
+#### 友好打印
+
+```php
+function dump( $var, $echo = true, $label = null, $strict = true ) {
+        $label = ( $label === null ) ? '' : rtrim( $label ) . ' ';
+        if ( ! $strict ) {
+            if ( ini_get( 'html_errors' ) ) {
+                $output = print_r( $var, true );
+                $output = "<pre>" . $label . htmlspecialchars( $output, ENT_QUOTES ) . "</pre>";
+            } else {
+                $output = $label . print_r( $var, true );
+            }
+        } else {
+            ob_start();
+            var_dump( $var );
+            $output = ob_get_clean();
+            if ( ! extension_loaded( 'xdebug' ) ) {
+                $output = preg_replace( "/\]\=\>\n(\s+)/m", "] => ", $output );
+                $output = '<pre>' . $label . htmlspecialchars( $output, ENT_QUOTES ) . '</pre>';
+            }
+        }
+        if ( $echo ) {
+            echo $output;
+            return null;
+        } else
+            return $output;
+    }
+```
 
 
 
