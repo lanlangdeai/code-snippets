@@ -1,5 +1,19 @@
 # Linux 
 
+#### 去除文件中注释
+
+```bash
+egrep -v "^$|#" /etc/nginx/nginx.conf.default > /etc/nginx/nginx.conf
+```
+
+
+
+
+
+
+
+
+
 
 
 ## 软件包

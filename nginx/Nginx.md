@@ -1,10 +1,95 @@
 # nginx
 
-## 安装&使用
-[安装]
+## 安装
+
+### Yum
+
+```bash
+#1.安装依赖	
+sudo yum install yum-utils -y
+
+#2.创建文件 /etc/yum.repos.d/nginx.repo 
+[nginx-stable]
+name=nginx stable repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+
+[nginx-mainline]
+name=nginx mainline repo
+baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+
+  
+#By default, the repository for stable nginx packages is used. If you would like to use mainline nginx packages, run the following command:
+
+sudo yum-config-manager --enable nginx-mainline
+
+#3.安装
+sudo yum install nginx -y
+  
+#4.启动nginx
+/usr/sbin/nginx
+```
+
+安装脚本
+
+```bash
+sudo yum install yum-utils -y
+
+tee /etc/yum.repos.d/nginx.repo <<-"EOF"
+[nginx-stable]
+name=nginx stable repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+
+[nginx-mainline]
+name=nginx mainline repo
+baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+EOF
+
+sudo yum install nginx -y
+
+/usr/sbin/nginx
+```
 
 
-设置自动启动
+
+### 编译
+
+```bash
+#安装依赖:
+yum -y install gcc pcre-devel  zlib-devel
+
+#编译安装:
+wget https://nginx.org/download/nginx-1.22.1.tar.gz
+
+tar zxvf nginx-1.22.1.tar.gz
+cd nginx-1.22.1
+./configure
+make && make install
+```
+
+
+
+
+
+
+
+### 设置自动启动
+
 ```bash
 #1. 添加系统服务配置文件
 vim /lib/systemd/system/nginx.service
@@ -26,7 +111,10 @@ WantedBy=multi-user.target
 
 ```
 配置说明:
+
+```
 [Unit]:服务的说明
+
 Description:描述服务
 After:描述服务类别
 
@@ -40,10 +128,16 @@ PrivateTmp=True表示给服务分配独立的临时空间
 [Install]运行级别下服务安装的相关设置，可设置为多用户，即系统运行级别为3
 
 注意：[Service]的启动、重启、停止命令全部要求使用绝对路径
+```
 
 
-[使用]
+
+
+
+## 使用
+
 常用命令:
+
 ```bash
 #加入开机启动
 systemctl enable nginx
@@ -64,8 +158,147 @@ systemctl status nginx
 systemctl list-units -type=service
 ```
 
+nginx命令
+
+```bash
+# 启动服务
+/usr/sbin/nginx
+  
+# 测试配置文件
+nginx -t
+
+# 测试配置文件并打印, 方便查看所有的nginx加载的配置文件内容
+nginx -T
+  
+# 停止服务
+nginx -s stop
+nginx -s quit
+  
+# 热加载配置文件
+nginx -s reload
+ 
+  
+# 其他参数
+  -v 查看版本
+  -V 版本+配置项
+  -q  静默方式,不报错
+  -c  配置文件地址
+```
+
+
+
+## 证书
+
+### Cerbot
+
+#### 安装 **snap**
+
+https://snapcraft.io/docs/installing-snap-on-centos
+
+```bash
+#查看系统版本
+cat /etc/centos-release
+  
+#centos7
+sudo yum install epel-release
+  
+#centos8
+sudo dnf install epel-release
+sudo dnf upgrade
+  
+#安装snap
+sudo yum install snapd
+  
+#systemctl管理
+sudo systemctl enable --now snapd.socket
+  
+#To enable classic snap support
+sudo ln -s /var/lib/snapd/snap /snap
+```
+
+#### 安装 Certbot
+
+```bash
+snap install core
+snap refresh core
+  
+#移除旧安装包
+sudo yum remove certbot
+  
+#安装
+sudo snap install --classic certbot
+```
+
+#### 添加环境变量
+
+```bash
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+
+#### 使用
+
+```bash
+sudo certbot --nginx
+  
+#只是生成证书
+sudo certbot certonly --nginx
+  
+#测试自动到期刷新
+sudo certbot renew --dry-run
+  
+ 
+#查看定时任务:
+/etc/crontab/
+/etc/cron.*/*
+systemctl list-timers
+```
+
+
+
+## 相关模块
+
+### 添加模块
+
+#### 查看编译使用的参数
+
+```bash
+nginx -V
+```
+
+#### 添加参数
+
+```bash
+--with-http_stub_status_module --with-http_ssl_module --with-http_realip_module
+
+
+在源码包中执行:
+./configure --prefix=/app/nginx -user=nobody -group=nobody --with-http_stub_status_module \
+--with-http_ssl_module --with-http_realip_module \
+--add-module=../nginx_upstream_hash-0.3.1/ \
+--add-module=../gnosek-nginx-upstream-fair-2131c73/
+```
+
+#### 重新编译安装
+
+```bash
+make
+#不要make install，否则就是覆盖安装
+
+cp /app/nginx/sbin/nginx /app/nginx/sbin/nginx.bak
+cp ./objs/nginx /app/nginx/sbin/
+
+#然后执行重载:
+nginx -s reload
+```
+
+
+
+
+
+
 
 ## 配置语法
+
 **正则表达式匹配，其中：**
 
 1. \* ~ 为区分大小写匹配
@@ -86,12 +319,42 @@ systemctl list-units -type=service
 3. \* redirect 返回302临时重定向 地址栏会显示跳转后的地址
 4. \* permanent 返回301永久重定向 地址栏会显示跳转后的地址
 
+```bash
+location ~* /x/glzp {
+    return http://xxx.xxx.com/downloadview/index?id=300;
+}
+
+
+location ^~ /site/download/ {
+    if ( $query_string ~* "appId=10000024" ) {
+        return http://xxx.xxx.com/downloadview/index?id=290;
+    }
+    proxy_pass http://127.0.0.1:8081;
+}
+
+
+location ^~ /lcmj {
+      if ( $query_string ~* ^(.*)$ ){
+            return https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbd3f278c1aeb2ae9&redirect_uri=http://xxx.xxx.com/le/agent/saomalc&response_type=code&scope=snsapi_userinfo&state=$query_string&connect_redirect=1#wechat_redirect;
+      }
+}
+```
 
 
 
-## 模版
 
-python项目
+
+
+
+
+
+
+
+
+## 项目配置
+
+#### python项目
+
 ```nginx
 server {
     listen  8000;
@@ -120,9 +383,70 @@ server {
 }
 ```
 
+## 
 
-## 示例
-1.非www，默认跳转www地址
+#### php项目
+
+```nginx
+server    {
+    listen                          8700;
+    server_name                     xxx.xxx.xxx.xxx;
+    index                           index.php index.html;
+    root                            /data/www/blog/public;
+    access_log                      /data/log/nginx/access_8700.log main;
+    error_log                       /data/log/nginx/error_8700.log warn;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ .*\.(php|php5)?$
+    {
+        fastcgi_pass  127.0.0.1:9000;
+        fastcgi_index index.php;
+        include       fastcgi.conf;  # 加载变量
+    }
+
+    location = /robots.txt {
+        allow         all;
+        log_not_found     off;
+        access_log     off;  # 关闭log记录
+    }  
+    
+    location = /favicon.ico {
+        expires        max;
+        access_log    off;
+        # 文件找不到是否进行记录,默认是on,记录
+        log_not_found    off;
+    }
+
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ {
+        expires      30d;  #缓存设置30天
+        access_log   off;
+    }
+
+    location ~ .*\.(js|css)?$ {
+        expires      12h;  # 缓存设置12小时
+        access_log   off;
+    }
+
+    location ~/\.(?!well-known).* {
+        deny all;  # 禁止访问
+    }
+}
+
+```
+
+
+
+
+
+
+
+
+
+#### 非www，默认跳转www地址
+
 ```nginx
 server {
    listen 80;
@@ -146,7 +470,7 @@ server {
 
 ```
 
-2. 生产环境基本配置
+#### 生产环境基本配置
 
 ```nginx
 upstream common {
@@ -221,7 +545,7 @@ server {
 }
 ```
 
-3. 禁止htaccess
+#### 禁止htaccess
 
 ```nginx
 location ~//.ht {
@@ -229,7 +553,7 @@ location ~//.ht {
 }
 ```
 
-4.禁止访问多目录
+#### 禁止访问多目录
 
 ```nginx
 location ~ ^/(cron|templates)/ {
@@ -244,7 +568,7 @@ location ~ ^/data {
 }
 ```
 
-5.禁止单个目录
+#### 禁止单个目录
 
 ```nginx
 location /searchword/cron/ {
@@ -257,7 +581,7 @@ location /searchword/cron/ {
 }
 ```
 
-6.设置过期时间
+#### 设置过期时间
 
 ```nginx
 location = /robots.txt {
@@ -274,7 +598,7 @@ location = /favicon.ico {
 }
 ```
 
-7.开启gzip压缩
+#### 开启gzip压缩
 
 ```
 gzip                            on;
@@ -287,7 +611,7 @@ gzip_disable                    "MSIE [1-6].";
 gzip_vary                       on;
 ```
 
-8.访问日志
+#### 访问日志
 
 ```nginx
 http {
@@ -302,7 +626,7 @@ request_time:指的就是从接受用户请求的第一个字节到发送完响�
 upstream_response_time:是指从 nginx 向后端（php-cgi)建立连接开始到接受完数据然后关闭连接为止的时间。
 ```
 
-9.非HTTP跳转https
+#### 非HTTP跳转https
 
 ```nginx
 server {
@@ -332,6 +656,64 @@ server{
 	if ($request_method ~ ^(HEAD)$ ) {
 		return 200 "All OK";
 	}
+}
+```
+
+#### 处理head请求
+
+```bash
+server{
+	if ($request_method ~ ^(HEAD)$ ) {
+		return 200 "All OK";
+	}
+}
+```
+
+#### Proxy_set_header 设置
+
+```bash
+location / {
+		proxy_pass http://127.0.0.1:3000;
+		proxy_set_header Host  $host;
+    proxy_set_header X-Real-IP  $remote_addr;
+    proxy_set_header X-Forwarded-For  $proxy_add_x_forwarded_for;
+	}
+```
+
+#### 限制单个IP的访问频率
+
+```bash
+http {
+
+    #$limit_conn_zone：限制并发连接数
+    limit_conn_zone $binary_remote_addr zone=one1:10m;
+
+    #limit_req_zone：请求频率
+    #$binary_remote_addr：以客户端IP进行限制
+    #zone=one:10m：创建IP存储区大小为10M,用来存储访问频率
+    #rate=10r/s：表示客户端的访问评率为每秒10次
+    limit_req_zone $binary_remote_addr zone=one2:10m   rate=10r/s;
+     
+}   
+
+
+# server配置
+
+server {
+        listen       80;
+        server_name  localhost;
+       
+
+        location / {
+            #限制并发数2
+            limit_conn  one1  2;  
+            #burst：如果请求的频率超过了限制域配置的值，请求处理会被延迟
+            #nodelay：超过频率限制的请求会被延迟，直到被延迟的请求数超过了定义的阈值，这个请求会被终止，并返回503
+            limit_req   zone=one2 burst=10 nodelay;
+            root   html;
+            index  index.html index.htm;
+        }
+
 }
 ```
 
