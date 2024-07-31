@@ -1080,6 +1080,43 @@ function convert_style( $style, array $texts = [] ) {
 }
 ```
 
+
+
+#### 抽奖算法
+
+```php
+$signRate = array(
+    '1' => 30,
+    '2' => 25,
+    '3' => 20,
+    '4' => 15,
+    '5' => 10
+);
+// 随机抽奖
+function getRand($proArr)
+{
+    $result = '';
+    // 概率数组的总概率精度
+    $proSum = array_sum($proArr);
+    // 概率数组循环
+    foreach ($proArr as $key => $proCur) {
+        $randNum = mt_rand(1, $proSum); // 抽取随机数
+        if ($randNum <= $proCur) {
+            $result = $key; // 得出结果
+            break;
+        } else {
+            $proSum -= $proCur;
+        }
+    }
+    unset($proArr);
+    return $result;
+}
+```
+
+
+
+
+
 #### 接口的数据加密
 
 ```php

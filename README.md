@@ -206,10 +206,22 @@ https://github.com/thephpleague/oauth2-client
 - NotORM: 非常简单操作数据库的类
 
   https://www.notorm.com/
+  
+- PhpSpreadsheet: Excel操作库
 
+https://github.com/PHPOffice/PhpSpreadsheet.git
 
+- FPID: PDF操作库
 
+  https://github.com/Setasign/FPDI
 
+- mpdf: pdf操作库
+
+  https://mpdf.github.io/
+
+- phpqrcode: 二维码库
+
+http://phpqrcode.sourceforge.net/
 
 
 
@@ -227,10 +239,14 @@ https://github.com/thephpleague/oauth2-client
 - symfony/mailer: 邮件发送
 
   https://symfony.com/doc/current/mailer.html
+  
+- PHPMailer: 邮件发送
 
+  https://github.com/PHPMailer/PHPMailer
 
+- Mobile-Detect: 终端检测 
 
-
+  https://github.com/serbanghita/Mobile-Detect
 
 
 

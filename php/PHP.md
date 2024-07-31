@@ -78,3 +78,24 @@ composer require 包名称
 
 ```
 
+
+
+### 项目中错误展示与级别设置
+
+```php
+$project_environment = getenv('PROJECT_ENVIRONMENT');
+if($project_environment == 'production'){
+    defined('PRO_ENV') or define('PRO_ENV', 'prod');
+}elseif($project_environment == 'test'){
+    defined('PRO_ENV') or define('PRO_ENV', 'test');
+    ini_set('display_errors', 1);
+    //开启错误和警告，严格规范开发
+    error_reporting(E_ALL ^E_NOTICE);
+}else{
+    defined('PRO_ENV') or define('PRO_ENV', 'dev');
+    ini_set('display_errors', 1);
+    //开启错误和警告，严格规范开发
+    error_reporting(E_ALL ^E_NOTICE);
+}
+```
+
