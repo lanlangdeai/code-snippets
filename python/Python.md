@@ -129,9 +129,28 @@ deactivate
 
 
 
+## 部署
 
+#### 添加系统进程管理
 
+文件路径: /usr/lib/systemd/system/django_rq.service
 
+```bash
+[Unit]
+Description=Django-RQ Worker
+After=network.target
+
+[Service]
+WorkingDirectory=<path_to_your_project_folder>
+ExecStart=/home/ubuntu/.virtualenv/<your_virtualenv>/bin/python \
+    <path_to_your_project_folder>/manage.py \
+    rqworker high default low
+
+[Install]
+WantedBy=multi-user.target
+```
+
+可以使用systemctl start/status/stop等命令管理该进程
 
 
 

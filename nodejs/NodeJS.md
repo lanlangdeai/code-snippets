@@ -3,7 +3,7 @@
 
 
 ## 安装
-[Linux]
+### [Linux]
 
 ```shell
 #nvm
@@ -20,17 +20,34 @@ node -v # should print `v12.22.12`
 npm -v # should print `6.14.16`
 
 
-设置npm_mirror:
+#设置npm_mirror:
 nvm npm_mirror https://npmmirror.com/mirrors/npm/
-设置node_mirror:
+#设置node_mirror:
 nvm node_mirror https://npmmirror.com/mirrors/node/
 
+```
+
+#### 源码安装
+
+```bash
+wget https://nodejs.org/dist/v10.18.0/node-v10.18.0-linux-x64.tar.gz
+tar zxvf node-v10.18.0-linux-x64.tar.gz
+
+mv node-v10.18.0-linux-x64 /usr/local/nodejs
+
+vim /etc/profile
+最后一行加入
+
+export PATH=$PATH:/usr/local/nodejs/bin
+
+source /etc/profile
 ```
 
 
 
 
-[Windows]
+
+### [Windows]
 
 ```shell
 # installs fnm (Fast Node Manager)
