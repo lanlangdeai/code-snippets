@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 import sys
 import time
 import ntpath
@@ -28,22 +25,23 @@ class FileChangeHandler(FileSystemEventHandler):
         # print('文件发生变化')
         src_path = event.src_path.replace('\\', '/')
         base_name = os.path.basename(src_path)
-        print('base_name:', base_name)
-        print('src_path:', src_path)
-        os.chdir(DIR_FOR_GIT)
-        git_add_cmd = "git add -A"
-        git_commit_cmd = "git commit -m " + re.escape("Update " + base_name)
-        if platform.system() == "Windows":
-            git_commit_cmd = "git commit -m Update."
-        git_pull_cmd = "git pull origin main"
-        git_push_cmd = "git push origin main"
-        call(
-            git_add_cmd + "&&" +
-            git_commit_cmd + "&&" +
-            git_pull_cmd + "&&" +
-            git_push_cmd,
-            shell=True
-        )
+        if base_name not in IGNORE_DIR_LIST:
+            print('base_name:', base_name)
+            print('src_path:', src_path)
+            os.chdir(DIR_FOR_GIT)
+            git_add_cmd = "git add -A"
+            git_commit_cmd = "git commit -m " + re.escape("Update " + base_name)
+            if platform.system() == "Windows":
+                git_commit_cmd = "git commit -m Update."
+            git_pull_cmd = "git pull origin main"
+            git_push_cmd = "git push origin main"
+            call(
+                git_add_cmd + "&&" +
+                git_commit_cmd + "&&" +
+                git_pull_cmd + "&&" +
+                git_push_cmd,
+                shell=True
+            )
 
 
 if __name__ == "__main__":
@@ -65,6 +63,6 @@ if __name__ == "__main__":
         while True:
             time.sleep(10)
     except KeyboardInterrupt:
-        # print('服务中断')
+        print('服务中断')
         observer.stop()
     observer.join()
