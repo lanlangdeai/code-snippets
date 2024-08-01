@@ -18,7 +18,7 @@ def check_phone(phone):
     return re.match(r'1[345789]\d{9}$', phone)
 ```
 
-邮箱验证
+#### 邮箱验证
 
 ```python
 def check_email(email):
@@ -29,6 +29,100 @@ def check_email(email):
     """
     return re.match(r"^[0-9a-zA-Z_]{0,19}@[0-9a-zA-Z]{1,13}\.(com|cn|net)$", email)
 ```
+
+
+
+### 获取时间相关
+
+#### 时间戳转字符串
+
+```python
+def timestamp_to_str(ts: int, fmt: str = '%Y-%m-%d %H:%M:%S') -> str:
+    """时间戳转字符串"""
+    timestamp = time.localtime(ts)
+    formated_string = time.strftime(fmt, timestamp)
+    return formated_string
+```
+
+#### 字符串转时间戳
+
+```python
+def str_to_timestamp(today_date, fmt: str = '%Y-%m-%d %H:%M:%S') -> int:
+    """时间字符串转时间戳"""
+    import time
+    today_arr = time.strptime(today_date, fmt)
+    return int(time.mktime(today_arr))
+```
+
+#### 时间格式转换
+
+```python
+def format_date(publish_date: str) -> str:
+    """时间格式替换"""
+    return re.sub(r'(\d+)-(\d+)', r'\1_\2', publish_date)
+```
+
+#### 获取当前开始于结束日期时间
+
+```python
+from datetime import date, timedelta, datetime, time
+def get_today_start_and_end():
+    """获取当日的开始时间与结束时间"""
+    pub_date = date.today()
+    min_pub_date_time = datetime.combine(pub_date, time.min)
+    max_pub_date_time = datetime.combine(pub_date, time.max)
+    return min_pub_date_time, max_pub_date_time
+```
+
+#### 获取时间戳(昨天,今天,明天的开始与结束)
+
+```python
+def get_timestamps():
+    """获取时间戳(昨天,今天,明天的开始与结束)"""
+    import time
+    import datetime
+
+    # 今天日期
+    today = datetime.date.today()
+
+    # 昨天时间
+    yesterday = today - datetime.timedelta(days=1)
+
+    # 明天时间
+    tomorrow = today + datetime.timedelta(days=1)
+    # 后天
+    acquire = today + datetime.timedelta(days=2)
+
+    # 昨天开始时间戳
+    yesterday_start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+
+    # 昨天结束时间戳
+    yesterday_end_time = int(time.mktime(time.strptime(str(today), '%Y-%m-%d'))) - 1
+
+    # 今天开始时间戳
+    today_start_time = yesterday_end_time + 1
+
+    # 今天结束时间戳
+    today_end_time = int(time.mktime(time.strptime(str(tomorrow), '%Y-%m-%d'))) - 1
+
+    # 明天开始时间戳
+    tomorrow_start_time = int(time.mktime(time.strptime(str(tomorrow), '%Y-%m-%d')))
+
+    # 明天结束时间戳
+    tomorrow_end_time = int(time.mktime(time.strptime(str(acquire), '%Y-%m-%d'))) - 1
+    return dict(
+        today_start_time=today_start_time,
+        today_end_time=today_end_time,
+        yesterday_start_time=yesterday_start_time,
+        yesterday_end_time=yesterday_end_time,
+        tomorrow_start_time=tomorrow_start_time,
+        tomorrow_end_time=tomorrow_end_time
+    )
+```
+
+
+
+
 
 
 

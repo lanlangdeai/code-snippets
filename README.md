@@ -333,13 +333,31 @@ https://www.phpcomposer.com/
 #### 框架
 - Django: https://www.djangoproject.com/
 - Flask: https://docs.jinkan.org/docs/flask/
-- 
+
+
+
+#### 系统类库
+
+- argparse: 命令行解析
+
+https://docs.python.org/zh-cn/3.9/library/argparse.html?highlight=argparse#module-argparse
+
+- shelve,dbm:本地数据存储
+- time: 时间相关
+- datetime: 日期相关
+
+
 
 
 #### 第三个类库
 
 - psutil: 查看系统信息(内存,CPU等)
-https://github.com/giampaolo/psutil
+  https://github.com/giampaolo/psutil
+- configparser: ini文件读写
+
+​		https://docs.python.org/zh-cn/3.9/library/configparser.html
+
+
 
 
 
