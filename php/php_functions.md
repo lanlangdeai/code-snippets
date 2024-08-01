@@ -547,6 +547,51 @@ function clean_chars($str)
 }
 ```
 
+#### 过滤emoji
+
+```php
+function filterEmoji($text)
+{
+    // Match Emoticons
+    $regexEmoticons = '/[\x{1F600}-\x{1F64F}]/u';
+    $text = preg_replace($regexEmoticons, '', $text);
+
+    // Match Miscellaneous Symbols and Pictographs
+    $regexSymbols = '/[\x{1F300}-\x{1F5FF}]/u';
+    $text = preg_replace($regexSymbols, '', $text);
+
+    // Match Transport And Map Symbols
+    $regexTransport = '/[\x{1F680}-\x{1F6FF}]/u';
+    $text = preg_replace($regexTransport, '', $text);
+
+    // Match Miscellaneous Symbols
+    $regexMisc = '/[\x{2600}-\x{26FF}]/u';
+    $text = preg_replace($regexMisc, '', $text);
+
+    // Match Dingbats
+    $regexDingbats = '/[\x{2700}-\x{27BF}]/u';
+    $text = preg_replace($regexDingbats, '', $text);
+
+    $text = preg_replace_callback(
+        '/./u',
+        function (array $match) {
+            return strlen($match[0]) >= 4 ? '' : $match[0];
+        },
+        $text);
+
+    //去除空格
+    if(!empty($text)){
+        $text = str_replace(' ', '',$text);
+    }
+
+    return $text;
+}
+```
+
+
+
+
+
 #### 是否以某个字符串开头的字符串
 
 ```php
@@ -556,6 +601,8 @@ function startsWith($haystack, $needle) {
 }
 ```
 
+
+
 #### 是否以某个字符串结尾的字符串
 
 ```php
@@ -563,6 +610,8 @@ function str_endWith($str,$subStr){
 	return substr($str, -(strlen($subStr)))==$subStr;
 }
 ```
+
+
 
 #### 过滤乱码
 

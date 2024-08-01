@@ -172,6 +172,16 @@ https://www.workerman.net/
 
 
 
+#### 系统类库
+
+- ZipArchive: zip压缩
+
+
+
+
+
+
+
 #### 第三方类库
 
 - laravel-uuid: 生成uuid
@@ -345,6 +355,8 @@ https://docs.python.org/zh-cn/3.9/library/argparse.html?highlight=argparse#modul
 - shelve,dbm:本地数据存储
 - time: 时间相关
 - datetime: 日期相关
+- string: 字符串相关
+- logging: 日志相关
 
 
 
@@ -356,6 +368,10 @@ https://docs.python.org/zh-cn/3.9/library/argparse.html?highlight=argparse#modul
 - configparser: ini文件读写
 
 ​		https://docs.python.org/zh-cn/3.9/library/configparser.html
+
+- requests: 网络请求库
+
+​		https://github.com/psf/requests
 
 
 

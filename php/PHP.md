@@ -80,6 +80,8 @@ composer require 包名称
 
 
 
+## 常用操作
+
 ### 项目中错误展示与级别设置
 
 ```php
@@ -96,6 +98,32 @@ if($project_environment == 'production'){
     ini_set('display_errors', 1);
     //开启错误和警告，严格规范开发
     error_reporting(E_ALL ^E_NOTICE);
+}
+```
+
+
+
+### 跨域处理
+
+```php
+// 设置允许其他域名访问
+header('Access-Control-Allow-Origin:*');  
+// 设置允许的响应类型 
+header('Access-Control-Allow-Methods:POST, GET');  
+// 设置允许的响应头 
+header('Access-Control-Allow-Headers:x-requested-with,content-type'); 
+
+
+$origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : '';
+$allow_origin = array(
+    'http://domain1',
+    'http://domain2',
+    'https://domain3',
+);
+if(in_array($origin, $allow_origin)){
+    header('Access-Control-Allow-Origin:'.$origin);
+    header('Access-Control-Allow-Methods:POST,GET');
+    header('Access-Control-Allow-Headers:x-requested-with,content-type');
 }
 ```
 

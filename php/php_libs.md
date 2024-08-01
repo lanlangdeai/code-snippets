@@ -94,6 +94,247 @@ $_vc->doimg();
 $_SESSION['verifyCode'] = $_vc->getCode(); 
 ```
 
+## 网络请求
+
+```php
+<?php
+
+class RestRequest
+{
+	protected $url;
+	protected $verb;
+	protected $requestBody;
+	protected $requestLength;
+	protected $username;
+	protected $password;
+	protected $acceptType;
+	protected $responseBody;
+	protected $responseInfo;
+	
+	public function __construct ($url = null, $verb = 'GET', $requestBody = null)
+	{
+		$this->url				= $url;
+		$this->verb				= $verb;
+		$this->requestBody		= $requestBody;
+		$this->requestLength	= 0;
+		$this->username			= null;
+		$this->password			= null;
+		$this->acceptType		= 'application/json';
+		$this->responseBody		= null;
+		$this->responseInfo		= null;
+		
+		if ($this->requestBody !== null)
+		{
+			$this->buildPostBody();
+		}
+	}
+	
+	public function flush ()
+	{
+		$this->requestBody		= null;
+		$this->requestLength	= 0;
+		$this->verb				= 'GET';
+		$this->responseBody		= null;
+		$this->responseInfo		= null;
+	}
+	
+	public function execute ()
+	{
+		$ch = curl_init();
+		$this->setAuth($ch);
+		
+		try
+		{
+			switch (strtoupper($this->verb))
+			{
+				case 'GET':
+					$this->executeGet($ch);
+					break;
+				case 'POST':
+					$this->executePost($ch);
+					break;
+				case 'PUT':
+					$this->executePut($ch);
+					break;
+				case 'DELETE':
+					$this->executeDelete($ch);
+					break;
+				default:
+					throw new InvalidArgumentException('Current verb (' . $this->verb . ') is an invalid REST verb.');
+			}
+		}
+		catch (InvalidArgumentException $e)
+		{
+			curl_close($ch);
+			throw $e;
+		}
+		catch (Exception $e)
+		{
+			curl_close($ch);
+			throw $e;
+		}
+		
+	}
+	
+	public function buildPostBody ($data = null)
+	{
+		$data = ($data !== null) ? $data : $this->requestBody;
+		
+		if (!is_array($data))
+		{
+			throw new InvalidArgumentException('Invalid data input for postBody.  Array expected');
+		}
+		
+		$data = http_build_query($data, '', '&');
+		$this->requestBody = $data;
+	}
+	
+	protected function executeGet ($ch)
+	{		
+		$this->doExecute($ch);	
+	}
+	
+	protected function executePost ($ch)
+	{
+		if (!is_string($this->requestBody))
+		{
+			$this->buildPostBody();
+		}
+		
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		
+		$this->doExecute($ch);	
+	}
+	
+	protected function executePut ($ch)
+	{
+		if (!is_string($this->requestBody))
+		{
+			$this->buildPostBody();
+		}
+		
+		$this->requestLength = strlen($this->requestBody);
+		
+		$fh = fopen('php://memory', 'rw');
+		fwrite($fh, $this->requestBody);
+		rewind($fh);
+		
+		curl_setopt($ch, CURLOPT_INFILE, $fh);
+		curl_setopt($ch, CURLOPT_INFILESIZE, $this->requestLength);
+		curl_setopt($ch, CURLOPT_PUT, true);
+		
+		$this->doExecute($ch);
+		
+		fclose($fh);
+	}
+	
+	protected function executeDelete ($ch)
+	{
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+		
+		$this->doExecute($ch);
+	}
+	
+	protected function doExecute (&$curlHandle)
+	{
+		$this->setCurlOpts($curlHandle);
+		$this->responseBody = curl_exec($curlHandle);
+		$this->responseInfo	= curl_getinfo($curlHandle);
+		
+		curl_close($curlHandle);
+	}
+	
+	protected function setCurlOpts (&$curlHandle)
+	{
+		curl_setopt($curlHandle, CURLOPT_TIMEOUT, 10);
+		curl_setopt($curlHandle, CURLOPT_URL, $this->url);
+		curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curlHandle, CURLOPT_HTTPHEADER, array ('Accept: ' . $this->acceptType));
+	}
+	
+	protected function setAuth (&$curlHandle)
+	{
+		if ($this->username !== null && $this->password !== null)
+		{
+			curl_setopt($curlHandle, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+			curl_setopt($curlHandle, CURLOPT_USERPWD, $this->username . ':' . $this->password);
+		}
+	}
+	
+	public function getAcceptType ()
+	{
+		return $this->acceptType;
+	} 
+	
+	public function setAcceptType ($acceptType)
+	{
+		$this->acceptType = $acceptType;
+	} 
+	
+	public function getPassword ()
+	{
+		return $this->password;
+	} 
+	
+	public function setPassword ($password)
+	{
+		$this->password = $password;
+	} 
+	
+	public function getResponseBody ()
+	{
+		return $this->responseBody;
+	} 
+	
+	public function getResponseInfo ()
+	{
+		return $this->responseInfo;
+	} 
+	
+	public function getUrl ()
+	{
+		return $this->url;
+	} 
+	
+	public function setUrl ($url)
+	{
+		$this->url = $url;
+	} 
+	
+	public function getUsername ()
+	{
+		return $this->username;
+	} 
+	
+	public function setUsername ($username)
+	{
+		$this->username = $username;
+	} 
+	
+	public function getVerb ()
+	{
+		return $this->verb;
+	} 
+	
+	public function setVerb ($verb)
+	{
+		$this->verb = $verb;
+	} 
+}
+
+// 使用
+$rs = new RestRequest($url,'POST',$requestBody);
+$rs->execute();
+$result = $rs->getResponseBody();
+```
+
+
+
+
+
+
+
 
 
 ## 文件上传
@@ -491,7 +732,767 @@ $_SESSION['verifyCode'] = $_vc->getCode();
 
 
 
+## 布隆过滤器
 
+#### 未使用缓存
+
+```php
+
+<?php
+ 
+/**
+ * Implements a Bloom Filter
+ */
+class BloomFilter {
+    /**
+     * Size of the bit array
+     *
+     * @var int
+     */
+    protected $m;
+ 
+    /**
+     * Number of hash functions
+     *
+     * @var int
+     */
+    protected $k;
+ 
+    /**
+     * Number of elements in the filter
+     *
+     * @var int
+     */
+    protected $n;
+ 
+    /**
+     * The bitset holding the filter information
+     *
+     * @var array
+     */
+    protected $bitset;
+ 
+    /**
+     * 计算最优的hash函数个数：当hash函数个数k=(ln2)*(m/n)时错误率最小
+     *
+     * @param int $m bit数组的宽度（bit数）
+     * @param int $n 加入布隆过滤器的key的数量
+     * @return int
+     */
+    public static function getHashCount($m, $n) {
+        return ceil(($m / $n) * log(2));
+    }
+ 
+    /**
+     * Construct an instance of the Bloom filter
+     *
+     * @param int $m bit数组的宽度（bit数） Size of the bit array
+     * @param int $k hash函数的个数 Number of different hash functions to use
+     */
+    public function __construct($m, $k) {
+
+        $this->m = $m;
+        $this->k = $k;
+        $this->n = 0;
+ 
+        /* Initialize the bit set */
+        $this->bitset = array_fill(0, $this->m - 1, false);
+    }
+ 
+    /**
+     * False Positive的比率：f = (1 – e-kn/m)k   
+     * Returns the probability for a false positive to occur, given the current number of items in the filter
+     *
+     * @return double
+     */
+    public function getFalsePositiveProbability() {
+        $exp = (-1 * $this->k * $this->n) / $this->m;
+ 
+        return pow(1 - exp($exp),  $this->k);
+    }
+ 
+    /**
+     * Adds a new item to the filter
+     *
+     * @param mixed Either a string holding a single item or an array of 
+     *              string holding multiple items.  In the latter case, all
+     *              items are added one by one internally.
+     */
+    public function add($key) {
+        if (is_array($key)) {
+            foreach ($key as $k) {
+                $this->add($k);
+            }
+            return;
+        }
+ 
+        $this->n++;
+ 
+        foreach ($this->getSlots($key) as $slot) {
+            $this->bitset[$slot] = true;
+        }
+    }
+ 
+    /**
+     * Queries the Bloom filter for an element
+     *
+     * If this method return FALSE, it is 100% certain that the element has
+     * not been added to the filter before.  In contrast, if TRUE is returned,
+     * the element *may* have been added to the filter previously.  However with
+     * a probability indicated by getFalsePositiveProbability() the element has
+     * not been added to the filter with contains() still returning TRUE.
+     *
+     * @param mixed Either a string holding a single item or an array of 
+     *              strings holding multiple items.  In the latter case the
+     *              method returns TRUE if the filter contains all items.
+     * @return boolean
+     */
+    public function contains($key) {
+        if (is_array($key)) {
+            foreach ($key as $k) {
+                if ($this->contains($k) == false) {
+                    return false;
+                }
+            }
+ 
+            return true;
+        }
+ 
+        foreach ($this->getSlots($key) as $slot) {
+            if ($this->bitset[$slot] == false) {
+                return false;
+            }
+        }
+ 
+        return true;
+    }
+ 
+    /**
+     * Hashes the argument to a number of positions in the bit set and returns the positions
+     *
+     * @param string Item
+     * @return array Positions
+     */
+    protected function getSlots($key) {
+        $slots = array();
+        $hash = self::getHashCode($key);
+        mt_srand($hash);
+ 
+        for ($i = 0; $i < $this->k; $i++) {
+            $slots[] = mt_rand(0, $this->m - 1);
+        }
+ 
+        return $slots;
+    }
+ 
+    /**
+     * 使用CRC32产生一个32bit（位）的校验值。
+     * 由于CRC32产生校验值时源数据块的每一bit（位）都会被计算，所以数据块中即使只有一位发生了变化，也会得到不同的CRC32值。
+     * Generates a numeric hash for the given string
+     *
+     * Right now the CRC-32 algorithm is used.  Alternatively one could e.g.
+     * use Adler digests or mimick the behaviour of Java's hashCode() method.
+     *
+     * @param string Input for which the hash should be created
+     * @return int Numeric hash
+     */
+    protected static function getHashCode($string) {
+        return crc32($string);
+    }
+    
+}
+ 
+ 
+ 
+$items = array("first item", "second item", "third item");
+        
+/* Add all items with one call to add() and make sure contains() finds
+ * them all.
+ */
+$filter = new BloomFilter(100, BloomFilter::getHashCount(100, 3));
+// var_dump($filter); exit;
+$filter->add($items);
+ 
+// var_dump($filter); exit;
+$items = array("firsttem", "seconditem", "thirditem");
+foreach ($items as $item) {
+ var_dump(($filter->contains($item)));
+}
+
+
+
+
+ 
+/* Add all items with multiple calls to add() and make sure contains()
+* finds them all.
+*/
+$filter = new BloomFilter(100, BloomFilter::getHashCount(100, 3));
+foreach ($items as $item) {
+	$filter->add($item);
+}
+$items = array("fir sttem", "secondit em", "thir ditem");
+
+foreach ($items as $item) {
+ var_dump(($filter->contains($item)));
+}
+```
+
+#### 结合Redis使用
+
+```php
+class BloomFilterHash
+{
+	/**
+	 * 由Justin Sobel编写的按位散列函数
+	 */
+	public function JSHash($string, $len = null)
+	{
+    	$hash = 1315423911;
+    	$len || $len = strlen($string);
+    	for ($i=0; $i<$len; $i++) {
+    		$hash ^= (($hash << 5) + ord($string[$i]) + ($hash >> 2));
+    	}
+		return ($hash % 0xFFFFFFFF) & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 该哈希算法基于AT＆T贝尔实验室的Peter J. Weinberger的工作。
+	 * Aho Sethi和Ulman编写的“编译器（原理，技术和工具）”一书建议使用采用此特定算法中的散列方法的散列函数。
+	 */
+	public function PJWHash($string, $len = null)
+	{
+		$bitsInUnsignedInt = 4 * 8; //（unsigned int）（sizeof（unsigned int）* 8）;
+    	$threeQuarters = ($bitsInUnsignedInt * 3) / 4;
+    	$oneEighth = $bitsInUnsignedInt / 8;
+    	$highBits = 0xFFFFFFFF << (int) ($bitsInUnsignedInt - $oneEighth);
+    	$hash = 0;
+    	$test = 0;
+    	$len || $len = strlen($string);
+    	for($i=0; $i<$len; $i++) {
+			$hash = ($hash << (int) ($oneEighth)) + ord($string[$i]); } $test = $hash & $highBits; if ($test != 0) { $hash = (($hash ^ ($test >> (int)($threeQuarters))) & (~$highBits));
+    	}
+		return ($hash % 0xFFFFFFFF) & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 类似于PJW Hash功能，但针对32位处理器进行了调整。它是基于UNIX的系统上的widley使用哈希函数。
+	 */
+	public function ELFHash($string, $len = null)
+	{
+		$hash = 0;
+		$len || $len = strlen($string);
+    	for ($i=0; $i<$len; $i++) {
+        	$hash = ($hash << 4) + ord($string[$i]); $x = $hash & 0xF0000000; if ($x != 0) { $hash ^= ($x >> 24);
+        	}
+        	$hash &= ~$x;
+    	}
+		return ($hash % 0xFFFFFFFF) & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 这个哈希函数来自Brian Kernighan和Dennis Ritchie的书“The C Programming Language”。
+	 * 它是一个简单的哈希函数，使用一组奇怪的可能种子，它们都构成了31 .... 31 ... 31等模式，它似乎与DJB哈希函数非常相似。
+	 */
+	public function BKDRHash($string, $len = null)
+	{
+    	$seed = 131;  # 31 131 1313 13131 131313 etc..
+    	$hash = 0;
+    	$len || $len = strlen($string);
+    	for ($i=0; $i<$len; $i++) {
+        	$hash = (int) (($hash * $seed) + ord($string[$i]));
+    	}
+		return ($hash % 0xFFFFFFFF) & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 这是在开源SDBM项目中使用的首选算法。
+	 * 哈希函数似乎对许多不同的数据集具有良好的总体分布。它似乎适用于数据集中元素的MSB存在高差异的情况。
+	 */
+	public function SDBMHash($string, $len = null)
+	{
+		$hash = 0;
+		$len || $len = strlen($string);
+		for ($i=0; $i<$len; $i++) {
+			$hash = (int) (ord($string[$i]) + ($hash << 6) + ($hash << 16) - $hash);
+		}
+		return ($hash % 0xFFFFFFFF) & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 由Daniel J. Bernstein教授制作的算法，首先在usenet新闻组comp.lang.c上向世界展示。
+	 * 它是有史以来发布的最有效的哈希函数之一。
+	 */
+	public function DJBHash($string, $len = null)
+	{
+		$hash = 5381;
+		$len || $len = strlen($string);
+		for ($i=0; $i<$len; $i++) {
+			$hash = (int) (($hash << 5) + $hash) + ord($string[$i]);
+		}
+		return ($hash % 0xFFFFFFFF) & 0xFFFFFFFF;
+	}
+
+	/**
+	 * Donald E. Knuth在“计算机编程艺术第3卷”中提出的算法，主题是排序和搜索第6.4章。
+	 */
+	public function DEKHash($string, $len = null)
+	{
+		$len || $len = strlen($string);
+		$hash = $len;
+		for ($i=0; $i<$len; $i++) {
+			$hash = (($hash << 5) ^ ($hash >> 27)) ^ ord($string[$i]);
+		}
+		return ($hash % 0xFFFFFFFF) & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 参考 http://www.isthe.com/chongo/tech/comp/fnv/
+	 */
+	public function FNVHash($string, $len = null)
+	{
+		$prime = 16777619; //32位的prime 2^24 + 2^8 + 0x93 = 16777619
+		$hash = 2166136261; //32位的offset
+		$len || $len = strlen($string);
+		for ($i=0; $i<$len; $i++) {
+			$hash = (int) ($hash * $prime) % 0xFFFFFFFF;
+			$hash ^= ord($string[$i]);
+		}
+		return ($hash % 0xFFFFFFFF) & 0xFFFFFFFF;
+	}
+}
+
+
+
+
+
+/**
+ * 使用redis实现的布隆过滤器
+ */
+abstract class BloomFilterRedis
+{
+	/**
+	 * 需要使用一个方法来定义bucket的名字
+	 */
+	protected $bucket;
+
+	protected $hashFunction;
+
+	public function __construct($config, $id)
+	{
+		if (!$this->bucket || !$this->hashFunction) {
+			throw new Exception("需要定义bucket和hashFunction", 1);
+		}
+		$this->Hash = new BloomFilterHash;
+		$this->Redis = new YourRedis; //假设这里你已经连接好了
+	}
+
+	/**
+	 * 添加到集合中
+	 */
+	public function add($string)
+	{
+		$pipe = $this->Redis->multi();
+		foreach ($this->hashFunction as $function) {
+			$hash = $this->Hash->$function($string);
+			$pipe->setBit($this->bucket, $hash, 1);
+		}
+		return $pipe->exec();
+	}
+
+	/**
+	 * 查询是否存在, 不存在的一定不会存在, 存在有一定几率会误判
+	 */
+	public function exists($string)
+	{
+		$pipe = $this->Redis->multi();
+		$len = strlen($string);
+		foreach ($this->hashFunction as $function) {
+			$hash = $this->Hash->$function($string, $len);
+			$pipe = $pipe->getBit($this->bucket, $hash);
+		}
+		$res = $pipe->exec();
+		foreach ($res as $bit) {
+			if ($bit == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+}
+// 上面定义的是一个抽象类，如果要使用，可以根据具体的业务来使用。比如下面是一个过滤重复内容的过滤器。
+
+/**
+ * 重复内容过滤器
+ * 该布隆过滤器总位数为2^32位, 判断条数为2^30条. hash函数最优为3个.(能够容忍最多的hash函数个数)
+ * 使用的三个hash函数为
+ * BKDR, SDBM, JSHash
+ *
+ * 注意, 在存储的数据量到2^30条时候, 误判率会急剧增加, 因此需要定时判断过滤器中的位为1的的数量是否超过50%, 超过则需要清空.
+ */
+class FilteRepeatedComments extends BloomFilterRedis
+{
+	/**
+	 * 表示判断重复内容的过滤器
+	 * @var string
+	 */
+	protected $bucket = 'rptc';
+
+	protected $hashFunction = array('BKDRHash', 'SDBMHash', 'JSHash');
+}
+```
+
+#### 结合Redis使用2
+
+```php
+<?php
+
+use \Redis;
+
+/**
+ * 布隆过滤器
+ * 
+ * Class BloomFilter
+ * @package Applications\Logic\Common\Redis
+ */
+class BloomFilter
+{
+    /**
+     * 字节数组大小(这里因为使用的redis，支持512M的字节)
+     * @var int
+     */
+    private $m;
+
+    /**
+     * hash函数数量
+     * @var int
+     */
+    private $k;
+
+
+    /**
+     * @var string 名称
+     */
+    private $key;
+
+    /**
+     * BloomFilter constructor.
+     * @param $key string 缓存key
+     * @param int $n 加入集合的元素数量
+     * @param float $falsePositiveProbability 可接受的错误率
+     */
+    public function __construct(string $key, int $n = 1000000, float $falsePositiveProbability = 0.0001)
+    {
+        $this->key = $key;
+        $this->m = $this->calcBitSize($n, $falsePositiveProbability);
+        $this->k = $this->getHashCount($this->m, $n);
+    }
+
+    /**
+     * 根据字节数组与数据量计算hash函数的数量
+     * @param $m int bit数组的宽度
+     * @param $n int 加入其中的key的数量
+     * @return float
+     */
+    private function getHashCount($m, $n) : float
+    {
+        return ceil(($m / $n) * log(2));
+    }
+
+    /**
+     * 根据集合数与可接收的错误率去计算bit位的大小
+     * m = ceil((n * log(p)) / log(1.0 / (pow(2.0, log(2.0)))));
+     * m - Number of bits in the filter
+     * n - Number of items in the filter
+     * p - Probability of false positives, float between 0 and 1 or a number indicating 1-in-p
+     *
+     * @param int $setSize
+     * @param float $falsePositiveProbability
+     * @return int
+     */
+    private function calcBitSize($setSize, $falsePositiveProbability) : int
+    {
+        return (int) round((($setSize * log($falsePositiveProbability)) / (log(2)** 2)) * -1);
+    }
+
+
+    /**
+     * @return string
+     */
+    private function getCacheKey() : string
+    {
+        return $this->key;
+    }
+
+    /**
+     * @param $str
+     * @return array
+     */
+    private function hashCode($str) : array
+    {
+        $res = array(); #put k hashing bit into $res
+        $seed = crc32($str);
+        mt_srand($seed); // set random seed, or mt_rand wouldn't provide same random arrays at different generation
+        for($i=0 ; $i<$this->k ; $i++){
+            $res[] = mt_rand(0,$this->m-1);
+        }
+        return $res;
+    }
+
+    /**
+     * 添加元素
+     * @param $filed
+     */
+    public function add($filed) : void
+    {
+        $code = $this->hashCode($filed);
+        $redis = new Redis();
+
+        $redis->multi(\Redis::PIPELINE);
+        foreach($code as $codeBit){
+            $redis->setBit($this->getCacheKey(), $codeBit, 1);
+        }
+
+        $redis->exec();
+    }
+
+    /**
+     * 判断是否存在字段
+     * @param $filed
+     * @return bool
+     */
+    public function has($filed) : bool
+    {
+        $code = $this->hashCode($filed);
+
+        $redis = new Redis();
+        $redis->multi(\Redis::PIPELINE);
+
+        foreach($code as $codeBit){
+            $redis->getBit($this->getCacheKey(), $codeBit);
+        }
+
+        $result = $redis->exec();
+        return !in_array(0, $result, false);
+    }
+}
+```
+
+
+
+## 大数据量处理
+
+#### BitMap
+
+```php
+<?php  
+// 5百万 uid 白名单 之 PHP Bitmap 处理 
+class Bitmap   
+{  
+    private $handler = NULL;  
+    private $max = 0;  
+    public function __construct($file)   
+    {  
+        clearstatcache(true, $file);    // 是否清除真实路径缓存     
+        // clearstatcache 清除文件状态缓存 (本函数缓存特定文件名的信息，因此只在对同一个文件名进行多次操作并且需要该文件信息不被缓存时才需要调用 clearstatcache()) 
+        if(file_exists($file))  
+            $this->handler = @fopen($file , 'r+') OR die('open bitmap file failed');  
+        else  
+            $this->handler = @fopen($file , 'w+') OR die('open bitmap file failed');  
+  
+        $this->max = file_exists($file) ? (filesize($file) * 8 - 1) : 0;  
+    }  
+    public function __destruct()   
+    {  
+        @fclose($this->handler);  
+    }  
+      
+    private function binary_dump($binary_data)  
+    {  
+        return sprintf('%08d',decbin(hexdec(bin2hex($binary_data))));  
+    }  
+      
+    private function num_check($num)  
+    {  
+        ($num > -1) OR die('number must be greater than -1');  
+        ($num < 4294967296) or die('number must be less than 4294967296'); // 2^32  
+        if ($this->max < $num) {  
+            fseek($this->handler, 0, SEEK_END);  
+            fwrite($this->handler , str_repeat("\x00",ceil(($num - $this->max)/8))); // fill with 0  
+            $this->max = ceil($num/8)*8 - 1;  
+        }         
+    }  
+      
+    public function set($num)  
+    {  
+        $this->num_check($num);  
+        fseek($this->handler, floor($num/8), SEEK_SET);  
+        $bin = fread($this->handler, 1) | pack('C',0x100 >> fmod($num,8)+1); // mark with 1  
+          
+        fseek($this->handler, ftell($this->handler)-1, SEEK_SET); // write a new byte  
+        fwrite($this->handler, $bin);   
+        fflush($this->handler);  
+    }  
+      
+    public function del($num)  
+    {  
+        $this->num_check($num);  
+        fseek($this->handler, floor($num/8), SEEK_SET);  
+        $bin = fread($this->handler, 1) & ~pack('C',0x100 >> fmod($num,8)+1); // mark with 0  
+          
+        fseek($this->handler, ftell($this->handler)-1, SEEK_SET); // write a new byte  
+        fwrite($this->handler, $bin);   
+        fflush($this->handler);  
+    }     
+      
+    public function find($num)  
+    {  
+        if (fseek($this->handler, floor($num/8), SEEK_SET) == -1) return FALSE;  
+        $bin = fread($this->handler , 1);  
+        if ($bin === FALSE || strlen($bin) == 0) return FALSE;  
+  
+        $bin = $bin & pack('C',0x100 >> fmod($num,8)+1);  
+        if($bin === "\x00") return FALSE;  
+        return TRUE;  
+    }  
+}  
+  
+$b = new Bitmap('cache.dat');  
+  
+// 设置白名单  
+$b->set(1); 
+$b->set(3); 
+$b->set(5);  
+$b->set(7); 
+$b->set(9); 
+$b->set(501);  
+  
+$uid = 501;  
+var_dump($b->find($uid)); // 查找白名单  
+  
+$b->del($uid); // 删除白名单  
+var_dump($b->find($uid)); // 查找白名单  
+```
+
+#### HashMap
+
+```php
+class HashMap
+{
+	private $H_table;
+
+	public function __construct()
+	{
+		$this->H_table = [];
+	}
+
+	// 向HashMap添加键值对
+	public function put($key,$value)
+	{
+		if( !array_key_exists($key,$this->H_table) ){
+			$this->H_table[$key] = $value;
+			return null;
+		}else{
+			$tempValue = $this->H_table[$key];
+			$this->H_table[$key] = $value;
+			return $tempValue;
+		}
+	}
+
+	// 根据key获取值
+	public function get($key)
+	{
+		return array_key_exists($key,$this->H_table) ? $this->H_table[$key] : null;
+	}
+
+	// 移除HashMap所有键值对
+	public function remove($key)
+	{
+		$temp_table = [];
+		if( array_key_exists($key,$this->H_table) ){
+			$tempValue = $this->H_table[$key];
+			while ($curValue = current($this->H_table) ) {
+				if( key($this->H_table) !== $key ){
+					$temp_table[key($this->H_table)] = $curValue;
+				}
+				next($this->H_table);
+			}
+
+			$this->H_table = null;
+			$this->H_table = $temp_table;
+			return $tempValue;
+		}
+
+		return null;
+	}
+
+	// 获取HashMap所有键名
+	public function keys()
+	{
+		return array_keys($this->H_table);
+	}
+
+	// 获取HashMap所有键值
+	public function values()
+	{
+		return array_values($this->H_table);
+	}
+
+	// 将一个HashMap中键值对放置到当前HashMap中
+	public function putAll($map)
+	{
+		if( !$map->isEmpty() && $map->size() > 0 ){
+			$keys = $map->keys();
+			foreach ($keys as $key) {
+				$this->put($key,$map->get($key));
+			}
+		}
+	}
+
+	// 移除HashMap所有元素
+	public function removeAll()
+	{
+		$this->H_table = null;
+		$this->H_table = [];
+	}
+
+	// HashMap是否包含指定值
+	public function containsValue($value)
+	{
+		while ( $curValue = current($this->H_table) ) {
+			if($curValue == $value){
+				return true;
+			}
+			next($this->H_table);
+		}
+		return false;
+	}
+
+	// HashMap是否包含指定键
+	public function containsKey($key)
+	{
+		return array_key_exists($key,$this->H_table);
+	}
+
+	// 获取HashMap中元素个数
+	public function size()
+	{
+		return count($this->H_table);
+	}
+
+	// 判断HashMap是否为空
+	public function isEmpty()
+	{
+		return count($this->H_table) === 0;
+	}
+
+	// 打印HashMap数据
+	public function toString()
+	{
+		print_r($this->H_table);
+	}
+}
+```
 
 
 

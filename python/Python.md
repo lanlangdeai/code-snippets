@@ -129,6 +129,53 @@ deactivate
 
 
 
+## 使用
+
+### 多线程+线程池
+
+```python
+import threading
+for list in lists['results']:
+    t = threading.Thread(target=run, args=(list,))
+    t.start()
+
+#线程池
+from concurrent.futures import ThreadPoolExecutor
+
+with ThreadPoolExecutor(max_workers=30) as executor:
+    for ret in executor.map(fetch_category, articles['hits']):
+        if ret['code']:
+            print(ret['msg'])
+        else:
+            print(ret['data'])
+```
+
+
+
+### 多进程+进程池
+
+```python
+import multiprocessing
+
+pool = multiprocessing.Pool()
+pages = range(1, PAGE_SIZE+1)
+    pool.map(main, pages)
+    pool.close()
+    pool.join()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 部署
 
 #### 添加系统进程管理
