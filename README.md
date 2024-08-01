@@ -389,6 +389,10 @@ https://github.com/giampaolo/psutil
 
 
 
+#### 博文
+
+- https://www.liwenzhou.com/
+
 
 
 #### 在线工具
@@ -497,8 +501,6 @@ https://github.com/tidwall/gjson
 - prometheus/client_golang: prometheus的golang语言客户端包
 https://github.com/prometheus/client_golang
 
-
-
 - gin-contrib/pprof: gin框架的pprof中间件
 https://github.com/gin-contrib/pprof
 
@@ -594,6 +596,15 @@ https://github.com/golang-module/carbon
 - Echo
 https://github.com/labstack/echo
 https://echo.labstack.com/
+- Gin
+
+​	https://github.com/teris-io/shortid
+
+- GoFrame
+
+方文档: https://goframe.org/pages/viewpage.action?pageId=1114119
+
+Github: https://github.com/gogf/gf
 
 
 
@@ -607,7 +618,11 @@ https://github.com/go-kit/kit
 https://github.com/cloudwego/hertz
 
 - kratos: 哔哩哔哩推出的微服务框架
-https://github.com/go-kratos/kratos
+  https://github.com/go-kratos/kratos
+
+- gRPC:
+
+​		https://grpc.io/
 
 
 
@@ -927,6 +942,14 @@ https://github.com/RedisBloom/RedisBloom
 
 
 
+## Prometheus
+
+#### 学习教程
+
+- https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-best-praticase
+
+
+
 
 
 ---
@@ -958,9 +981,11 @@ https://github.com/RedisBloom/RedisBloom
 
 
 
-学习教程:
+#### 学习教程
 
 - https://www.qikqiak.com/k8s-book/
+- https://yeasy.gitbook.io/docker_practice/kubernetes/concepts
+- [https://www.qikqiak.com/k8s-book/docs/18.YAML%20%E6%96%87%E4%BB%B6.html](https://www.qikqiak.com/k8s-book/docs/18.YAML 文件.html)
 
 
 
@@ -999,6 +1024,7 @@ https://github.com/AliyunContainerService/k8s-for-docker-desktop
 Github:
 - https://github.com/guangzhengli/k8s-tutorials
 - https://github.com/dockersamples/example-voting-app
+- https://github.com/bregman-arie/devops-exercises?mode=light
 
 
 
@@ -1389,7 +1415,9 @@ github文件下载加速: https://mirror.ghproxy.com/
 #### 存储类(OSS)
 
 - 又拍云: https://www.upyun.com/
-- 阿里云
+- 阿里云:
+- 七牛云:https://www.qiniu.com/prices/kodo
+- R2: https://developers.cloudflare.com/r2/pricing
 
 #### 实时通信:
 
