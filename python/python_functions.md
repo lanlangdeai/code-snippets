@@ -122,6 +122,22 @@ def get_timestamps():
 
 
 
+#### 获取指定范围的日期列表
+
+```python
+import datetime
+
+def get_date_list(start_date, end_date):
+    date_list = []
+    start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+    end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+    date_list.append(start_date.strftime('%Y-%m-%d'))
+    while start_date < end_date:
+        start_date += datetime.timedelta(days=1)
+        date_list.append(start_date.strftime('%Y-%m-%d'))
+    return date_list
+```
+
 
 
 

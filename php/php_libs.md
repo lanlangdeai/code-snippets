@@ -732,6 +732,569 @@ $result = $rs->getResponseBody();
 
 
 
+## 数据库
+
+#### PDO操作
+
+```php
+class crud
+{
+
+    private $db;
+
+    /**
+     *
+     * Set variables
+     *
+     */
+    public function __set($name, $value)
+    {
+        switch($name)
+        {
+            case 'username':
+            $this->username = $value;
+            break;
+
+            case 'password':
+            $this->password = $value;
+            break;
+
+            case 'dsn':
+            $this->dsn = $value;
+            break;
+
+            default:
+            throw new Exception("$name is invalid");
+        }
+    }
+
+    /**
+     *
+     * @check variables have default value
+     *
+     */
+    public function __isset($name)
+    {
+        switch($name)
+        {
+            case 'username':
+            $this->username = null;
+            break;
+
+            case 'password':
+            $this->password = null;
+            break;
+        }
+    }
+
+        /**
+         *
+         * @Connect to the database and set the error mode to Exception
+         *
+         * @Throws PDOException on failure
+         *
+         */
+        public function conn()
+        {
+            isset($this->username);
+            isset($this->password);
+            if (!$this->db instanceof PDO)
+            {
+                $this->db = new PDO($this->dsn, $this->username, $this->password);
+                $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            }
+        }
+
+
+        /***
+         *
+         * @select values from table
+         *
+         * @access public
+         *
+         * @param string $table The name of the table
+         *
+         * @param string $fieldname
+         *
+         * @param string $id
+         *
+         * @return array on success or throw PDOException on failure
+         *
+         */
+        public function dbSelect($table, $fieldname=null, $id=null)
+        {
+            $this->conn();
+            $sql = "SELECT * FROM `$table` WHERE `$fieldname`=:id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+
+        /**
+         *
+         * @execute a raw query
+         *
+         * @access public
+         *
+         * @param string $sql
+         *
+         * @return array
+         *
+         */
+        public function rawSelect($sql)
+        {
+            $this->conn();
+            return $this->db->query($sql);
+        }
+
+        /**
+         *
+         * @run a raw query
+         *
+         * @param string The query to run
+         *
+         */
+        public function rawQuery($sql)
+        {
+            $this->conn();
+            $this->db->query($sql);
+        }
+
+
+        /**
+         *
+         * @Insert a value into a table
+         *
+         * @acces public
+         *
+         * @param string $table
+         *
+         * @param array $values
+         *
+         * @return int The last Insert Id on success or throw PDOexeption on failure
+         *
+         */
+        public function dbInsert($table, $values)
+        {
+            $this->conn();
+            /*** snarg the field names from the first array member ***/
+            $fieldnames = array_keys($values[0]);
+            /*** now build the query ***/
+            $size = sizeof($fieldnames);
+            $i = 1;
+            $sql = "INSERT INTO $table";
+            /*** set the field names ***/
+            $fields = '( ' . implode(' ,', $fieldnames) . ' )';
+            /*** set the placeholders ***/
+            $bound = '(:' . implode(', :', $fieldnames) . ' )';
+            /*** put the query together ***/
+            $sql .= $fields.' VALUES '.$bound;
+
+            /*** prepare and execute ***/
+            $stmt = $this->db->prepare($sql);
+            foreach($values as $vals)
+            {
+                $stmt->execute($vals);
+            }
+        }
+
+        /**
+         *
+         * @Update a value in a table
+         *
+         * @access public
+         *
+         * @param string $table
+         *
+         * @param string $fieldname, The field to be updated
+         *
+         * @param string $value The new value
+         *
+         * @param string $pk The primary key
+         *
+         * @param string $id The id
+         *
+         * @throws PDOException on failure
+         *
+         */
+        public function dbUpdate($table, $fieldname, $value, $pk, $id)
+        {
+            $this->conn();
+            $sql = "UPDATE `$table` SET `$fieldname`='{$value}' WHERE `$pk` = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+            $stmt->execute();
+        }
+
+
+        /**
+         *
+         * @Delete a record from a table
+         *
+         * @access public
+         *
+         * @param string $table
+         *
+         * @param string $fieldname
+         *
+         * @param string $id
+         *
+         * @throws PDOexception on failure
+         *
+         */
+        public function dbDelete($table, $fieldname, $id)
+        {
+            $this->conn();
+            $sql = "DELETE FROM `$table` WHERE `$fieldname` = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+            $stmt->execute();
+        }
+    } /*** end of class ***/
+```
+
+
+
+
+
+## 日志
+
+#### 日志类
+
+```php
+<?php
+/**
+ * php日志类
+ *
+ * Description: 
+ * 1.自定义日志根目录及日志文件名称。
+ * 2.使用日期时间格式自定义日志目录。
+ * 3.自动创建不存在的日志目录。
+ * 4.记录不同分类的日志，例如信息日志，警告日志，错误日志。
+ * 5.可自定义日志配置，日志根据标签调用不同的日志配置。
+ *
+ * Func
+ * public  static set_config 设置配置
+ * public  static get_logger 获取日志类对象
+ * public  info              写入信息日志
+ * public  warn              写入警告日志
+ * public  error             写入错误日志
+ * private add               写入日志
+ * private create_log_path   创建日志目录
+ * private get_log_file      获取日志文件名称
+ */
+class LOG {
+
+    // 日志根目录
+    private $_log_path = '.';
+
+    // 日志文件
+    private $_log_file = 'default.log';
+
+    // 日志自定义目录
+    private $_format = 'Y/m/d';
+
+    // 日志标签
+    private $_tag = 'default';
+
+    // 总配置设定
+    private static $_CONFIG;
+
+    /**
+     * 设置配置
+     * @param  Array $config 总配置设定
+     */
+    public static function set_config($config=array()){
+        self::$_CONFIG = $config; 
+    }
+
+    /**
+     * 获取日志类对象
+     * @param  Array $config 总配置设定
+     * @return Obj
+     */
+    public static function get_logger($tag='default'){
+
+        // 根据tag从总配置中获取对应设定，如不存在使用default设定
+        $config = isset(self::$_CONFIG[$tag])? self::$_CONFIG[$tag] : (isset(self::$_CONFIG['default'])? self::$_CONFIG['default'] : array());
+
+        // 设置标签
+        $config['tag'] = $tag!='' && $tag!='default'? $tag : '-';
+
+        // 返回日志类对象
+        return new LOG($config);
+
+    }
+
+    /**
+     * 初始化
+     * @param Array $config 配置设定
+     */
+    public function __construct($config=array()){
+
+        // 日志根目录
+        if(isset($config['log_path'])){
+            $this->_log_path = $config['log_path'];
+        }
+
+        // 日志文件
+        if(isset($config['log_file'])){
+            $this->_log_file = $config['log_file'];
+        }
+
+        // 日志自定义目录
+        if(isset($config['format'])){
+            $this->_format = $config['format'];
+        }
+
+        // 日志标签
+        if(isset($config['tag'])){
+            $this->_tag = $config['tag'];
+        }
+
+    }
+
+    /**
+     * 写入信息日志
+     * @param  String $data 信息数据
+     * @return Boolean
+     */
+    public function info($data){
+        return $this->add('INFO', $data);
+    }
+
+    /**
+     * 写入警告日志
+     * @param  String  $data 警告数据
+     * @return Boolean
+     */
+    public function warn($data){
+        return $this->add('WARN', $data);
+    }
+
+    /**
+     * 写入错误日志
+     * @param  String  $data 错误数据
+     * @return Boolean
+     */
+    public function error($data){
+        return $this->add('ERROR', $data);
+    }
+
+    /**
+     * 写入日志
+     * @param  String  $type 日志类型
+     * @param  String  $data 日志数据
+     * @return Boolean
+     */
+    private function add($type, $data){
+
+        // 获取日志文件
+        $log_file = $this->get_log_file();
+
+        // 创建日志目录
+        $is_create = $this->create_log_path(dirname($log_file));
+
+        // 创建日期时间对象
+        $dt = new DateTime;
+
+        // 日志内容
+        $log_data = sprintf('[%s] %-5s %s %s'.PHP_EOL, $dt->format('Y-m-d H:i:s'), $type, $this->_tag, $data);
+
+        // 写入日志文件
+        if($is_create){
+            return file_put_contents($log_file, $log_data, FILE_APPEND);
+        }
+
+        return false;
+
+    }
+
+    /**
+     * 创建日志目录
+     * @param  String  $log_path 日志目录
+     * @return Boolean
+     */
+    private function create_log_path($log_path){
+        if(!is_dir($log_path)){
+            return mkdir($log_path, 0777, true);
+        }
+        return true;
+    }
+
+    /**
+     * 获取日志文件名称
+     * @return String
+     */
+    private function get_log_file(){
+
+        // 创建日期时间对象
+        $dt = new DateTime;
+
+        // 计算日志目录格式
+        return sprintf("%s/%s/%s", $this->_log_path, $dt->format($this->_format), $this->_log_file);
+    
+    }
+
+}
+```
+
+
+
+
+
+
+
+## 服务
+
+#### RPC服务
+
+```php
+// 1.服务端
+<?php  
+
+class RpcServer 
+{
+
+    protected $serv = null;
+ 
+    public function __construct($host, $port, $path) {
+        //创建一个tcp socket服务
+        $this->serv = stream_socket_server("tcp://{$host}:{$port}", $errno, $errstr); 
+        if (!$this->serv) {
+            exit("{$errno} : {$errstr} \n");
+        }
+        //判断我们的RPC服务目录是否存在
+        $realPath = realpath(__DIR__ . $path);
+        if ($realPath === false || !file_exists($realPath)) {
+            exit("{$path} error \n");
+        }
+ 
+        while (true) {
+            $client = stream_socket_accept($this->serv);
+ 
+            if ($client) {
+                //这里为了简单，我们一次性读取
+                $buf = fread($client, 2048);
+                //解析客户端发送过来的协议
+                $classRet = preg_match('/Rpc-Class:\s(.*);\r\n/i', $buf, $class);
+                $methodRet = preg_match('/Rpc-Method:\s(.*);\r\n/i', $buf, $method);
+                $paramsRet = preg_match('/Rpc-Params:\s(.*);\r\n/i', $buf, $params);
+                 
+                if($classRet && $methodRet) {
+                    $class = ucfirst($class[1]);
+                    $file = $realPath . '/' . $class . '.php';
+                    //判断文件是否存在，如果有，则引入文件
+                    if(file_exists($file)) {
+                        require_once $file;
+                        //实例化类，并调用客户端指定的方法
+                        $obj = new $class();
+                        //如果有参数，则传入指定参数
+                        if(!$paramsRet) {
+                            $data = $obj->$method[1]();
+                        } else {
+                            $data = $obj->$method[1](json_decode($params[1], true));
+                        }
+                        //把运行后的结果返回给客户端
+                        fwrite($client, $data);
+                    }
+                } else {
+                    fwrite($client, 'class or method error');
+                }
+                //关闭客户端
+                fclose($client);
+            }
+        }
+    }
+ 
+    public function __destruct() {
+        fclose($this->serv);
+    }
+}
+ 
+new RpcServer('127.0.0.1', 8888, './service');
+
+
+// 2.客户端
+<?php 
+
+class RpcClient {
+    protected $urlInfo = array();
+     
+    public function __construct($url) {
+        //解析URL
+        $this->urlInfo = parse_url($url);
+        if(!$this->urlInfo) {
+            exit("{$url} error \n");
+        }
+    }
+     
+    public function __call($method, $params) {
+        //创建一个客户端
+        $client = stream_socket_client("tcp://{$this->urlInfo['host']}:{$this->urlInfo['port']}", $errno, $errstr);
+        if (!$client) {
+            exit("{$errno} : {$errstr} \n");
+        }
+        //传递调用的类名
+        $class = basename($this->urlInfo['path']);
+        $proto = "Rpc-Class: {$class};" . PHP_EOL;
+        //传递调用的方法名
+        $proto .= "Rpc-Method: {$method};" . PHP_EOL;
+        //传递方法的参数
+        $params = json_encode($params);
+        $proto .= "Rpc-Params: {$params};" . PHP_EOL;
+        //向服务端发送我们自定义的协议数据
+        fwrite($client, $proto);
+        //读取服务端传来的数据
+        $data = fread($client, 2048);
+        //关闭客户端
+        fclose($client);
+        return $data;
+    }
+}
+ 
+$cli = new RpcClient('http://127.0.0.1:8888/test');
+echo $cli->hehe();
+echo $cli->hehe2(array('name' => 'test', 'age' => 27));
+
+
+// 3.测试数据
+<?php  
+
+class Test {
+    public function hehe() {
+        return 'hehe';
+    }
+    public function hehe2($params) {
+        return json_encode($params);
+    }
+}
+
+
+//项目结构
+RPC
+| - - service
+| - - - Test.php
+| - - RpcClient.php
+| - - RpcServer.php
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 布隆过滤器
 
 #### 未使用缓存
@@ -1280,7 +1843,7 @@ class BloomFilter
 
 
 
-## 大数据量处理
+## 数据处理
 
 #### BitMap
 
@@ -1492,6 +2055,385 @@ class HashMap
 		print_r($this->H_table);
 	}
 }
+```
+
+
+
+#### 数据操作-带锁(文件,数据库,memcache)
+
+```php
+<?php 
+
+class LockSystem
+{
+ const LOCK_TYPE_DB = 'SQLLock';
+ const LOCK_TYPE_FILE = 'FileLock';
+ const LOCK_TYPE_MEMCACHE = 'MemcacheLock';
+
+ private $_lock = null;
+ private static $_supportLocks = array('FileLock', 'SQLLock', 'MemcacheLock'); 
+
+ public function __construct($type, $options = array()) 
+ {
+  if(false == empty($type))
+  {
+   $this->createLock($type, $options);
+  }
+ } 
+
+ public function createLock($type, $options=array())
+ {
+  if (false == in_array($type, self::$_supportLocks))
+  {
+   throw new Exception("not support lock of ${type}");
+  }
+  $this->_lock = new $type($options);
+ }  
+ public function getLock($key, $timeout = ILock::EXPIRE)
+ {
+  if (false == $this->_lock instanceof ILock) 
+  {
+   throw new Exception('false == $this->_lock instanceof ILock');   
+  } 
+  $this->_lock->getLock($key, $timeout); 
+ }
+
+ public function releaseLock($key)
+ {
+  if (false == $this->_lock instanceof ILock) 
+  {
+   throw new Exception('false == $this->_lock instanceof ILock');   
+  } 
+  $this->_lock->releaseLock($key);   
+ } 
+}
+interface ILock
+{
+ const EXPIRE = 5;
+ public function getLock($key, $timeout=self::EXPIRE);
+ public function releaseLock($key);
+}
+
+class FileLock implements ILock
+{
+
+ private $_fp;
+ private $_single;
+
+ public function __construct($options)
+ {
+  if (isset($options['path']) && is_dir($options['path']))
+  {
+    $this->_lockPath = $options['path'].'/';
+  }
+  else
+  {
+    $this->_lockPath = '/tmp/'; //将文件锁放置在临时目录中
+  }
+
+  $this->_single = isset($options['single'])?$options['single']:false;
+ }
+ public function getLock($key, $timeout=self::EXPIRE)
+ {
+    $startTime = Timer::getTimeStamp();
+
+    $file = md5(__FILE__.$key); //文件名称要唯一 (一个功能对应一个文件锁)
+    $this->fp = fopen($this->_lockPath.$file.'.lock', "w+");
+    if (true || $this->_single)
+    {
+      $op = LOCK_EX + LOCK_NB; //在锁定的时候,不希望被阻塞时添加  LOCK_NB
+    }
+    else
+    {
+      $op = LOCK_EX; //独占 (写入)
+    }
+
+    if (false == flock($this->fp, $op, $a))
+    {
+      throw new Exception('failed');
+    }
+
+    return true;
+ }
+ public function releaseLock($key)
+ {
+    flock($this->fp, LOCK_UN); //解除锁定
+    fclose($this->fp); //释放文件
+ }
+}
+
+class SQLLock implements ILock
+{
+
+ public function __construct($options)
+ {
+    $this->_db = new mysql(); 
+ }
+
+ public function getLock($key, $timeout=self::EXPIRE)
+ {  
+    $sql = "SELECT GET_LOCK('".$key."', '".$timeout."')";
+    $res = $this->_db->query($sql);
+    return $res;
+ }
+
+ public function releaseLock($key)
+ {
+    $sql = "SELECT RELEASE_LOCK('".$key."')";
+    return $this->_db->query($sql);
+ }
+}
+
+class MemcacheLock implements ILock
+{
+
+ public function __construct($options)
+ {
+
+    $this->memcache = new Memcache();
+ }
+
+ public function getLock($key, $timeout=self::EXPIRE)
+ {  
+    $waitime = 20000;
+    $totalWaitime = 0;
+    $time = $timeout*1000000; //5秒钟尝试时间
+    while ($totalWaitime < $time && false == $this->memcache->add($key, 1, $timeout)) 
+    {
+      usleep($waitime);
+      $totalWaitime += $waitime;
+    }
+    if ($totalWaitime >= $time)
+      throw new Exception('can not get lock for waiting '.$timeout.'s.');
+
+ }
+
+ public function releaseLock($key)
+ {
+    $this->memcache->delete($key);
+ }
+}
+
+// 调用方式
+
+//  try
+//  {
+//   //创建锁(推荐使用MemcacheLock)
+//   $lockSystem = new LockSystem(LockSystem::LOCK_TYPE_MEMCACHE);    
+
+//   //获取锁
+//   $lockKey = 'pay'.$userId; //确定唯一性
+//   $lockSystem->getLock($lockKey,8);
+
+//   //取出总额
+//   $total = getUserLeftMoney($userId);
+
+//   //花费大于剩余
+//   if($money > $total)
+//   {
+//    $ret = false; 
+//   }
+//   else
+//   { 
+//    //余额
+//    $left = $total - $money;
+
+//    //更新余额
+//    $ret = setUserLeftMoney($userId,$left);
+//   }
+
+//   //释放锁
+//   $lockSystem->releaseLock($lockKey); 
+//  }
+//  catch (Exception $e)
+//  {
+//   //释放锁
+//   $lockSystem->releaseLock($lockKey);  
+//  }
+
+// }
+```
+
+#### 生成请求ID
+
+```php
+<?php
+/**
+ * PHP生成唯一RequestID类
+ * Description:
+ * PHP实现生成唯一RequestID类，使用session_create_id()与uniqid()方法实现，保证唯一性。
+ *
+ * Func:
+ * public  generate 生成唯一请求id
+ * private format   格式化请求id
+ */
+class RequestID{ 
+
+    /**
+     * 生成唯一请求id
+     * @return String
+     */
+    public static function generate(){
+        // 使用session_create_id()方法创建前缀
+        $prefix = session_create_id(date('YmdHis'));
+
+        // 使用uniqid()方法创建唯一id
+        $request_id = strtoupper(md5(uniqid($prefix, true)));
+
+        // 格式化请求id
+        return self::format($request_id);
+
+    }
+
+    /**
+     * 格式化请求id
+     * @param  String $request_id 请求id
+     * @param  Array  $format     格式
+     * @return String
+     */
+    private static function format($request_id, $format='8,4,4,4,12'){
+
+        $tmp = array();
+        $offset = 0;
+
+        $cut = explode(',', $format);
+
+        // 根据设定格式化
+        if($cut){
+            foreach($cut as $v){
+                $tmp[] = substr($request_id, $offset, $v);
+                $offset += $v;
+            }
+        }
+
+        // 加入剩余部分
+        if($offset<strlen($request_id)){
+            $tmp[] = substr($request_id, $offset);
+        }
+
+        return implode('-', $tmp);
+
+    }
+
+}
+echo 
+RequestID::generate();
+```
+
+
+
+
+
+
+
+## 其他
+
+#### 区块链算法实现
+
+```php
+<?php 
+/**
+ * 区块链相关算法
+ */
+class Block
+{
+    
+    public $timestamp; //时间
+   
+    public $index; //索引
+    
+    public $data; //数据
+
+    public $prevHash; //上一个哈希值
+    
+    public $hash; //当前哈希值
+
+    public function __construct($index, $timestamp, $data, $prevHash = '')
+    {
+        $this->index = $index;
+        $this->timestamp = $timestamp;
+        $this->data = $data;
+        $this->prevHash = $prevHash;
+        $this->hash = $this->calculateHash();
+    }
+    /**
+     * 加密算法
+     * @return string
+     */
+    public function calculateHash()
+    {
+        return hash('sha256', $this->index . $this->prevHash . $this->timestamp . json_encode($this->data));
+    }
+}
+/**
+ * 区块链
+ * Class BlockChain
+ */
+class BlockChain
+{
+
+    public $chain = []; // Block[]
+
+    public function __construct()
+    {
+        $this->chain = [$this->createGenesisBlock()];
+    }
+    /**
+     * 创世区块
+     * @return Block
+     */
+    public function createGenesisBlock()
+    {
+        return new Block(0, '2017-01-23', 'forecho', '0');
+    }
+    /**
+     * 获取最新的区块
+     * @return Block|mixed
+     */
+    public function getLatestBlock()
+    {
+        return $this->chain[count($this->chain) - 1];
+    }
+    /**
+     * 添加区块
+     * @param Block $newBlock
+     */
+    public function addBlock(Block $newBlock)
+    {
+        $newBlock->prevHash = $this->getLatestBlock()->hash;
+        $newBlock->hash = $newBlock->calculateHash();
+        array_push($this->chain, $newBlock);
+    }
+    /**
+     * 验证区块链
+     * @return bool
+     */
+    public function isChainValid()
+    {
+        for ($i = 1; $i < count($this->chain); $i++) {
+            $currentBlock = $this->chain[$i];
+            $prevBlock = $this->chain[$i - 1];
+            if ($currentBlock->hash !== $currentBlock->calculateHash()) {
+                return false;
+            }
+            if ($currentBlock->prevHash !== $prevBlock->hash) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+// test
+$blockChain = new BlockChain();
+$blockChain->addBlock(new Block(1, '2017-02-23', ['amount' => 1]));
+$blockChain->addBlock(new Block(2, '2017-03-23', ['amount' => 3]));
+$blockChain->addBlock(new Block(3, '2017-04-23', ['amount' => 20]));
+print_r($blockChain);
+echo "区块链验证通过吗？" . ($blockChain->isChainValid() ? '通过' : '失败') . PHP_EOL;
+$blockChain->chain[1]->data = ['amount' => 2];
+$blockChain->chain[1]->hash = $blockChain->chain[1]->calculateHash();
+echo "区块链验证通过吗？" . ($blockChain->isChainValid() ? '通过' : '失败') . PHP_EOL;
+
 ```
 
 

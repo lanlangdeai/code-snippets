@@ -301,6 +301,16 @@ function generateRandNumString($len)
 }
 
 
+function get_code($len){
+	$CHAR_ARR = array('1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','X','Y','Z','W','S','R','T');
+	$CHAR_ARR_LEN = count($CHAR_ARR) - 1;
+	$code = '';
+	while(--$len >= 0){ 
+		$code .= $CHAR_ARR[rand(0,$CHAR_ARR_LEN)]; 
+	}
+	return $code;
+}
+
 
 ```
 
@@ -473,6 +483,35 @@ function uuid()
     return $uuid;
 }
 ```
+
+#### 生成文件名ID
+
+```php
+/**
+* unique_ID
+* 生成16位以上唯一ID
+* @param int $length 不含前缀的长度，最小14，建议16+
+* @param str $prefix 前缀
+* @return str $id
+*/
+function unique_ID($length = 16,$prefix = ''){
+    $id = $prefix;
+    $addLength = $length - 13;
+    $id .= uniqid();
+    if (function_exists('random_bytes')) {
+        $id .= substr(bin2hex(random_bytes(ceil(($addLength) / 2))),0,$addLength);
+    } elseif (function_exists('openssl_random_pseudo_bytes')) {
+        $id .= substr(bin2hex(openssl_random_pseudo_bytes(ceil($addLength / 2))),0,$addLength);
+    } else {
+        $id .= mt_rand(1*pow(10,($addLength)),9*pow(10,($addLength)));
+    }
+    return $id;
+}
+```
+
+
+
+
 
 #### 驼峰转下划线
 
@@ -676,9 +715,79 @@ function clean($input)
 
 
 
+#### 提取文本中的图片标签
+
+```php
+function imgs($string){
+    //preg_match_all函数进行全局正则表达式匹配。
+//     $param1 = "/<img([^>]*)\s*src=('|\")([^'\"]+)('|\")/";  //带引号
+//     $param2 = "/<img([^>]*)\ssrc=([^\s>]+)/";               //不带引号
+//    $param3 = '/<img.*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]? >/i';
+    $param3 = '/<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/i';
+    //这个获取图片的全部标签
+    preg_match_all($param3,$string,$matches);//不带引号
+    return $matches[0];//图片标签 //$matches[1] 链接地址
+}
+```
 
 
 
+#### 提取字符串中的URL
+
+```php
+function getUrls($string)
+{
+    $regex = '/https?\:\/\/[^\" ]+/i';
+    preg_match_all($regex, $string, $matches);
+    return ($matches[0]);
+}
+```
+
+
+
+#### 邮箱编码处理
+
+```php
+// 把邮箱地址转换成HTML ASCII编码的主要作用是防止网页邮箱采集器，比如常见的把@替换为#、[@]或干脆直接用图片都是为了防止网页邮箱采集器
+echo encodeEmail('kevin@example.org');
+
+/**
+ *
+ * Return ASCII value for web use
+ *
+ * @param string
+ *
+ * @return string
+ *
+ */
+function makeASCII($char=0){
+  return '&#'.ord($char).';';
+}
+
+/**
+ *
+ * @Encode an email to ascii
+ *
+ * @parma string 
+ *
+ * @return string
+ *
+ */
+function encodeEmail($email){
+
+if(filter_var($email, FILTER_VALIDATE_EMAIL) !== FALSE)
+    {
+    $charArray = str_split($email);
+    $encodedArray = filter_var($charArray, FILTER_CALLBACK, array('options'=>"makeASCII"));
+    $encodedString = implode('',$encodedArray);
+    return '<a href="mailto:'.$encodedString.'">'.$encodedString.'</a>';
+    }
+else
+  {
+  return false;
+  } 
+}
+```
 
 
 
@@ -1319,7 +1428,209 @@ function curl($url,$params = [],$options = []){
     curl_close($curlInstance);
     return $ret;
 }
+
+
+
+
+
 ```
+
+#### get请求
+
+```php
+/**
+ * 统一封装的file_get_contents
+ * @param  string  $url 请求url
+ * @param  integer $timeout 超时时间
+ * @param  array   $header 请求头部
+ * @return 
+ */
+function pft_file_get_contents($url, $timeout = 10, $header = []){
+    $url     = strval($url);
+    $timeout = intval($timeout);
+    $timeout = $timeout <= 0 ? 10 : $timeout;
+
+    $contextOptions = [
+        'http' => ['timeout' => $timeout]
+    ];
+    if($header) {
+        $contextOptions['http']['header'] = $header;
+    }
+
+    $context = stream_context_create($contextOptions);
+    $res = file_get_contents($url, false, $context);
+    return $res;
+}
+```
+
+
+
+
+
+#### post请求
+
+```php
+/**
+ * curl请求
+ * @param  string  $url     地址
+ * @param  array   $data    post数据
+ * @param  array   $options 参数数据
+ * @param  boolean $isTry   是否错误重试
+ */
+function cUrl($url,$data = null,$options = [],$isTry = false)
+{
+    $ch = curl_init();
+
+    // 默认配置
+    $opts = [
+        CURLOPT_URL             =>  $url,
+        CURLOPT_HEADER          =>  0,
+        CURLOPT_TIMEOUT         =>  10, //10s
+        CURLOPT_RETURNTRANSFER  =>  true, //不直接输出
+    ];
+
+    $ssl = stripos($url,'https://') === 0;
+    if($ssl){
+        $opts[CURLOPT_SSL_VERIFYHOST] = false;
+        $opts[CURLOPT_SSL_VERIFYPEER] = false;
+    }
+
+    if( is_array($data) ){
+        if( !empty($data) ){
+            $data = http_build_query($data);
+        }
+
+        $opts[CURLOPT_POST]         = true;
+        $opts[CURLOPT_POSTFIELDS]   = $data;
+    }
+
+    $options += $opts;
+
+    curl_setopt_array($ch,$options);
+
+    $count = 0;
+    while ($count < 3) {
+        $data = curl_exec($ch);
+        if( !curl_errno($ch) ){
+            break;
+        }
+
+        $data = 'Error:'.curl_errno($ch).curl_error($ch);
+        $count ++;
+    }
+
+    curl_close($ch);
+    return $data;
+}
+
+// 简单post请求
+function curl( $url, $postStr )
+    {
+        $curlPost = $postStr;
+        $ch = curl_init();//初始化curl
+        curl_setopt($ch,CURLOPT_URL,$url);//抓取指定网页
+        curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
+        curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
+        $data = curl_exec($ch);//运行curl
+        curl_close($ch);
+        return $data;
+    }
+
+
+/**
+ * CURL 提交请求数据
+ * @param string $url 请求URL
+ * @param string $postData 请求发送的数据
+ * @param int $port 请求端口
+ * @param int $timeout 超时时间
+ * @param array $headers 请求头信息
+ * @return bool|mixed
+ */
+function curl_post($url, $postData, $port = 80, $timeout = 25, $headers = []) {
+    //超时时间处理
+    $timeout = intval($timeout);
+    $timeout = $timeout <= 0 ? 25 : $timeout;
+
+    $ch       = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, $port);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    if ((is_array($headers) || is_object($headers)) && count($headers)) {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    }
+
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    $res = curl_exec($ch);
+
+    //错误处理
+    $errCode = curl_errno($ch);
+    if ($errCode > 0) {
+        curl_close($ch);
+        return false;
+    } else {
+        //获取HTTP码
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($httpCode != 200) {
+            curl_close($ch);
+            return false;
+        } else {
+            curl_close($ch);
+            return $res;
+        }
+    }
+}
+```
+
+#### soap请求
+
+```php
+/**
+ * 统一封装的SOAP客户端封装，有些系统还在使用soap协议提供接口
+ * $soapClient = new PftSoapClient('xxx.wsdl');
+ * $soapClient->setTimeout(25);
+ * $soapClient->getMyMoney($params);
+ */
+class PftSoapClient extends \SoapClient {
+    //超时的时间
+    private $timeout = 0;
+
+    //设置超时时间
+    public function setTimeout($timeout) {
+        $timeout = intval($timeout);
+        $timeout = $timeout <= 0 ? 25 : $timeout;
+
+        $this->timeout = $timeout;
+    }
+
+    //请求接口
+    public function __doRequest($request, $location, $action, $version, $oneWay = FALSE) {
+        if ($this->timeout <= 0) {
+            //使用默认的方式
+            $res = parent::__doRequest($request, $location, $action, $version, $oneWay);
+        } else {
+            //使用添加了超时的方式
+            $socketTime = ini_get('default_socket_timeout');
+            ini_set('default_socket_timeout', $this->timeout);
+            $res = parent::__doRequest($request, $location, $action, $version, $oneWay);
+            ini_set('default_socket_timeout', $socketTime);
+        }
+
+        return $res;
+    }
+}
+```
+
+
+
+
 
 
 
@@ -1385,7 +1696,7 @@ function isLeapYear($year)
 
 ## 文件
 
-#### 读写
+#### 读写数据
 
 ```php
 // 普通读取
@@ -1468,6 +1779,103 @@ function getFileExt3($filename)
     return $pathinfo['extension'];
 }
 ```
+
+
+
+#### 获取文件名称+唯一
+
+```php
+function generateFileId($file, $useFileName=false, $prefix="")
+{
+    if( !empty($file) ){
+        if( !file_exists($file) )   return;
+        if( !$useFileName ){
+            $fileName = hash_hmac('md5',microtime(true).sha1_file($file),true );
+        }else{
+            $fileName = pathinfo($file,PATHINFO_FILENAME);
+        }
+        $fileName = $prefix.$fileName;
+    }else{
+        $fileName = hash_hmac('md5',sha1(uniqid(microtime(true),true).mt_rand()),true );
+    }
+
+    return $fileName;
+}
+
+// 生成文件ID
+$filePath = 'test1.txt';
+var_dump(generateFileId($filePath));
+var_dump(generateFileId($filePath, true, 'cyd_'));
+```
+
+
+
+
+
+
+
+
+
+#### 获取二进制流的文件类型
+
+```php
+/**
+     * 获取二进制流的文件类型
+     * @param  String $stream 二进制流
+     * @return String $type   文件类型
+     */
+    function getStreamType($stream)
+    {
+        if( empty($stream) ) return;
+        $bin = substr($stream, 0,2);
+        $code = @unpack('C2chars', $bin); //将二进制转化为十进制
+        $code = intval($code['chars1'].$code['chars2']);
+
+        $map = [
+            255216  =>  'jpg',
+            13780   =>  'png',
+            8297    =>  'rar',
+            8273    =>  'wav',
+            7798    =>  'exe',
+            7784    =>  'midi',
+            7368    =>  'mp3',
+            7173    =>  'gif',
+            6677    =>  'bmp',
+            0       =>  'mp4',
+        ];
+
+        return array_key_exists($code, $map) ? $map[$code] : 'unknow';
+    }
+
+$imgPath = './test.jpg';
+$content = file_get_contents($imgPath);
+var_dump(getStreamType($content));
+```
+
+
+
+#### 图片转base64
+
+```php
+function imgToBase64($img_file) {
+    $img_base64 = '';
+    if (file_exists($img_file)) {
+        $img_info = getimagesize($img_file);
+        if ($img_info[2] === 2 || $img_info[2] === 3) {
+            $fp = fopen($img_file, "r");
+            if ($fp) {
+                $filesize = filesize($img_file);
+                $content = fread($fp, $filesize);
+                $img_base64 = chunk_split(base64_encode($content));
+            }
+            fclose($fp);
+        }
+    }
+    return $img_base64;
+}
+```
+
+
 
 
 
@@ -1625,6 +2033,43 @@ function b64decode( $string ) {
 
 ```
 
+#### url编码与解码
+
+```php
+    /**
+     * Decode a string with URL-safe Base64.
+     *
+     * @param string $input A Base64 encoded string
+     *
+     * @return string A decoded string
+     */
+    public static function urlsafeB64Decode($input)
+    {
+        $remainder = strlen($input) % 4;
+        if ($remainder) {
+            $padlen = 4 - $remainder;
+            $input .= str_repeat('=', $padlen);
+        }
+        return base64_decode(strtr($input, '-_', '+/'));
+    }
+
+    /**
+     * Encode a string with URL-safe Base64.
+     *
+     * @param string $input The string you want encoded
+     *
+     * @return string The base64 encode of what you passed in
+     */
+    public static function urlsafeB64Encode($input)
+    {
+        return str_replace('=', '', strtr(base64_encode($input), '+/', '-_'));
+    }
+```
+
+
+
+
+
 #### 加解密算法
 
 ```php
@@ -1752,6 +2197,102 @@ function decrypt($data)
 }
 ```
 
+#### 加解密1
+
+```php
+// 加解密数据
+    function key_encryption($id, $decrypt=false)
+    {
+        if($decrypt)
+        {
+            //解密
+            return bzdecompress(base64_decode(str_pad(strtr($id, '-_', '+/'), strlen($id) % 4, '=', STR_PAD_RIGHT)));
+        }else{
+            //加密
+            return rtrim(strtr(base64_encode(bzcompress($id)), '+/', '-_'), '=');
+        }
+    }
+```
+
+#### 加解密2
+
+```php
+
+	/**
+	 * 加密字符串
+	 * 
+	 * @param decStr 需要加密的串
+	 * @param strKey KEY
+	 * 
+	 * @return 
+	 */
+	private static function encrypt($decStr, $strKey)
+	{
+		return base64_encode(mcrypt_encrypt(MCRYPT_DES, $strKey, $decStr, MCRYPT_MODE_CBC,$strKey));
+	}
+
+	/**
+	 * 解密字符串
+	 * 
+	 * @param encStr 需要解密的串
+	 * @param strKey KEY
+	 * 
+	 * @return 
+	 */
+	private static function decrypt($encStr, $strKey)
+	{
+		$encStr = base64_decode(str_replace(' ','+',$encStr));
+        return mcrypt_decrypt(MCRYPT_DES, $strKey, $encStr, MCRYPT_MODE_CBC,$strKey);
+	}
+```
+
+#### 加解密3
+
+```php
+//加密函数
+function lock_url($txt,$key='xingxing'){  
+    $txt = $txt.$key;  
+    $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-=+";  
+    $nh = rand(0,64);  
+    $ch = $chars[$nh];  
+    $mdKey = md5($key.$ch);  
+    $mdKey = substr($mdKey,$nh%8, $nh%8+7);  
+    $txt = base64_encode($txt);  
+    $tmp = '';  
+    $i=0;$j=0;$k = 0;  
+    for ($i=0; $i<strlen($txt); $i++) {  
+        $k = $k == strlen($mdKey) ? 0 : $k;  
+        $j = ($nh+strpos($chars,$txt[$i])+ord($mdKey[$k++]))%64;  
+        $tmp .= $chars[$j];  
+    }  
+    return urlencode(base64_encode($ch.$tmp));  
+}  
+//解密函数  
+function unlock_url($txt,$key='xingxing'){  
+    $txt = base64_decode(urldecode($txt));  
+    $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-=+";  
+    $ch = $txt[0];  
+    $nh = strpos($chars,$ch);  
+    $mdKey = md5($key.$ch);  
+    $mdKey = substr($mdKey,$nh%8, $nh%8+7);  
+    $txt = substr($txt,1);  
+    $tmp = '';  
+    $i=0;$j=0; $k = 0;  
+    for ($i=0; $i<strlen($txt); $i++) {  
+        $k = $k == strlen($mdKey) ? 0 : $k;  
+        $j = strpos($chars,$txt[$i])-$nh - ord($mdKey[$k++]);  
+        while ($j<0) $j+=64;  
+        $tmp .= $chars[$j];  
+    }  
+    return trim(base64_decode($tmp),$key);  
+}
+
+```
+
+
+
+
+
 
 
 ## 系统函数
@@ -1863,6 +2404,52 @@ function getRand($proArr)
     }
     unset($proArr);
     return $result;
+}
+```
+
+#### 下载Excel大文件
+
+```sql
+articleAccessLog($timeStart='20181201', $timeEnd='20181210');
+
+function articleAccessLog($timeStart, $timeEnd)
+{
+    set_time_limit(0);
+
+    $columns = [
+        '文章ID'
+    ];
+    $fileName = '用户日志' . $timeStart .'_'. $timeEnd . '.xls';
+    //设置好告诉浏览器要下载excel文件的headers
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment; filename="'. $fileName .'"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');//强制页面不缓存
+    header('Pragma: public');
+
+    $fp = fopen('php://output', 'a');//打开output流
+    mb_convert_variables('GBK', 'UTF-8', $columns);
+    fputcsv($fp, $columns);//将数据格式化为CSV格式并写入到output流中
+    $accessNum = '1000000';//从数据库获取总量，假设是一百万
+    $perSize = 1000;//每次查询的条数
+    $pages   = ceil($accessNum / $perSize);
+    for($i = 1; $i <= $pages; $i++) {
+        $accessLog = range($i+($i-1)*$perSize,$i*$perSize);
+        foreach($accessLog as $access) {
+            $rowData = [
+                $access //每一行的数据
+            ];
+            mb_convert_variables('GBK', 'UTF-8', $rowData);
+            fputcsv($fp, $rowData);
+        }
+        unset($accessLog);//释放变量的内存
+        //刷新输出缓冲到浏览器
+        ob_flush();
+        flush();//必须同时使用 ob_flush() 和flush() 函数来刷新输出缓冲。
+    }
+    fclose($fp);
+    exit();
 }
 ```
 
