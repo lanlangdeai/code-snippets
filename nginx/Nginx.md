@@ -383,7 +383,7 @@ server {
 }
 ```
 
-## 
+
 
 #### php项目
 
@@ -545,6 +545,70 @@ server {
 }
 ```
 
+#### 证书配置
+
+```ng
+   
+server {
+	
+	listen 80; 
+	server_name tp5.feekr.com;
+
+	rewrite ^(.*)$  https://$host$1 permanent;
+}
+  
+server {
+  
+	listen 443; 
+	server_name tp5.feekr.com;
+	ssl on;
+  
+	root   /svn/webdata/f/tp5/public;
+	index  index.php index.html index.htm;
+
+	ssl_certificate      /web/python/ssl/feekr.pem;
+	ssl_certificate_key  /web/python/ssl/feekr.key;
+	ssl_session_timeout 5m;
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+	ssl_ciphers AESGCM:ALL:!DH:!EXPORT:!RC4:+HIGH:!MEDIUM:!LOW:!aNULL:!eNULL;
+	ssl_prefer_server_ciphers on;
+		
+	location / {
+		if (!-e $request_filename) {
+			rewrite  ^(.*)$  /index.php?s=/$1  last;
+			break;
+		}
+	}
+
+	location ~ \.php$ {
+	
+			try_files $uri =404;
+            fastcgi_pass  unix:/tmp/php-cgi7.2.sock;
+            fastcgi_index index.php;
+            include fastcgi.conf;
+			
+			set $path_info "";
+			set $real_script_name $fastcgi_script_name;
+			if ($fastcgi_script_name ~ "^(.+?\.php)(/.*)$") {
+				set $real_script_name $1;
+				set $path_info $2;
+			}
+			fastcgi_param PATH_INFO $path_info;
+			fastcgi_param SCRIPT_FILENAME $document_root$real_script_name;
+			fastcgi_param SCRIPT_NAME $real_script_name;
+			
+	}
+	location ~ /\.ht {
+		deny  all;
+	}
+	
+}
+```
+
+
+
+
+
 #### 禁止htaccess
 
 ```nginx
@@ -580,6 +644,19 @@ location /searchword/cron/ {
          deny all;
 }
 ```
+
+#### 匹配上传文件目录(展示静态文件)
+
+```nginx
+# 会直接将upload追加上  
+location ~ ^/upload {
+    root "/data/resources/cpc";
+}
+```
+
+
+
+
 
 #### 设置过期时间
 

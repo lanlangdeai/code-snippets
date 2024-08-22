@@ -339,6 +339,8 @@ $result = $rs->getResponseBody();
 
 ## 文件上传
 
+#### 多文件上传
+
 ```php
 /**
      * FileUpload.class.php
@@ -729,6 +731,337 @@ $result = $rs->getResponseBody();
         }
     }
 ```
+
+#### 支持多种上传方式
+
+```php
+<?php
+
+class Uploader
+{
+    private $fileField; //文件域名
+    private $file; //文件上传对象
+    private $base64; //文件上传对象
+    private $config; //配置信息
+    private $oriName; //原始文件名
+    private $fileName; //新文件名
+    private $fullName; //完整文件名,即从当前配置目录开始的URL
+    private $filePath; //完整文件名,即从当前配置目录开始的URL
+    private $fileSize; //文件大小
+    private $fileType; //文件类型
+    private $stateInfo; //上传状态信息,
+    private $stateMap = array( //上传状态映射表，国际化用户需考虑此处数据的国际化
+        "SUCCESS", //上传成功标记，在UEditor中内不可改变，否则flash判断会出错
+        "文件大小超出 upload_max_filesize 限制",
+        "文件大小超出 MAX_FILE_SIZE 限制",
+        "文件未被完整上传",
+        "没有文件被上传",
+        "上传文件为空",
+        "ERROR_TMP_FILE" => "临时文件错误",
+        "ERROR_TMP_FILE_NOT_FOUND" => "找不到临时文件",
+        "ERROR_SIZE_EXCEED" => "文件大小超出网站限制",
+        "ERROR_TYPE_NOT_ALLOWED" => "文件类型不允许",
+        "ERROR_CREATE_DIR" => "目录创建失败",
+        "ERROR_DIR_NOT_WRITEABLE" => "目录没有写权限",
+        "ERROR_FILE_MOVE" => "文件保存时出错",
+        "ERROR_FILE_NOT_FOUND" => "找不到上传文件",
+        "ERROR_WRITE_CONTENT" => "写入文件内容错误",
+        "ERROR_UNKNOWN" => "未知错误",
+        "ERROR_DEAD_LINK" => "链接不可用",
+        "ERROR_HTTP_LINK" => "链接不是http链接",
+        "ERROR_HTTP_CONTENTTYPE" => "链接contentType不正确"
+    );
+    /**
+     * 构造函数
+     * @param string $fileField 表单名称
+     * @param array $config 配置项
+	 * @param string $type	处理文件上传的方式
+     */
+    public function __construct($fileField, $config, $type = "upload")
+    {
+        $this->fileField = $fileField;
+        $this->config = $config;
+        $this->type = $type;
+        if ($type == "remote") {
+            $this->saveRemote();
+        } else if($type == "base64") {
+            $this->upBase64();
+        } else {
+            $this->upFile();
+        }
+        $this->stateMap['ERROR_TYPE_NOT_ALLOWED'] = mb_convert_encoding($this->stateMap['ERROR_TYPE_NOT_ALLOWED'], 'utf-8', 'auto');
+    }
+    /**
+     * 上传文件的主处理方法
+     * @return mixed
+     */
+    private function upFile()
+    {
+        $file = $this->file = $_FILES[$this->fileField];
+        if (!$file) {
+            $this->stateInfo = $this->getStateInfo("ERROR_FILE_NOT_FOUND");
+            return;
+        }
+        if ($this->file['error']) {
+            $this->stateInfo = $this->getStateInfo($file['error']);
+            return;
+        } else if (!file_exists($file['tmp_name'])) {
+            $this->stateInfo = $this->getStateInfo("ERROR_TMP_FILE_NOT_FOUND");
+            return;
+        } else if (!is_uploaded_file($file['tmp_name'])) {
+            $this->stateInfo = $this->getStateInfo("ERROR_TMPFILE");
+            return;
+        }
+        $this->oriName = $file['name'];
+        $this->fileSize = $file['size'];
+        $this->fileType = $this->getFileExt();
+        $this->fullName = $this->getFullName();
+        $this->filePath = $this->getFilePath();
+        $this->fileName = $this->getFileName();
+        $dirname = dirname($this->filePath);
+        //检查文件大小是否超出限制
+        if (!$this->checkSize()) {
+            $this->stateInfo = $this->getStateInfo("ERROR_SIZE_EXCEED");
+            return;
+        }
+        //检查是否不允许的文件格式
+        if (!$this->checkType()) {
+            $this->stateInfo = $this->getStateInfo("ERROR_TYPE_NOT_ALLOWED");
+            return;
+        }
+        //创建目录失败
+        if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
+            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR");
+            return;
+        } else if (!is_writeable($dirname)) {
+            $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
+            return;
+        }
+        //移动文件
+        if (!(move_uploaded_file($file["tmp_name"], $this->filePath) && file_exists($this->filePath))) { //移动失败
+            $this->stateInfo = $this->getStateInfo("ERROR_FILE_MOVE");
+        } else { //移动成功
+            $this->stateInfo = $this->stateMap[0];
+        }
+    }
+    /**
+     * 处理base64编码的图片上传
+     * @return mixed
+     */
+    private function upBase64()
+    {
+        $base64Data = $_POST[$this->fileField];
+        $img = base64_decode($base64Data);
+        $this->oriName = $this->config['oriName'];
+        $this->fileSize = strlen($img);
+        $this->fileType = $this->getFileExt();
+        $this->fullName = $this->getFullName();
+        $this->filePath = $this->getFilePath();
+        $this->fileName = $this->getFileName();
+        $dirname = dirname($this->filePath);
+        //检查文件大小是否超出限制
+        if (!$this->checkSize()) {
+            $this->stateInfo = $this->getStateInfo("ERROR_SIZE_EXCEED");
+            return;
+        }
+        //创建目录失败
+        if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
+            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR");
+            return;
+        } else if (!is_writeable($dirname)) {
+            $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
+            return;
+        }
+        //移动文件
+        if (!(file_put_contents($this->filePath, $img) && file_exists($this->filePath))) { //移动失败
+            $this->stateInfo = $this->getStateInfo("ERROR_WRITE_CONTENT");
+        } else { //移动成功
+            $this->stateInfo = $this->stateMap[0];
+        }
+    }
+    /**
+     * 拉取远程图片
+     * @return mixed
+     */
+    private function saveRemote()
+    {
+        $imgUrl = htmlspecialchars($this->fileField);
+        $imgUrl = str_replace("&amp;", "&", $imgUrl);
+	    
+        //获取带有GET参数的真实图片url路径
+        $pathRes     = parse_url($imgUrl);
+        $queryString = isset($pathRes['query']) ? $pathRes['query'] : '';
+        $imgUrl      = str_replace('?' . $queryString, '', $imgUrl);
+        //http开头验证
+        if (strpos($imgUrl, "http") !== 0) {
+            $this->stateInfo = $this->getStateInfo("ERROR_HTTP_LINK");
+            return;
+        }
+        //获取请求头并检测死链
+        $heads = get_headers($imgUrl, 1); 
+        if (!(stristr($heads[0], "200") && stristr($heads[0], "OK"))) {
+            $this->stateInfo = $this->getStateInfo("ERROR_DEAD_LINK");
+            return;
+        }
+        //格式验证(扩展名验证和Content-Type验证)
+        $fileType = strtolower(strrchr($imgUrl, '.'));
+        if (!in_array($fileType, $this->config['allowFiles']) || !isset($heads['Content-Type']) || !stristr($heads['Content-Type'], "image")) {
+            $this->stateInfo = $this->getStateInfo("ERROR_HTTP_CONTENTTYPE");
+            return;
+        }
+        //打开输出缓冲区并获取远程图片
+        ob_start();
+        $context = stream_context_create(
+            array('http' => array(
+                'follow_location' => false // don't follow redirects
+            ))
+        );
+        readfile($imgUrl . '?' . $queryString, false, $context); //读取文件并写入到输出缓冲
+        $img = ob_get_contents();
+        ob_end_clean();
+        preg_match("/[\/]([^\/]*)[\.]?[^\.\/]*$/", $imgUrl, $m);
+        $this->oriName = $m ? $m[1]:"";
+        $this->fileSize = strlen($img);
+        $this->fileType = $this->getFileExt();
+        $this->fullName = $this->getFullName();
+        $this->filePath = $this->getFilePath();
+        $this->fileName = $this->getFileName();
+        $dirname = dirname($this->filePath);
+        //检查文件大小是否超出限制
+        if (!$this->checkSize()) {
+            $this->stateInfo = $this->getStateInfo("ERROR_SIZE_EXCEED");
+            return;
+        }
+        //检查文件内容是否真的是图片
+        if (substr(mime_content_type($this->filePath), 0, 5) != 'image') {
+            $this->stateInfo = $this->getStateInfo("ERROR_TYPE_NOT_ALLOWED");
+            return;
+        }
+        //创建目录失败
+        if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
+            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR");
+            return;
+        } else if (!is_writeable($dirname)) {
+            $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
+            return;
+        }
+        //移动文件
+        if (!(file_put_contents($this->filePath, $img) && file_exists($this->filePath))) { //移动失败
+            $this->stateInfo = $this->getStateInfo("ERROR_WRITE_CONTENT");
+        } else { //移动成功
+            $this->stateInfo = $this->stateMap[0];
+        }
+    }
+    /**
+     * 上传错误检查
+     * @param $errCode
+     * @return string
+     */
+    private function getStateInfo($errCode)
+    {
+        return !$this->stateMap[$errCode] ? $this->stateMap["ERROR_UNKNOWN"] : $this->stateMap[$errCode];
+    }
+    /**
+     * 获取文件扩展名
+     * @return string
+     */
+    private function getFileExt()
+    {
+        return strtolower(strrchr($this->oriName, '.'));
+    }
+    /**
+     * 重命名文件
+     * @return string
+     */
+    private function getFullName()
+    {
+        //替换日期事件
+        $t = time();
+        $d = explode('-', date("Y-y-m-d-H-i-s"));
+        $format = $this->config["pathFormat"];
+        $format = str_replace("{yyyy}", $d[0], $format);
+        $format = str_replace("{yy}", $d[1], $format);
+        $format = str_replace("{mm}", $d[2], $format);
+        $format = str_replace("{dd}", $d[3], $format);
+        $format = str_replace("{hh}", $d[4], $format);
+        $format = str_replace("{ii}", $d[5], $format);
+        $format = str_replace("{ss}", $d[6], $format);
+        $format = str_replace("{time}", $t, $format);
+        //过滤文件名的非法字符,并替换文件名
+        $oriName = substr($this->oriName, 0, strrpos($this->oriName, '.'));
+        $oriName = preg_replace("/[\|\?\"\<\>\/\*\\\\]+/", '', $oriName);
+        $format = str_replace("{filename}", $oriName, $format);
+        //替换随机字符串
+        $randNum = rand(1, 10000000000) . rand(1, 10000000000);
+        if (preg_match("/\{rand\:([\d]*)\}/i", $format, $matches)) {
+            $format = preg_replace("/\{rand\:[\d]*\}/i", substr($randNum, 0, $matches[1]), $format);
+        }
+        if($this->fileType){
+            $ext = $this->fileType;
+        } else {
+            $ext = $this->getFileExt();
+        }
+        return $format . $ext;
+    }
+    /**
+     * 获取文件名
+     * @return string
+     */
+    private function getFileName () {
+        return substr($this->filePath, strrpos($this->filePath, '/') + 1);
+    }
+    /**
+     * 获取文件完整路径
+     * @return string
+     */
+    private function getFilePath()
+    {
+        $fullname = $this->fullName;
+        $rootPath = $_SERVER['DOCUMENT_ROOT'];
+        if (substr($fullname, 0, 1) != '/') {
+            $fullname = '/' . $fullname;
+        }
+        return $rootPath . $fullname;
+    }
+    /**
+     * 文件类型检测
+     * @return bool
+     */
+    private function checkType()
+    {
+        return in_array($this->getFileExt(), $this->config["allowFiles"]);
+    }
+    /**
+     * 文件大小检测
+     * @return bool
+     */
+    private function  checkSize()
+    {
+        return $this->fileSize <= ($this->config["maxSize"]);
+    }
+    /**
+     * 获取当前上传成功文件的各项信息
+     * @return array
+     */
+    public function getFileInfo()
+    {
+        return array(
+            "state" => $this->stateInfo,
+            "url" => $this->fullName,
+            "title" => $this->fileName,
+            "original" => $this->oriName,
+            "type" => $this->fileType,
+            "size" => $this->fileSize
+        );
+    }
+}
+```
+
+
+
+
+
+
 
 
 
@@ -1281,6 +1614,146 @@ RPC
 | - - RpcServer.php
 
 
+```
+
+#### 协程处理
+
+```php
+// 协程实例
+
+class Task {
+    protected $taskId;//任务id
+    protected $coroutine;//生成器
+    protected $sendValue = null;//生成器send值
+    protected $beforeFirstYield = true;//迭代指针是否是第一个
+ 
+    public function __construct($taskId, Generator $coroutine) {
+        $this->taskId = $taskId;
+        $this->coroutine = $coroutine;
+    }
+ 
+    public function getTaskId() {
+        return $this->taskId;
+    }
+ 
+    /**
+     * 设置插入数据
+     * @param $sendValue
+     */
+    public function setSendValue($sendValue) {
+        $this->sendValue = $sendValue;
+    }
+ 
+    /**
+     * send数据进行迭代
+     * @return mixed
+     */
+    public function run() {
+        //如果是
+        if ($this->beforeFirstYield) {
+            $this->beforeFirstYield = false;
+            var_dump($this->coroutine->current());
+            return $this->coroutine->current();
+        } else {
+            $retval = $this->coroutine->send($this->sendValue);
+            $this->sendValue = null;
+            return $retval;
+        }
+    }
+ 
+    /**
+     * 是否完成
+     * @return bool
+     */
+    public function isFinished() {
+        return !$this->coroutine->valid();
+    }
+}
+
+
+/**
+ * 任务调度
+ * Class Scheduler
+ */
+class Scheduler {
+    protected $maxTaskId = 0;//任务id
+    protected $taskMap = []; // taskId => task
+    protected $taskQueue;//任务队列
+ 
+    public function __construct() {
+        $this->taskQueue = new SplQueue();
+    }
+ 
+    public function newTask(Generator $coroutine) {
+        $tid = ++$this->maxTaskId;
+        //新增任务
+        $task = new Task($tid, $coroutine);
+        $this->taskMap[$tid] = $task;
+        $this->schedule($task);
+        return $tid;
+    }
+ 
+    /**
+     * 任务入列
+     * @param Task $task
+     */
+    public function schedule(Task $task) {
+        $this->taskQueue->enqueue($task);
+    }
+ 
+    public function run() {
+        while (!$this->taskQueue->isEmpty()) {
+            //任务出列进行遍历生成器数据
+            $task = $this->taskQueue->dequeue();
+            $task->run();
+ 
+            if ($task->isFinished()) {
+                //完成则删除该任务
+                unset($this->taskMap[$task->getTaskId()]);
+            } else {
+                //继续入列
+                $this->schedule($task);
+            }
+        }
+    }
+}
+
+function task1()
+{
+    for ($i = 0; $i <= 300; $i++) {
+        //写入文件,大概要3000微秒
+        usleep(3000);
+        echo "写入文件{$i}\n";
+        yield $i;
+    }
+}
+ 
+function task2()
+{
+    for ($i = 0; $i <= 500; $i++) {
+        //发送邮件给500名会员,大概3000微秒
+        usleep(3000);
+        echo "发送邮件{$i}\n";
+        yield $i;
+    }
+}
+ 
+function task3()
+{
+    for ($i = 0; $i <= 100; $i++) {
+        //模拟插入100条数据,大概3000微秒
+        usleep(3000);
+        echo "插入数据{$i}\n";
+        yield $i;
+    }
+}
+ 
+$scheduler = new Scheduler;
+$scheduler->newTask(task1());
+$scheduler->newTask(task2());
+$scheduler->newTask(task3());
+ 
+$scheduler->run();
 ```
 
 
@@ -2320,6 +2793,234 @@ echo
 RequestID::generate();
 ```
 
+#### 生成随机字符串
+
+```php
+class randomPassword{
+
+function __construct($passType='alphanumeric', $length=8, $rangeLength=9){
+  $this->setLength($length);
+  $this->setRangeLength($rangeLength);
+  $this->passType = $this->setPassType($passType);
+}
+
+function setRangeLength($rangeLength){
+  $this->rangeLength=$rangeLength;
+}
+
+// set the length of the password
+private function setLength($length){
+  $this->length=$length;
+}
+
+
+// set the type of password
+private function setPassType($passType){
+  return $passType.'Chars';
+}
+
+// return an array of numbers
+private function numericChars(){
+  return range(0, $this->rangeLength);
+}
+
+// return an array of chars
+private function alphaChars(){
+  return range('a', 'z');
+}
+
+// return an array of alphanumeric chars
+private function alphaNumericChars(){
+  return array_merge($this->numericChars(), $this->alphaChars());
+}
+
+// return a string of chars
+private function makeString(){
+  // here we set the function to call based on the password type
+  $funcName = $this->passType;
+  return implode($this->$funcName());
+}
+
+// shuffle the chars and return $length of chars
+public function makePassword(){
+  return substr(str_shuffle($this->makeString()), 1, $this->length);
+}
+
+} // end class
+
+  function randomPassword($length) {
+  // create an array of chars to use as password
+  $chars = implode(array_merge(range(0,9), range('a', 'z')));
+
+  // randomly snarf $length number of array keys
+  return substr(str_shuffle($chars), 1, $length);
+
+}
+  echo randomPassword(8).'<br />';
+
+try
+    {
+    $obj = new randomPassword('alphanumeric', 16, 100);
+    echo $obj->makePassword().'<br />';
+    }
+catch(Exception $ex)
+    {
+    echo $ex->getMessage();
+    }
+
+```
+
+
+
+#### 频繁访问限制
+
+```php
+class FrequencyLimit
+{
+
+	const DEFAULT_EXPIRE_TIME = 3600*24*7; //默认自动过期时间
+
+	static $r = null;
+	// 初始化Redis
+	public function __construct()
+	{
+		// 初始化Redis
+		self::$r = new Client([
+			'host'	=>	\Env::get(ENV.'.redis_host'),
+			'port'	=>	\Env::get(ENV.'.redis_port'),
+			'database'=> 5,
+		]); 
+	} 
+
+	// ip限制
+	public function ip(string $ip, int $time, int $number )
+	{
+		$key = C::IP_LIMIT . $ip;
+		return $this->do($key,$time,$number);
+	}
+
+	// 接口限制
+	public function api(string $appid, string $url, int $time, int $number)
+	{
+		$key = C::API_LIMIT . $appid.'_'.$url;
+		return $this->do($key,$time,$number);
+	}
+
+	// 并发限制
+	public function concurrent(string $appid,string $url,int $time,int $number)
+	{
+		$key = C::API_CONCURRENT_LIMIT . $appid . '_' . $url . '_' . time();
+		return $this->do($key,$time,$number);
+	}
+
+	// 频次间隔限制
+	public function apiInterval(string $appid, string $url, int $interval)
+	{
+		$key = C::API_INTERVAL_LIMIT . $appid.'_'.$url;
+		return $this->run($key,$interval);
+	}
+
+	/**
+	 * 执行频次限制
+	 * @param  string $key    key键名
+	 * @param  int    $time   时间范围[秒]
+	 * @param  int    $number 操作次数
+	 * @param  array  $expire 封禁时间['type'=>1,'ttl'=>'过期时间'],['type'=>2,'ttl'=>'具体过期时间戳']
+	 * @return bool   结果
+	 */
+	private function do($key, $time, $number, $expire=[])
+	{
+		$current = intval(self::$r->get($key) );
+		if($current >= $number) return false;
+
+		$current = self::$r->incr($key);
+		if($current === 1) self::$r->expire($key,$time);
+		if($current < $number) return true;
+
+		if($expire){
+			$type = !$expire['type'] ? 0 : intval($expire['type']);
+			$ttl = !$expire['ttl'] ? 0 : intval($expire['ttl']);
+			if($current === $number && $ttl > 0 && in_array($type, [1,2]) ){
+				$type === 1 ? self::$r->expire($key,$ttl) :  self::$r->expireAt($key,$ttl);
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 执行时间间隔限制
+	 * @param  string $key key名称
+	 * @param  int    $interval 间隔时间
+	 * @return bool 结果
+	 */
+	private function run($key,$interval)
+	{
+		if(!self::$r->exists($key) ){
+			self::$r->setex($key,self::DEFAULT_EXPIRE_TIME,time());
+			return true;
+		}
+
+		$timestamp = self::$r->get($key);
+		if(time() - $timestamp > $interval){
+			self::$r->setex($key,self::DEFAULT_EXPIRE_TIME,time());
+			return true;
+		}
+
+		return false;
+	}
+
+}
+```
+
+#### 签名验证
+
+```php
+class Auth 
+{
+	const SIGN_EXPIRES = 50; 
+
+	// 验证IP
+	static function checkIp(string $ip): bool
+	{
+		$allowIps = [ //ip白名单
+			'127.0.0.1',
+			'115.205.1.26', //公司
+			'47.93.249.6', // 2019-8-8
+			'47.97.175.19', //2019/8/20
+			'47.75.91.0', //2019/8/22
+		];
+		return in_array($ip, $allowIps,true);
+	}
+
+	// 验证签名
+	static function verifySign(array $param,string $secret)
+	{
+		if(isset($param['version']) ) unset($param['version']);
+
+		if(time() - $param['timestamp'] >= self::SIGN_EXPIRES){
+			return Code::EXPIRED_REQUEST;
+		}
+		$sign = $param['signature'];
+		unset($param['signature']);
+		
+		return self::createSign($param,$secret) === $sign;
+	}
+
+	/**
+	 * 生成签名
+	 * @param  $param  传递的参数
+	 * @param  $secret 秘钥secret
+	 * @return string  签名
+	 */
+	public static function createSign(array $param,string $secret)
+	{
+		ksort($param);
+		$str = http_build_query($param);
+		return md5($str.$secret);
+	}
+}
+```
+
 
 
 
@@ -2327,6 +3028,169 @@ RequestID::generate();
 
 
 ## 其他
+
+#### Hook实现
+
+```php
+class Ball{
+	 public function down(){
+	 echo  "ball is downing ";
+	 //注册事件
+	 Hook::add("Man");
+	 Hook::add("Woman");
+	 }
+	 public function do(){
+	 Hook::exec();
+	 }
+}
+// 钩子的定义
+class Hook{
+	 private static $hooklist = null;
+	 // 添加
+	 public static function add($people){
+	 	self::$hooklist[] = new $people();
+	 }
+	 // 触发事件
+	 public static function exec(){
+		 foreach(self::$hooklist as $addon){
+		   $addon ->act();
+		 }
+	 }
+}
+
+
+// 钩子实现
+class Man{
+ public function act(){
+ echo 'notiong111111';
+ }
+}
+class Woman{
+ public function act(){
+ echo 'oh my god2222222 ';
+ }
+}
+class Child{
+ public function act(){
+ echo 'oh my god333333 ';
+ }
+}
+$ball = new Ball();
+$ball ->down();
+$ball ->do();
+```
+
+#### Hash算法
+
+```php
+<?php
+
+// 一致性哈希算法
+class ConsistentHashing
+{
+    protected $nodes = [];
+    protected $position = [];
+    protected $mul = 64;  // 每个节点对应64个虚拟节点
+
+    /**
+     * 把字符串转为32位符号整数
+     */
+    public function hash($str)
+    {
+        return sprintf('%u', crc32($str));
+    }
+
+    /**
+     * 核心功能
+     */
+    public function lookup($key)
+    {
+        $point = $this->hash($key);
+
+        //先取圆环上最小的一个节点,当成结果
+        $node = current($this->position);
+
+        // 循环获取相近的节点
+        foreach ($this->position as $key => $val) {
+            if ($point <= $key) {
+                $node = $val;
+                break;
+            }
+        }
+
+        reset($this->position);
+
+        return $node;
+    }
+
+    /**
+     * 添加节点
+     */
+    public function addNode($node)
+    {
+        if(isset($this->nodes[$node])) return;
+
+        // 添加节点和虚拟节点
+        for ($i = 0; $i < $this->mul; $i++) {
+            $pos = $this->hash($node . '-' . $i);
+            $this->position[$pos] = $node;
+            $this->nodes[$node][] = $pos;
+        }
+
+        // 重新排序
+        $this->sortPos();
+    }
+
+    /**
+     * 删除节点
+     */
+    public function delNode($node)
+    {
+        if (!isset($this->nodes[$node])) return;
+
+        // 循环删除虚拟节点
+        foreach ($this->nodes[$node] as $val) {
+            unset($this->position[$val]);
+        }
+
+        // 删除节点
+        unset($this->nodes[$node]);
+    }
+
+    /**
+     * 排序
+     */
+    public function sortPos()
+    {
+        ksort($this->position, SORT_REGULAR);
+    }
+}
+
+
+// 测试
+$con = new ConsistentHashing();
+
+$con->addNode('a');
+$con->addNode('b');
+$con->addNode('c');
+$con->addNode('d');
+
+$key1 = 'www.zhihu.com';
+$key2 = 'www.baidu.com';
+$key3 = 'www.google.com';
+
+echo 'key' . $key1 . '落在' . $con->lookup($key1) . '号节点上！<br>';
+echo 'key' . $key2 . '落在' . $con->lookup($key2) . '号节点上！<br>';
+echo 'key' . $key3 . '落在' . $con->lookup($key3) . '号节点上！<br>';
+
+
+```
+
+
+
+
+
+
 
 #### 区块链算法实现
 

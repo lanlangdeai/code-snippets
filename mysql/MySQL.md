@@ -186,6 +186,26 @@ select table_name from information_schema.tables where table_schema ='表名' an
 
 
 
+## 日常脚本
+
+#### 备份数据库
+
+```bash
+#!/bin/bash
+
+#预发布系统-数据库备份脚本
+
+start1=`date +%s`
+mysqldump  -h42.121.121.169 -utest-mysql-user -p123456 -C --single-transaction test | mysql -uroot -ptest654 pre_test
+end1=`date +%s`
+
+echo "sync database test Time:"$[end1 - start1]
+```
+
+
+
+
+
 
 
 

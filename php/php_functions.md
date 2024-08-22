@@ -314,6 +314,20 @@ function get_code($len){
 
 ```
 
+#### 生成订单号
+
+```php
+function createOrderNo($datetime=null)
+    {
+        $datetime = $datetime ? date('ymdHis',strtotime($datetime)) : date('YmdHis');
+        return $datetime.substr(crc32(uniqid(true)), -4);
+    }
+```
+
+
+
+
+
 #### 是否包含中文
 
 ```php
@@ -482,6 +496,26 @@ function uuid()
     . chr(125); // "}"
     return $uuid;
 }
+
+
+function guid(){
+    if (function_exists('com_create_guid')){
+        return com_create_guid();
+    }else{
+        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+        $charid = strtoupper(md5(uniqid(rand(), true)));
+        $hyphen = chr(45);// "-"
+        $uuid = chr(123)// "{"
+                .substr($charid, 0, 8).$hyphen
+                .substr($charid, 8, 4).$hyphen
+                .substr($charid,12, 4).$hyphen
+                .substr($charid,16, 4).$hyphen
+                .substr($charid,20,12)
+                .chr(125);// "}"
+        return $uuid;
+    }
+}
+
 ```
 
 #### 生成文件名ID
@@ -625,6 +659,19 @@ function filterEmoji($text)
 
     return $text;
 }
+
+
+function filterEmoji($str)  
+    {  
+        $str = preg_replace_callback(  
+        '/./u',  
+        function (array $match) {  
+            return strlen($match[0]) >= 4 ? '' : $match[0];  
+        },  
+        $str);  
+      
+      return $str;  
+    }
 ```
 
 
@@ -1587,6 +1634,43 @@ function curl_post($url, $postData, $port = 80, $timeout = 25, $headers = []) {
         }
     }
 }
+
+/**
+     * curl操作
+     * @param  string  $url    地址 
+     * @param  [type]  $post   post参数
+     * @param  array   $header Header头
+     * @param  integer $timeout 超时时间
+     */
+    function httpCurl($url, $post=null, $header=[], $timeout=5):array
+    {
+        $ch = curl_init(); // 启动一个CURL会话
+        curl_setopt($ch, CURLOPT_URL, $url);// 要访问的地址
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);// 设置超时限制防止死循环
+        if ($header)
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        if ($post)
+        {
+            curl_setopt($ch, CURLOPT_POST, true);// 发送一个常规的Post请求
+            curl_setopt($ch, CURLOPT_POSTFIELDS, is_array($post) ? http_build_query($post) : $post);// Post提交的数据包
+        }
+
+        curl_setopt($ch, CURLOPT_HEADER, false);// 显示返回的Header区域内容
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);// 获取的信息以文件流的形式返回
+        $content = curl_exec($ch); // 执行操作
+    
+        if($errno = curl_errno($ch) ){
+            $errmsg = curl_error($ch);
+            return [$errno, $errmsg,curl_getinfo($ch)];
+        }
+        curl_close($ch);
+        
+        return [null, $content];
+    }
+
+
+
+
 ```
 
 #### soap请求
@@ -1690,6 +1774,17 @@ function isLeapYear($year)
 }
 ```
 
+#### 获取今日开始于结束时间戳
+
+```php
+function today()
+	{
+		$begin = strtotime('today');
+		$end = strtotime('tomorrow');
+		return [$begin,$end-1];
+	}
+```
+
 
 
 
@@ -1722,9 +1817,9 @@ function read2($filename)
 
 
 // 更多读取,使用stream_copy_to_stream, 中间可以使用过滤器,进行数据的压缩
-$filename = '0325-8元.txt';
+$filename = '0325.txt';
 
-$filename2 = '8元.txt';
+$filename2 = '8.txt';
 
 // 文件转存
 //file_put_contents($filename2, file_get_contents($filename));  // 774448
@@ -1734,8 +1829,8 @@ $fp2 = fopen($filename2, 'w');
 $bytes = stream_copy_to_stream($fp1, $fp2);
 var_dump($bytes);
 
-//$filename11 = '0325-8元.deflate';
-$filename11 = '0325-8元.zip';
+//$filename11 = '0325.deflate';
+$filename11 = '0325.zip';
 $handler1 = fopen('php://filter/zlib.deflate/resource=' . $filename, 'r');
 $handler2 = fopen($filename11, 'w');
 stream_copy_to_stream($handler1, $handler2);  // 1114088
@@ -1745,6 +1840,58 @@ stream_copy_to_stream($handler1, $handler2);  // 1114088
 $content = file_get_contents('php://filter/zlib.inflate/resource='.$filename11);
 var_dump($content);
 ```
+
+#### 读取文件某行数据
+
+```php
+function readLine($file, $line_num, $delimiter="\n")
+{
+    /*** set the counter to one ***/
+    $i = 1;
+
+    /*** open the file for reading ***/
+    $fp = fopen( $file, 'r' );
+
+    /*** loop over the file pointer ***/
+    while ( !feof ( $fp) )
+    {
+        /*** read the line into a buffer ***/
+        $buffer = stream_get_line( $fp, 1024, $delimiter );
+        /*** if we are at the right line number ***/
+        if( $i == $line_num )
+        {
+            /*** return the line that is currently in the buffer ***/
+            return $buffer;
+        }
+        /*** increment the line counter ***/
+        $i++;
+        /*** clear the buffer ***/
+        $buffer = '';
+    }
+    return false;
+}
+
+
+function readLine( $file, $line_number )
+{
+        /*** read the file into the iterator ***/
+        $file_obj = new SplFileObject( $file );
+
+        /*** seek to the line number ***/
+        $file_obj->seek( $line_number );
+
+        /*** return the current line ***/
+        return $file_obj->current();
+}
+```
+
+
+
+
+
+
+
+
 
 #### 格式化文件大小
 
@@ -1758,6 +1905,24 @@ function formatSize($fileSize)
     return round($fileSize, 2).''. $sizes[$i];
 }
 ```
+
+#### 统计目录大小
+
+```php
+function directorySize($directory)
+{
+    $size = 0;
+    foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file)
+    {
+        $size += $file->getSize();
+    }
+    return $size;
+}
+```
+
+
+
+
 
 #### 获取文件扩展名
 
@@ -1782,7 +1947,7 @@ function getFileExt3($filename)
 
 
 
-#### 获取文件名称+唯一
+#### 获取文件名称唯一
 
 ```php
 function generateFileId($file, $useFileName=false, $prefix="")
@@ -1806,6 +1971,31 @@ function generateFileId($file, $useFileName=false, $prefix="")
 $filePath = 'test1.txt';
 var_dump(generateFileId($filePath));
 var_dump(generateFileId($filePath, true, 'cyd_'));
+```
+
+
+
+#### 查看某个目录下的所有文件名称
+
+```php
+function listFiles($directory)
+{
+    // 创建一个递归目录迭代器
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+
+    // 遍历所有文件
+    foreach ($iterator as $file) {
+        // 检查是否是文件（排除目录）
+        if ($file->isFile()) {
+            // 输出文件名称（可以根据需要处理路径）  
+            echo $file->getPathname() . PHP_EOL;
+        }
+    }
+}
+
+// 设定要查看的目录
+$targetDirectory = './';
+listFiles($targetDirectory);
 ```
 
 
@@ -1875,6 +2065,30 @@ function imgToBase64($img_file) {
 }
 ```
 
+#### 图片下载
+
+```php
+/**
+ * 强制下载图片
+ * @param  string $file     图片路径
+ * @param  string $fileName 图片名称
+ */
+function downloadFile($file,$fileName){ 
+	header('Pragma: public'); // required 
+	header('Expires: 0'); // no cache 
+	header('Cache-Control: must-revalidate, post-check=0, pre-check=0'); 
+	header('Cache-Control: private',false); 
+	header('Content-Type: application/force-download'); //强制下载
+	header('Content-Disposition: attachment; filename="'.basename($fileName).'"'); 
+	header('Content-Transfer-Encoding: binary'); 
+	header('Connection: close'); 
+	readfile($file); // push it out 
+	exit(); 
+}
+```
+
+
+
 
 
 
@@ -1906,6 +2120,66 @@ function data_to_xml($data) {
 ```
 
 
+
+## 数据
+
+#### 导出CSV格式的文件
+
+```php
+function exportCsv($filename, $data)
+{
+    set_time_limit(0);
+    ini_set('memory_limit', '512M');
+
+    // $output = fopen('php://output', 'w');
+    $output = fopen("{$filename}.csv", 'w');
+
+    //告诉浏览器这个是一个csv文件  
+    header("Content-Type: application/csv;charset=utf-8");
+    header("Content-Disposition: attachment; filename=$filename.csv");
+    // header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+    // header('Expires:0');
+    // header('Pragma:public');
+    //输出表头 
+    $table_head = array('ID','名称');
+    fputcsv($output, $table_head);
+    //输出每一行数据到文件中  
+    foreach ($data as $v) {
+        //输出内容  
+        fputcsv($output, array_values($v));
+    }
+
+    fclose($output);
+}
+
+// 下载CSV文件
+function exportToCsv($filename, $tileArray=[], $dataArray=[]){
+    ini_set('memory_limit','512M');
+    ini_set('max_execution_time',0);
+    ob_end_clean();
+    ob_start();
+    header("Content-Type: text/csv");
+    header("Content-Disposition:filename=".$filename);
+    $fp=fopen('php://output','w');
+    fwrite($fp, chr(0xEF).chr(0xBB).chr(0xBF));//转码 防止乱码(比如微信昵称(乱七八糟的))
+    fputcsv($fp,$tileArray);
+    $index = 0;
+    foreach ($dataArray as $item) {
+        if($index==1000){
+            $index=0;
+            ob_flush();
+            flush();
+        }
+        $index++;
+        fputcsv($fp,$item);
+    }
+
+    ob_flush();
+    flush();
+    ob_end_clean();
+}
+
+```
 
 
 
@@ -1951,6 +2225,65 @@ function session($name,$val=''){
 	return false;
 }
 ```
+
+### Redis
+
+#### 分布式锁
+
+```php
+/**
+ * 获取Redis分布式锁
+ *
+ * @param $lockKey
+ * @return bool
+ */function getRedisDistributedLock(string $lockKey) : bool{
+    $lockTimeout = 2000;// 锁的超时时间2000毫秒
+    $now = intval(microtime(true) * 1000);
+    $lockExpireTime = $now + $lockTimeout;
+    $lockResult = Redis::setnx($lockKey, $lockExpireTime);
+
+    if ($lockResult) {
+        // 当前进程设置锁成功
+        return true;
+    } else {
+        $oldLockExpireTime = Redis::get($lockKey);
+        if ($now > $oldLockExpireTime && $oldLockExpireTime == Redis::getset($lockKey, $lockExpireTime)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+/**
+ * 串行执行程序
+ *
+ * @param string $lockKey Key for lock
+ * @param Closure $closure 获得锁后进程要执行的闭包
+ * @return mixed
+ */function serialProcessing(string $lockKey, Closure $closure){
+    if (getRedisDistributedLock($lockKey)) {
+        $result = $closure();
+        $now = intval(microtime(true) * 1000);
+        if ($now < Redis::get($lockKey)) {
+            Redis::del($lockKey);   
+        }
+    } else {
+        // 延迟200毫秒再执行
+        usleep(200 * 1000);
+        return serialProcessing($lockKey, $closure);
+    }
+
+    return $result;
+}
+```
+
+
+
+
+
+
 
 
 
@@ -2469,6 +2802,26 @@ function articleAccessLog($timeStart, $timeEnd)
 ```
 
 
+
+#### 分库分表
+
+```php
+function getHash(&$key, $n = 64) {
+    $hash = crc32($key) >> 16 & 0xffff;
+    return sprintf("%02s", $hash % $n);
+}
+
+
+public function getStringHash($string, $tab_count)
+{
+        $unsign = sprintf('%u', crc32($string));
+        if ($unsign > 2147483647)  // sprintf u for 64 & 32 bit
+        {
+            $unsign -= 4294967296;
+        }
+        return abs($unsign) % $tab_count;
+}
+```
 
 
 
