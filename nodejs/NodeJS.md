@@ -102,6 +102,11 @@ fnm env --use-on-cd | Out-String | Invoke-Expression
   npm install npm@latest -g
   # 清理缓存
   npm cache clean
+  
+  # 查看安装过程中详情
+  npm install --loglevel verbose
+  
+  
   ```
   
   
