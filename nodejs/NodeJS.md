@@ -127,19 +127,27 @@ fnm env --use-on-cd | Out-String | Invoke-Expression
 ### npm 加速
 1. 在安装软件的时候使用--registry来注册镜像地址到国内的镜像（每次使用都需要指定国内的镜像）
 ```shell
-npm install gitbook-cli -g --registry=http://registry.npm.taobao.org
+npm install gitbook-cli -g --registry=http://registry.npmmirror.com
 ```
 
 2. 可以将国内镜像设置为默认的镜像源
 ```shell
-npm config set registry=http://registry.npm.taobao.org
+npm config set registry http://registry.npmmirror.com
+# 注: 旧镜像：http://registry.npm.taobao.org，2022年6月30日改为了：http://registry.npmmirror.com
 ```
 
 3. 使用cnpm来替代npm
 ```shell
-npm install -g cnpm --registry=https://registry.npm.taobao.org
+npm install -g cnpm --registry=http://registry.npmmirror.com
 # 安装完成之后就可以使用cnpm来进行相关软件的安装
 cnpm install  [name]
+# 不推荐使用, 容易出现很多安装中奇怪的报错
+```
+
+4.全局安装webpack
+
+```bash
+npm install webpack@^4.0.0 --save-dev
 ```
 
 
