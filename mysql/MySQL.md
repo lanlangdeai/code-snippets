@@ -184,6 +184,8 @@ select table_name from information_schema.tables where table_schema ='表名' an
 
 
 
+查询库中
+
 
 
 
