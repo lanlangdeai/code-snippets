@@ -186,6 +186,20 @@ select table_name from information_schema.tables where table_schema ='表名' an
 
 #### 查询库中所有表的存储情况
 
+```sql
+select
+table_schema as '数据库',
+table_name as '表名',
+table_rows as '记录数',
+truncate(data_length/1024/1024, 2) as '数据容量(MB)',
+truncate(index_length/1024/1024, 2) as '索引容量(MB)'
+from information_schema.tables
+where table_schema='mysql'
+order by data_length desc, index_length desc;
+```
+
+
+
 
 
 
