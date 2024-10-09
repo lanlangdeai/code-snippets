@@ -184,7 +184,7 @@ select table_name from information_schema.tables where table_schema ='表名' an
 
 
 
-查询库中
+#### 查询库中所有表的存储情况
 
 
 
