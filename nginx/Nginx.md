@@ -749,6 +749,13 @@ server{
 处理Option预检请求
 
 ```bash
+add_header Access-Control-Allow-Origin '*' always;
+add_header Access-Control-Allow-Headers '*';
+add_header Access-Control-Allow-Methods '*';
+add_header Access-Control-Allow-Credentials 'true';
+if ($request_method = 'OPTIONS') {
+   return 204;
+}
 ```
 
 
