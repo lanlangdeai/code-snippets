@@ -746,7 +746,7 @@ server{
 }
 ```
 
-处理Option预检请求()
+处理Option预检请求(否则)
 
 ```bash
 add_header Access-Control-Allow-Origin '*' always;
