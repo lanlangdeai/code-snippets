@@ -746,7 +746,7 @@ server{
 }
 ```
 
-处理Option预检请求(或在项目中进行处理, 否则会出现Option也可以正常请求数据的情况)
+#### 处理Option预检请求(或在项目中进行处理, 否则会出现Option也可以正常请求数据的情况)
 
 ```bash
 add_header Access-Control-Allow-Origin '*' always;
