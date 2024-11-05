@@ -746,9 +746,9 @@ server{
 }
 ```
 
-处理Option
+处理Option预检请求
 
-
+```
 
 
 
