@@ -818,7 +818,7 @@ Nodejs: https://nodejs.org/en
 
   https://element.eleme.cn/#/zh-CN
 
-- vite
+- vite: 轻量、可定制的移动端 Vue 组件库
 
   https://vant-ui.github.io/vant/#/zh-CN/
 
