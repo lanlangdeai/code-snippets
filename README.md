@@ -231,7 +231,7 @@ https://github.com/thephpleague/oauth2-client
 
 - phpqrcode: 二维码库
 
-http://phpqrcode.sourceforge.net/
+  http://phpqrcode.sourceforge.net/
 
 
 
