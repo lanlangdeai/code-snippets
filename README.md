@@ -188,11 +188,11 @@ https://www.workerman.net/
 https://github.com/webpatser/laravel-uuid
 
 - sso: SSo实现包
-https://github.com/evangui/sso
-
+  https://github.com/evangui/sso
 
 - oauth2: OAUTH2.0实现
 https://github.com/thephpleague/oauth2-client
+
 
 - OpenID: OpenId连接授权
   https://github.com/jumbojett/OpenID-Connect-PHP
