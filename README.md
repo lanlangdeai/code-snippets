@@ -863,7 +863,7 @@ Nodejs: https://nodejs.org/en
 - [vue搭建移动端开发,基于vue-cli4.0+webpack 4+vant ui + sass+ rem适配方案+axios封装](https://github.com/sunniejs/vue-h5-template)
 - [基于 vue3 + vant3 的 H5移动端 demo](https://github.com/vincentzyc/vue3-demo) 较为简易的脚手架,大部分页面都需要自行实现
 
-
+PC
 
 
 
