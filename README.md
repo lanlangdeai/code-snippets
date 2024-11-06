@@ -253,7 +253,7 @@ https://github.com/thephpleague/oauth2-client
 
   https://github.com/serbanghita/Mobile-Detect
 
-- 微信支付,支付宝支付 (composer require)
+- 微信支付,支付宝支付 (composer require zoujingli/wechat-developer)
 
   https://github.com/zoujingli/WeChatDeveloper
 
