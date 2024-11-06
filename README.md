@@ -863,7 +863,7 @@ Nodejs: https://nodejs.org/en
 
 #### Github项目借鉴
 
-- [一个基于 Vue 3 生态系统的移动 web 应用模板
+- [一个基于 Vue 3 生态系统的移动 web 应用模板](https://github.com/easy-temps/vue3-vant-mobile)
 
 
 
