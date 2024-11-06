@@ -820,7 +820,7 @@ Nodejs: https://nodejs.org/en
 
 - vite
 
-  
+  https://vant-ui.github.io/vant/#/zh-CN/
 
 
 
