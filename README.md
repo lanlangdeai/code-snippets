@@ -868,7 +868,7 @@ Nodejs: https://nodejs.org/en
 - [一个基于 Vue 3 生态系统的移动 web 应用模板](https://github.com/easy-temps/vue3-vant-mobile)
 - [一个移动端 H5 商城](https://github.com/JoeshuTT/v-shop) 存在vue2和vue3两个版本
 - [vue搭建移动端开发,基于vue-cli4.0+webpack 4+vant ui + sass+ rem适配方案+axios封装](https://github.com/sunniejs/vue-h5-template)
-- [基于 vue3 + vant3 的 H5移动端 demo]() 较为简易的脚手架,大部分页面都需要自行实现
+- [基于 vue3 + vant3 的 H5移动端 demo](https://github.com/vincentzyc/vue3-demo) 较为简易的脚手架,大部分页面都需要自行实现
 
 
 
