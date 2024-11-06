@@ -865,7 +865,7 @@ Nodejs: https://nodejs.org/en
 
 PC端方案:
 
-- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+- [vue-element-admin后台管理](https://github.com/PanJiaChen/vue-element-admin)
 
 
 
