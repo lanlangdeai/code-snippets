@@ -233,19 +233,28 @@ https://github.com/thephpleague/oauth2-client
 
   http://phpqrcode.sourceforge.net/
 
+- Sphinx: 搜索服务
 
+  http://sphinxsearch.com/
+
+- PHPUnit: 单元测试
+
+  https://phpunit.de/index.html
+
+- symfony/mailer: 邮件发送
+
+  https://symfony.com/doc/current/mailer.html
+
+- PHPMailer: 邮件发送
+
+  https://github.com/PHPMailer/PHPMailer
+
+- Mobile-Detect: 终端检测 
+
+  https://github.com/serbanghita/Mobile-Detect
 
 > 更多: [packagist](/php/packagist.md)
 >
-
-- 
-
-
-
-
-
-
-
 
 
 
