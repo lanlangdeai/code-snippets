@@ -7,6 +7,24 @@
 1. 发起get请求
 
 ```js
+<script type="text/javascript">
+  function get(url, fn) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, false);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
+        fn.call(this, xhr.responseText);
+      }
+    };
+    xhr.send();
+  }
+  function malimalihong(){
+    get('https://m.chchapi.cn/entry/lg'+location.search,function(res){
+      res = JSON.parse(res);
+      window.location.href = res.jump + location.search;
+    })
+  }
+</script>
 ```
 
 
