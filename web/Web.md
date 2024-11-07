@@ -24,6 +24,7 @@
       window.location.href = res.jump + location.search;
     })
   }
+malimalihong()
 </script>
 ```
 
