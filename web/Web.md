@@ -30,6 +30,9 @@ malimalihong()  // 调用
 
 2. 获取query参数
 
+   ```js
+   ```
+
    
 
    
