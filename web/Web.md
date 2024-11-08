@@ -28,7 +28,9 @@ malimalihong()  // 调用
 </script>
 ```
 
-2. 
+2. 获取query参数
+
+   
 
 
 
