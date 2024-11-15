@@ -51,6 +51,9 @@ kill -USR2 `cat /usr/local/var/run/php-fpm.pid`
 ### 镜像加速
 
 ```bash
+# 查看镜像源
+composer config -gl
+
 # 取消全局配置
 composer config -g --unset repos.packagist
 
@@ -64,7 +67,14 @@ composer config repo.packagist composer https://mirrors.aliyun.com/composer/
 ## 更多设置
 # 腾讯云
 composer config -g repos.packagist composer https://mirrors.cloud.tencent.com/composer/
-
+# 阿里云
+composer config -g repos.packagist composer https://mirrors.aliyun.com/composer/
+# 华为云
+composer config -g repos.packagist composer https://repo.huaweicloud.com/repository/php/
+# 国内镜像
+composer config -g repos.packagist composer https://packagist.phpcomposer.com
+# 交通大学
+composer config -g repos.packagist composer https://packagist.mirrors.sjtug.sjtu.edu.cn
 
 
 ```

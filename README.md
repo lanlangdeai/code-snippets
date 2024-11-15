@@ -866,6 +866,8 @@ Nodejs: https://nodejs.org/en
 PC端方案:
 
 - [vue-element-admin后台管理系统](https://github.com/PanJiaChen/vue-element-admin)
+- [likeadmin（PHP） 通用管理后台](https://github.com/likeadmin-likeshop/likeadmin_php)
+- [`Dcat Admin`是一个基于[laravel-admin](https://www.laravel-admin.org/)二次开发而成的后台系统构建工具](https://github.com/jqhph/dcat-admin)
 
 
 
