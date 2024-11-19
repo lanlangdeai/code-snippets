@@ -17,11 +17,13 @@ sudo yum remove docker \
 ```
 
 2.添加包管理
+
 ```bash
 sudo yum install -y yum-utils  device-mapper-persistent-data lvm2
 sudo yum-config-manager \
   --add-repo \
   https://download.docker.com/linux/centos/docker-ce.repo
+  
     
 yum makecache fast
 ```
