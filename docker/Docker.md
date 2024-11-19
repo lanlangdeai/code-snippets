@@ -50,7 +50,8 @@ sudo systemctl start docker
 # 设置开机启动
 sudo systemctl enable docker
 # 重载配置
-sudo systemctl daem
+sudo systemctl daemon-reload
+# cho
 ```
 
 
