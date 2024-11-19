@@ -88,7 +88,7 @@ linux
 
   https://lnmp.org/
 
-- One
+- OneinSta
 
 
 
