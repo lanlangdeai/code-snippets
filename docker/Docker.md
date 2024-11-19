@@ -44,7 +44,7 @@ sudo yum install docker-ce-<VERSION_STRING> docker-ce-cli-<VERSION_STRING> conta
 
 4.启动服务
 ```bash
-
+# 
 sudo systemctl start docker
 # 设置开机启动
 sudo systemctl enable docker
