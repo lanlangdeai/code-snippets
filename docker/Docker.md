@@ -30,7 +30,7 @@ yum-config-manager \
 # Centos7)    
 yum makecache fast
 # Centos8)
-
+dnf makecache
 ```
 
 3.安装
