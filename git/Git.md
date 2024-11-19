@@ -3,10 +3,10 @@
 ## 安装
 
 ```shell
-# 安装
+# 安装依赖
 yum install -y curl-devel expat-devel gettext-devel \
   openssl-devel zlib-devel
-
+# 
 yum -y install git-core
 # 查看版本
 git --version
