@@ -37,7 +37,7 @@ dnf makecache
 ```bash
 sudo yum install docker-ce docker-ce-cli containerd.io -y
 
-
+# 可以查看并
 ```
 
 4.启动服务
