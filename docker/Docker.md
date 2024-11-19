@@ -86,7 +86,7 @@ mkdir -p /etc/docker
 tee /etc/docker/daemon.json <<-EOF
 {
   "registry-mirrors": [
-    ""https://dockerproxy.com",",
+    "https://dockerproxy.com",
   ]
 }
 EOF
