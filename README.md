@@ -84,9 +84,7 @@ https://www.servbay.dev/zh_CN
 linux
 
 
-- Lnmp
-
-  https://lnmp.org/
+- [Lnmp(https://lnmp.org/)
 
 - [OneinStack](https://oneinstack.com/)
 
