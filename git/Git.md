@@ -3,7 +3,7 @@
 ## 安装
 
 ```shell
-
+# 安装
 yum install -y curl-devel expat-devel gettext-devel \
   openssl-devel zlib-devel
 
