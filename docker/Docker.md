@@ -29,6 +29,7 @@ yum-config-manager \
     https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 # Centos7)    
 yum makecache fast
+# Centos8)
 ```
 
 3.安装
