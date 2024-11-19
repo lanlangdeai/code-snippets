@@ -37,7 +37,9 @@ dnf makecache
 ```bash
 sudo yum install docker-ce docker-ce-cli containerd.io -y
 
-# 可以查看并
+# 可以查看并安装指定版本
+yum list docker-ce --showduplicates | sort -r  #查看版本
+sudo yum install docker-ce-<VERSION_STRING> docker-ce-cli-<VERSION_STRING> containerd.io #安装指定版本
 ```
 
 4.启动服务
