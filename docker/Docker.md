@@ -51,7 +51,8 @@ sudo systemctl start docker
 sudo systemctl enable docker
 # 重载配置
 sudo systemctl daemon-reload
-# cho
+# 重启服务
+
 ```
 
 
