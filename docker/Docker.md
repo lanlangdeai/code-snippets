@@ -54,7 +54,8 @@ sudo systemctl daemon-reload
 # 重启服务
 systemctl restart docker
 
-# 查看当前使用的
+# 查看当前使用的镜像源
+docker info|grep Mirrors -A 1
 ```
 
 
