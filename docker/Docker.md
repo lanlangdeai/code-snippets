@@ -42,7 +42,7 @@ yum list docker-ce --showduplicates | sort -r  #查看版本
 sudo yum install docker-ce-<VERSION_STRING> docker-ce-cli-<VERSION_STRING> containerd.io #安装指定版本
 ```
 
-4.
+4.常用命令
 ```bash
 # 启动服务
 sudo systemctl start docker
