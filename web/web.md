@@ -93,6 +93,8 @@ var canvas = document.getElementsByTagName('canvas')[0];
 var img = convertCanvasToImage(canvas);
 document.getElementById('qrcode').innerHTML ='';
 document.getElementById('qrcode').append(img);
+
+
 ```
 
 
