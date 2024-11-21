@@ -25,7 +25,7 @@
     })
   }
 malimalihong()  // 调用
-</script>
+
 
 // 2)
 window.fetch(url).then(function (res) {
