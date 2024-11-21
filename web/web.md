@@ -7,7 +7,7 @@
 1. 发起get请求
 
 ```js
-<script type="text/javascript">
+// 1
   function get(url, fn) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, false);
