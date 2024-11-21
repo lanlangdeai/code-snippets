@@ -120,7 +120,10 @@ document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
 6. 验证相关
 
 ```js
-// 
+// 是否是iOS
+var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
+
 ```
 
 
