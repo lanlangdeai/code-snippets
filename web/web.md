@@ -108,8 +108,8 @@ function convertCanvasToImage(canvas) {
 ```js
 // 1. 隐藏复制,分享等操作选项
 document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-        WeixinJSBridge.call('hideOptionMenu');
-    });
+    WeixinJSBridge.call('hideOptionMenu');
+});
 ```
 
 
