@@ -118,7 +118,12 @@ document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
 ```
 
 6. 验证相关
-7. 
+
+```js
+// 
+```
+
+
 
 
 
