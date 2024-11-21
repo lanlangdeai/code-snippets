@@ -31,7 +31,7 @@ malimalihong()  // 调用
 2.事件监听
 
 ```js
-
+// 页面加载后
 window.addEventListener('pageshow', function (e) {
         todo();
 });
