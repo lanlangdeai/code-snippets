@@ -31,8 +31,9 @@ malimalihong()  // 调用
 2.事件监听
 
 ```js
+
 window.addEventListener('pageshow', function (e) {
-        do_r();
+        todo();
 });
 ```
 
