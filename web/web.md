@@ -173,7 +173,12 @@ var ua = navigator.userAgent.toLowerCase();
 
 8. 移动端
 
+```js
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 ```
+
+
 
 
 
