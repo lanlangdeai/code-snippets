@@ -132,7 +132,7 @@ if (typeof WeixinJSBridge == "undefined") {
     onBridgeReady();
 }
 
-// 3. 是否是
+// 3. 是否是微信
 function isWeChat(){
     //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
     var ua = window.navigator.userAgent.toLowerCase();
@@ -143,6 +143,8 @@ function isWeChat(){
         return false;
     }
 }
+// 
+var qy = ua.match(/MicroMessenger/i) == 'micromessenger' && ua.match(/wxwork/i) == 'wxwork';
 ```
 
 6. 验证相关
