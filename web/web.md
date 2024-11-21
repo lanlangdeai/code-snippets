@@ -115,6 +115,8 @@ function convertCanvasToImage(canvas) {
 document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
     WeixinJSBridge.call('hideOptionMenu');
 });
+
+
 ```
 
 6. 验证相关
