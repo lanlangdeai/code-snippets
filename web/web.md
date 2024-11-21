@@ -27,7 +27,17 @@
 malimalihong()  // 调用
 </script>
 
-
+// 2)
+window.fetch(url).then(function (res) {
+    return res.json()
+}).then(function (ret) {
+    if (ret.code === 0) {
+        openid = ret.data.client_id
+        localStorage.setItem(cache_key, openid)
+        jpurl = api + '/api/getDomain/' + cid + '_' + secret + "?openid="+openid+"&t=" + new Date().valueOf()
+        getDomainUrl(jpurl, openid)
+    }
+})
 
 ```
 
