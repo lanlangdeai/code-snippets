@@ -39,6 +39,9 @@ window.addEventListener('pageshow', function (e) {
 
 3. 获取请求参数
 
+```js
+```
+
 
 
 
