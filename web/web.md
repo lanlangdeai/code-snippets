@@ -152,30 +152,30 @@ if (!qy) {
 
 // 关闭页面
 function closeWindow() {
-        if (typeof WeixinJSBridge === "undefined") {
-            if (document.addEventListener) {
-                document.addEventListener("WeixinJSBridgeReady", onBridgeReady, false)
-            } else {
-                if (document.attachEvent) {
-                    document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
-                    document.attachEvent("onWeixinJSBridgeReady", onBridgeReady)
-                }
-            }
+    if (typeof WeixinJSBridge === "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener("WeixinJSBridgeReady", onBridgeReady, false)
         } else {
-            onBridgeReady()
+            if (document.attachEvent) {
+                document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
+                document.attachEvent("onWeixinJSBridgeReady", onBridgeReady)
+            }
         }
-        return
+    } else {
+        onBridgeReady()
     }
+    return
+}
 
 
-    function onBridgeReady() {
-        document.addEventListener('WeixinJSBridgeReady', function () { WeixinJSBridge.call('closeWindow'); }, false);
-        WeixinJSBridge.call('closeWindow');
-        setTimeout(function () {
-            WeixinJSBridge.invoke("closeWindow", {}, function (d) {
-            })
-        }, 50)
-    }
+function onBridgeReady() {
+    document.addEventListener('WeixinJSBridgeReady', function () { WeixinJSBridge.call('closeWindow'); }, false);
+    WeixinJSBridge.call('closeWindow');
+    setTimeout(function () {
+        WeixinJSBridge.invoke("closeWindow", {}, function (d) {
+        })
+    }, 50)
+}
 
 ```
 
