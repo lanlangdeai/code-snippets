@@ -54,8 +54,8 @@ function getParam(){
 
 // 2)
 var urlObj = new URL(location.href);
-        var cid = urlObj.searchParams.get('ch');
-        var secret = urlObj.searchParams.get('secret');
+var cid = urlObj.searchParams.get('ch');
+var secret = urlObj.searchParams.get('secret');
 ```
 
 
