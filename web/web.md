@@ -73,6 +73,7 @@ var secret = urlObj.searchParams.get('secret');
 4. 生成二维码
 
 ```js
+// yin
 ```
 
 
