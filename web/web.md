@@ -47,6 +47,8 @@ window.fetch(url).then(function (res) {
 window.addEventListener('pageshow', function (e) {
         todo();
 });
+
+
 ```
 
 3. 获取请求参数
