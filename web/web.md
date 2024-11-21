@@ -188,12 +188,13 @@ var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
 ```
 
-7. 浏览器
+7. 浏览器相关
 
 ```js
 // ua
 var ua = navigator.userAgent.toLowerCase();
 
+/
 
 ```
 
