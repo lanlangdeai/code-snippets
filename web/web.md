@@ -48,7 +48,9 @@ window.addEventListener('pageshow', function (e) {
         todo();
 });
 // or
-window.onpageshow = function(d) {}
+window.onpageshow = function(d) {
+    // to
+}
 
 ```
 
