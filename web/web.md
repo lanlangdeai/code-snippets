@@ -26,6 +26,9 @@
   }
 malimalihong()  // 调用
 </script>
+
+
+
 ```
 
 2. 事件监听
