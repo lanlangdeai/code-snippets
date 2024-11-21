@@ -7,7 +7,7 @@
 1. 发起get请求
 
 ```js
-// 1
+// 1)
   function get(url, fn) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, false);
@@ -34,8 +34,7 @@ window.fetch(url).then(function (res) {
     if (ret.code === 0) {
         openid = ret.data.client_id
         localStorage.setItem(cache_key, openid)
-        jpurl = api + '/api/getDomain/' + cid + '_' + secret + "?openid="+openid+"&t=" + new Date().valueOf()
-        getDomainUrl(jpurl, openid)
+		
     }
 })
 
