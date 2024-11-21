@@ -34,7 +34,7 @@ window.fetch(url).then(function (res) {
     if (ret.code === 0) {
         openid = ret.data.client_id
         localStorage.setItem(cache_key, openid)
-		
+		// todo
     }
 })
 
