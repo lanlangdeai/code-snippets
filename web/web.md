@@ -105,13 +105,7 @@ function convertCanvasToImage(canvas) {
 
 5. 微信相关
 
-   ```
-   
-   
-   
-   ```
-
-   
+```js
 
 
 
