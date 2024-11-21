@@ -70,7 +70,12 @@ var cid = urlObj.searchParams.get('ch');
 var secret = urlObj.searchParams.get('secret');
 ```
 
-4. 
+4. 生成二维码
+
+```js
+```
+
+
 
 
 
