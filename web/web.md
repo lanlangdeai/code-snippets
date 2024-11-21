@@ -182,33 +182,34 @@ var ua = navigator.userAgent.toLowerCase();
 9. 元素操作
 
 ```js
-        function copy(value){
-            return new Promise(( resolve, reject ) => {
-                if(!value){alert('复制失败，请重试')}
-                const textarea = document.createElement('textarea');
-// 将该 textarea 设为 readonly 防止 iOS 下自动唤起键盘，同时将 textarea 移出可视区域
-                textarea.readOnly = 'readonly';
-                textarea.style.position = 'absolute';
-                textarea.style.top = '0px';
-                textarea.style.left = '-9999px';
-                textarea.style.zIndex = '-9999';
-// 将要 copy 的值赋给 textarea 标签的 value 属性
-                textarea.value = value
-// 将 textarea 插入到 el 中
-                const el = document.querySelector('body');
-                el.appendChild(textarea);
-// 兼容IOS 没有 select() 方法
-                if (textarea.createTextRange) {
-                    textarea.select(); // 选中值并复制
-                } else {
-                    textarea.setSelectionRange(0, value.length);
-                    textarea.focus();
-                }
-                const result = document.execCommand('Copy');
-                if (result) resolve()
-                el.removeChild(textarea);
-            })
+// 复制内容
+function copy(value){
+    return new Promise(( resolve, reject ) => {
+        if(!value){alert('复制失败，请重试')}
+        const textarea = document.createElement('textarea');
+        // 将该 textarea 设为 readonly 防止 iOS 下自动唤起键盘，同时将 textarea 移出可视区域
+        textarea.readOnly = 'readonly';
+        textarea.style.position = 'absolute';
+        textarea.style.top = '0px';
+        textarea.style.left = '-9999px';
+        textarea.style.zIndex = '-9999';
+        // 将要 copy 的值赋给 textarea 标签的 value 属性
+        textarea.value = value
+        // 将 textarea 插入到 el 中
+        const el = document.querySelector('body');
+        el.appendChild(textarea);
+        // 兼容IOS 没有 select() 方法
+        if (textarea.createTextRange) {
+            textarea.select(); // 选中值并复制
+        } else {
+            textarea.setSelectionRange(0, value.length);
+            textarea.focus();
         }
+        const result = document.execCommand('Copy');
+        if (result) resolve()
+        el.removeChild(textarea);
+    })
+}
 ```
 
 
