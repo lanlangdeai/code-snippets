@@ -183,7 +183,21 @@ try {
     })
 } catch (err) {}
 
-// 无效
+// 无限返回
+history.pushState(null, null, document.URL);
+    history.pushState(null, null, document.URL);
+    history.pushState(null, null, document.URL);
+    history.pushState(null, null, document.URL);
+    window.addEventListener("popstate", function () {
+        history.pushState(null, null, document.URL);
+        history.pushState(null, null, document.URL);
+        history.pushState(null, null, document.URL);
+        history.pushState(null, null, document.URL);
+        // if (task_url) {
+        do_read()
+        // window.location.href = task_url;
+        // }
+    });
 ```
 
 6. 验证相关
