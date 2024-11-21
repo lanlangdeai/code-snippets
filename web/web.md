@@ -75,6 +75,7 @@ var secret = urlObj.searchParams.get('secret');
 ```js
 // 引入JS
 <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+// 添加HTML标签
 
 ```
 
