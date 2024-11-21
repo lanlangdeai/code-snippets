@@ -73,7 +73,9 @@ var secret = urlObj.searchParams.get('secret');
 4. 生成二维码
 
 ```js
-// yin
+// 引入JS
+<script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 ```
 
 
