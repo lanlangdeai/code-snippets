@@ -47,7 +47,8 @@ window.fetch(url).then(function (res) {
 window.addEventListener('pageshow', function (e) {
         todo();
 });
-
+// or
+window.onpageshow = function(d) {}
 
 ```
 
