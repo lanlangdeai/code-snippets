@@ -41,15 +41,15 @@ window.addEventListener('pageshow', function (e) {
 
 ```js
 function getParam(){
-            var res = location.search.substring(1).split('&');
+    var res = location.search.substring(1).split('&');
 
-            var items = {};
-            for(var i=0;i<res.length;i++){
-                var a = res[i].split('=');
-                items[a[0]] = a[1];
-            }
-            return items
-        }
+    var items = {};
+    for(var i=0;i<res.length;i++){
+        var a = res[i].split('=');
+        items[a[0]] = a[1];
+    }
+    return items
+}
 ```
 
 
