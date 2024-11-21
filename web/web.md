@@ -149,6 +149,8 @@ var qy = ua.match(/MicroMessenger/i) == 'micromessenger' && ua.match(/wxwork/i) 
 if (!qy) {
     alert("请在微信内打开！");
 }
+
+
 ```
 
 6. 验证相关
