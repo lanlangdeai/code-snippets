@@ -19,10 +19,15 @@ IGNORE_DIR_LIST = [
     '.git',
 ]
 
+global cnt
 
 class FileChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
         # print('文件发生变化')
+        cnt++
+        if cnt % 10 != 0:  # 十次变化一次提交    
+            continue
+
         src_path = event.src_path.replace('\\', '/')
         base_name = os.path.basename(src_path)
         if base_name not in IGNORE_DIR_LIST:
