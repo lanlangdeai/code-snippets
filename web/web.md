@@ -77,7 +77,22 @@ var secret = urlObj.searchParams.get('secret');
 <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 // 添加HTML标签
 <div id="qrcode" style="width: 60vw; height: 60vw; padding: 10px; margin-top: 10vw;margin-bottom: 10vw; display: flex; flex-direction: column; align-items: center"></div>
-// JS动态
+// JS动态生成
+if (!window.qrcodeObj) {
+    window.qrcodeObj = new QRCode(document.getElementById("qrcode"), {
+        text: ret.url,
+        width: 250,
+        height: 250,
+        correctLevel: 3 // 重点是这个值解决
+    });
+} else {
+    window.qrcodeObj.clear();
+    window.qrcodeObj.makeCode(ret.url);
+}
+var canvas = document.getElementsByTagName('canvas')[0];
+var img = convertCanvasToImage(canvas);
+document.getElementById('qrcode').innerHTML ='';
+document.getElementById('qrcode').append(img);
 ```
 
 
