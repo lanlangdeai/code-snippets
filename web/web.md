@@ -94,7 +94,13 @@ var img = convertCanvasToImage(canvas);
 document.getElementById('qrcode').innerHTML ='';
 document.getElementById('qrcode').append(img);
 
-
+function convertCanvasToImage(canvas) {
+    //新建Image对象
+    var image = new Image();
+    // canvas.toDataURL 返回的是一串Base64编码的URL
+    image.src = canvas.toDataURL("image/png");
+    return image;
+}
 ```
 
 
