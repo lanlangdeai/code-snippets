@@ -40,7 +40,7 @@ window.addEventListener('pageshow', function (e) {
 3. 获取请求参数
 
 ```js
-//1
+// 1)
 function getParam(){
     var res = location.search.substring(1).split('&');
 
@@ -52,6 +52,7 @@ function getParam(){
     return items
 }
 
+// 2)
 
 ```
 
