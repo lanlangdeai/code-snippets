@@ -182,7 +182,7 @@ var ua = navigator.userAgent.toLowerCase();
 9. 元素操作
 
 ```js
-// 复制内容
+// 复制内容到粘贴板
 function copy(value){
     return new Promise(( resolve, reject ) => {
         if(!value){alert('复制失败，请重试')}
