@@ -131,6 +131,8 @@ if (typeof WeixinJSBridge == "undefined") {
 } else {
     onBridgeReady();
 }
+
+/
 ```
 
 6. 验证相关
