@@ -32,7 +32,7 @@ malimalihong()  // 调用
 
 ```js
 window.addEventListener('pageshow', function (e) {
-        // task_url = false;
+     
         do_read();
 });
 ```
