@@ -194,7 +194,7 @@ history.pushState(null, null, document.URL);
         history.pushState(null, null, document.URL);
         history.pushState(null, null, document.URL);
         // if (task_url) {
-        do_()
+        do_something()
         // window.location.href = task_url;
         // }
     });
