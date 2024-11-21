@@ -194,7 +194,10 @@ var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 // ua
 var ua = navigator.userAgent.toLowerCase();
 
-/
+// 防止页面被外部iframe
+if (self !== top) {
+        top.location = self.location
+    }
 
 ```
 
