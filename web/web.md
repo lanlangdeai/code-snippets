@@ -49,7 +49,7 @@ window.addEventListener('pageshow', function (e) {
 });
 // or
 window.onpageshow = function(d) {
-    // to
+    // todo
 }
 
 ```
