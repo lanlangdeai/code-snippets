@@ -143,8 +143,9 @@ function isWeChat(){
         return false;
     }
 }
-// 
+// 是否是企微
 var qy = ua.match(/MicroMessenger/i) == 'micromessenger' && ua.match(/wxwork/i) == 'wxwork';
+
 ```
 
 6. 验证相关
