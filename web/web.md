@@ -171,7 +171,11 @@ var ua = navigator.userAgent.toLowerCase();
 
 ```
 
-8.
+8. 移动端
+
+```
+
+
 
 
 
