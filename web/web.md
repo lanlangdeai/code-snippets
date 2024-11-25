@@ -291,7 +291,7 @@ function copy(value){
 
 ## 缓存处理方案:
 
-1).页面不缓存
+页面不缓存
 
 ```html
 <META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
