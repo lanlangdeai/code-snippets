@@ -284,6 +284,18 @@ function copy(value){
 ### 时间处理处理
 
 ```js
+// 格式化
+formatDate(currentDate) {
+      // 获取年、月、日、小时、分钟和秒
+      const year = currentDate.getFullYear()
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0') // 月份从0开始，所以要加1，并补零
+      const day = currentDate.getDate().toString().padStart(2, '0') // 补零
+      const hours = currentDate.getHours().toString().padStart(2, '0') // 补零
+      const minutes = currentDate.getMinutes().toString().padStart(2, '0') // 补零
+      const seconds = currentDate.getSeconds().toString().padStart(2, '0') // 补零
+      // 拼接日期和时间字符串
+      return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds
+    }
 ```
 
 
