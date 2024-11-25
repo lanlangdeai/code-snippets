@@ -284,7 +284,7 @@ function copy(value){
 ### 时间处理处理
 
 ```js
-// 格式化
+// 格式化date
 formatDate(currentDate) {
       // 获取年、月、日、小时、分钟和秒
       const year = currentDate.getFullYear()
