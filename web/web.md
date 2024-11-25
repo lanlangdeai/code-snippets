@@ -291,7 +291,7 @@ function copy(value){
 
 ## 缓存处理方案:
 
-页面不缓存
+### 页面不缓存
 
 ```html
 <META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
@@ -299,7 +299,7 @@ function copy(value){
 <META HTTP-EQUIV="expires" CONTENT="0">
 ```
 
-2)随机数或时间戳
+### 随机数或时间戳
 
 ```html
 // 在 URL 参数后加上 "?timestamp=" + new Date().getTime(); 
