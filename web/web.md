@@ -305,15 +305,21 @@ function copy(value){
 // 在 URL 参数后加上 "?timestamp=" + new Date().getTime(); 
 ```
 
-3)后台设置
+### 后台设置
 
 ```php
 header("Cache-Control: no-cache, must-revalidate");
 ```
 
-4)replace跳转覆盖
+### replace跳转覆盖
 
 ```js
 window.location.replace("WebForm1.aspx");
 ```
+
+
+
+
+
+
 
