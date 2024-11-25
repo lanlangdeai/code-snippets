@@ -231,7 +231,7 @@ if (self !== top) {
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 ```
 
-9. 元素操作
+### 元素操作
 
 ```js
 // 复制内容到粘贴板
