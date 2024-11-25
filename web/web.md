@@ -38,6 +38,8 @@ window.fetch(url).then(function (res) {
     }
 })
 
+
+
 ```
 
 ### 事件监听
