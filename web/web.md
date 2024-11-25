@@ -38,7 +38,8 @@ window.fetch(url).then(function (res) {
     }
 })
 
-// 3) 
+// 3) axios
+
 
 ```
 
