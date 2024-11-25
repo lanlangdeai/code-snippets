@@ -108,7 +108,7 @@ function convertCanvasToImage(canvas) {
 }
 ```
 
-5. 微信相关
+### 微信相关
 
 ```js
 // 1. 隐藏复制,分享等操作选项
@@ -200,7 +200,7 @@ history.pushState(null, null, document.URL);
     });
 ```
 
-6. 验证相关
+验证相关
 
 ```js
 // 是否是iOS
