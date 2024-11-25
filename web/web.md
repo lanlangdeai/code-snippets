@@ -200,7 +200,7 @@ history.pushState(null, null, document.URL);
     });
 ```
 
-验证相关
+### 验证相关
 
 ```js
 // 是否是iOS
@@ -209,7 +209,7 @@ var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
 ```
 
-7. 浏览器相关
+### 浏览器相关
 
 ```js
 // ua
@@ -223,7 +223,7 @@ if (self !== top) {
 
 ```
 
-8. 移动端
+### 移动端
 
 ```js
 // 移动端适配
