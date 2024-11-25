@@ -300,7 +300,18 @@ formatDate(currentDate) {
 
 ### 数据导出
 
+```js
+
+downloadFile(fileName, content){
+    let aLink = document.createElement('a');
+    let blob = new Blob([content], {type:"text/csv"});
+    aLink.download = fileName;
+    aLink.href = URL.createObjectURL(blob);
+    aLink.click();
+}
 ```
+
+
 
 
 
