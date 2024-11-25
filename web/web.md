@@ -54,7 +54,7 @@ window.onpageshow = function(d) {
 
 ```
 
-获取请求参数
+### 获取请求参数
 
 ```js
 // 1)
@@ -75,7 +75,7 @@ var cid = urlObj.searchParams.get('ch');
 var secret = urlObj.searchParams.get('secret');
 ```
 
-4. 生成二维码
+### 生成二维码
 
 ```js
 // 引入JS
