@@ -40,6 +40,20 @@ window.fetch(url).then(function (res) {
 
 // 3) axios
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+//使用axios自定义配置，访问指定地址
+                    const request = axios.create({
+                        baseURL: 'http://localhost:9000'
+                    })
+
+                    request
+                        .get('/user/allUsers')
+                        .then((response) => {
+                            console.log('数据获取成功', response.data)
+                            this.userList = response.data
+                        })
+                        .catch((error) => {
+                            console.log('数据获取失败', error)
+                        })
 
 ```
 
