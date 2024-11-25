@@ -40,7 +40,7 @@ window.fetch(url).then(function (res) {
 
 ```
 
-2. 事件监听
+### 事件监听
 
 ```js
 // 页面加载后执行
@@ -54,7 +54,7 @@ window.onpageshow = function(d) {
 
 ```
 
-3. 获取请求参数
+获取请求参数
 
 ```js
 // 1)
