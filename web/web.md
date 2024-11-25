@@ -309,7 +309,7 @@ downloadFile(fileName, content){
     aLink.href = URL.createObjectURL(blob);
     aLink.click();
 }
-// 调用()
+// 调用(数据格式: 日期,名称\n2024-11-25,lanlang\n)
 downloadFile(`数据-${cid}.csv`, response.data.data)
 ```
 
