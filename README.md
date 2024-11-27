@@ -359,11 +359,17 @@ https://docs.python.org/zh-cn/3.9/library/argparse.html?highlight=argparse#modul
 
 #### 第三个类库		
 
-| 库名         | 安装 | 网址                                                        | 说明                     |
-| ------------ | ---- | ----------------------------------------------------------- | ------------------------ |
-| psutil       |      | https://github.com/giampaolo/psutil                         | 查看系统信息(内存,CPU等) |
-| configparser |      | https://docs.python.org/zh-cn/3.9/library/configparser.html | ini文件读写              |
-| requests     |      | https://github.com/psf/requests                             | 网络请求库               |
+| 库名         | 安装 | 网址                                                        | 说明                                     |
+| ------------ | ---- | ----------------------------------------------------------- | ---------------------------------------- |
+| psutil       |      | https://github.com/giampaolo/psutil                         | 查看系统信息(内存,CPU等)                 |
+| configparser |      | https://docs.python.org/zh-cn/3.9/library/configparser.html | ini文件读写                              |
+| requests     |      | https://github.com/psf/requests                             | 网络请求库                               |
+| shutil       |      |                                                             | 文件和目录复制,移动,删除,压缩,解压等操作 |
+|              |      |                                                             |                                          |
+|              |      |                                                             |                                          |
+|              |      |                                                             |                                          |
+|              |      |                                                             |                                          |
+|              |      |                                                             |                                          |
 
 
 
