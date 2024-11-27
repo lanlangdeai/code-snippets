@@ -357,19 +357,13 @@ https://docs.python.org/zh-cn/3.9/library/argparse.html?highlight=argparse#modul
 
 
 
-#### 第三个类库
+#### 第三个类库		
 
-- psutil: 查看系统信息(内存,CPU等)
-  https://github.com/giampaolo/psutil
-- configparser: ini文件读写
-
-​		https://docs.python.org/zh-cn/3.9/library/configparser.html
-
-- requests: 网络请求库
-
-​		https://github.com/psf/requests
-
-
+| 库名         | 安装 | 网址                                                        | 说明                     |
+| ------------ | ---- | ----------------------------------------------------------- | ------------------------ |
+| psutil       |      | https://github.com/giampaolo/psutil                         | 查看系统信息(内存,CPU等) |
+| configparser |      | https://docs.python.org/zh-cn/3.9/library/configparser.html | ini文件读写              |
+| requests     |      | https://github.com/psf/requests                             | 网络请求库               |
 
 
 
@@ -1232,9 +1226,13 @@ https://github.com/markyin0707/typora-activation
 
 https://www.virtualbox.org/
 
-#### Xshell+Xftp
+#### Xshell+Xftp:ssh和ftp链接终端
 
 https://www.xshell.com/zh/
+
+FastStone Capture: 截屏/录屏/图片处理
+
+https://www.faststonecapture.cn/
 
 
 
@@ -1254,7 +1252,7 @@ https://github.com/gee1k/uPic
 
 https://github.com/cloudreve/Cloudreve
 
-#### 代码片段管理软件
+#### massCode:代码片段管理软件
 
 https://github.com/massCodeIO/massCode
 
@@ -1351,6 +1349,10 @@ Bi数据分析: https://github.com/getredash/redash
 ### 工具&软件
 
 github文件下载加速: https://mirror.ghproxy.com/
+
+Pritunl内网VPN软件: https://github.com/pritunl/pritunl
+
+
 
  
 
@@ -1600,6 +1602,8 @@ github文件下载加速: https://mirror.ghproxy.com/
 #### 科学上网
 
 - [iguge](https://iguge.net/)
+- [shadowsocks](https://shadowsocks.org/)
+- [蓝灯](https://lantern.io/zh)
 
 
 
